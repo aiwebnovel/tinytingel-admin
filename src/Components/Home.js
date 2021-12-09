@@ -1,12 +1,12 @@
 import React from 'react';
-import { Box } from '@chakra-ui/react';
+import { Text } from '@chakra-ui/react';
 import Layout from './Layout';
 
 
 const Home = () => {
   return (
     <Layout>
-     <h2> test</h2>
+     <Text fontSize='2xl'> test</Text>
     </Layout>
   );
 };

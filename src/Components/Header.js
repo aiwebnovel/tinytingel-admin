@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
-import { Box, Avatar, Flex } from '@chakra-ui/react';
+import { Box, Avatar, Flex, Divider } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
+import "../styles/style.scss";
 
 const Header = ({ onOpen }) => {
   const [isShow, SetShow] = useState(false);
@@ -11,7 +12,7 @@ const Header = ({ onOpen }) => {
 
   return (
     <>
-      <Box backgroundColor="#f9f9f9" padding="10px">
+      <Box backgroundColor="#f5f7fa" padding="10px">
         <Flex
           justify={{ base: 'space-between', md: 'flex-end' }}
           align="center"
@@ -20,19 +21,30 @@ const Header = ({ onOpen }) => {
             boxSize={6}
             onClick={onOpen}
             display={{ base: 'block', md: 'none' }}
+            style={{cursor:'pointer'}}
           />
           <Avatar
+            bg='#b8c6db'
             name="user"
-            src="/logo192.png"
             size="md"
+            style={{cursor:'pointer'}}
             onClick={HandleShow}
           />
         </Flex>
       </Box>
       {isShow && (
-        <div>
-            <p>Admin 님</p>
-        </div>
+        <Box
+          bg="#fff"
+          position="absolute"
+          top="70px"
+          right="0px"
+          className="UserProfile"
+        >
+          <p>Admin 님</p>
+          <Divider/>
+          <p>ADMIN</p>
+          <button>로그아웃</button>
+        </Box>
       )}
     </>
   );

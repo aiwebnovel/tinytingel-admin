@@ -2,19 +2,20 @@ import React from 'react';
 import Header from './Header';
 import {
   Box,
+  Heading,
   useDisclosure,
-  useMediaQuery,
   VStack,
   CloseButton,
   Drawer,
   DrawerContent,
   DrawerOverlay,
+  HStack,
+  Flex,
 } from '@chakra-ui/react';
+import { CheckIcon } from '@chakra-ui/icons';
 import Sider from './Sider';
 
-
 const Layout = ({ children }) => {
-
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   return (
@@ -38,44 +39,38 @@ const Layout = ({ children }) => {
             borderRightColor="gray.300"
             w="full"
             pos="fixed"
-            //left={0}
-            //top={0}
             h="full"
             paddingTop={{ base: '0' }}
-            backgroundColor="#f9f9f9"
+            backgroundColor="#fff"
           >
-            <Box>
+            <Flex justify="space-between" padding="5px 10px" bg="#f9f9f9">
               <CloseButton onClick={onClose} />
-            </Box>
-            <VStack spacing="15px">
-              <Box>
-                <h4>회원관리</h4>
-                <ul>
-                  <li>회원 현황 조회</li>
-                  <li>로그인 기록 조회</li>
-                </ul>
-              </Box>
-              <Box>
-                <h4>회원관리</h4>
-                <ul>
-                  <li>회원 현황 조회</li>
-                  <li>로그인 기록 조회</li>
-                </ul>
-              </Box>
-              <Box>
-                <h4>회원관리</h4>
-                <ul>
-                  <li>회원 현황 조회</li>
-                  <li>로그인 기록 조회</li>
-                </ul>
-              </Box>
+              <HStack>
+                <button>home</button>
+                <button>Logout</button>
+              </HStack>
+            </Flex>
+            <VStack spacing="35px" align="stretch" padding='30px'>
+              <Flex direction="column" align="baseline" className="MobileNav">
+                <Heading as="h4" size="md" marginBottom="5px">
+                  회원관리
+                </Heading>
+                <p>회원 현황 조회</p>
+                <p>로그인 기록 조회</p>
+              </Flex>
+              <Flex direction="column" align="baseline" className="MobileNav">
+                <Heading as="h4" size="md" marginBottom="5px">
+                  문의사항 관리
+                </Heading>
+                <p>문의사항 조회</p>
+              </Flex>
             </VStack>
           </Box>
         </DrawerContent>
       </Drawer>
       <Header onOpen={onOpen} />
-     
-      <Box backgroundColor="#fff" marginLeft={{ base: '0', md: '240px' }}>
+
+      <Box backgroundColor="#f5f7fa" marginLeft={{ base: '0', md: '240px' }}>
         {children}
       </Box>
     </Box>

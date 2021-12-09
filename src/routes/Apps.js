@@ -1,8 +1,8 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from '../Components/Home';
-import Landing from '../Components/Landing/index';
-import Regist from '../Components/Landing/Regist';
+//import Landing from '../Components/Landing/index';
+//import Regist from '../Components/Landing/Regist';
 
 
 function Apps() {
@@ -12,7 +12,9 @@ function Apps() {
         {로그인 했을 시 ? 
             <BrowserRouter>
                 <Routes>
-                    <Route path='/' element={<Landing/>}
+                //로그인 전 랜딩 페이지
+                    <Route path='/' element={<Landing/>
+                    <Route path="/regist" element={<Regist/>}></Route> 
                 </Routes>
             </BrowserRouter>
             : 
@@ -20,9 +22,7 @@ function Apps() {
         */
     <BrowserRouter>
       <Routes>
-        {/* <Route path="/" element={<Home />}></Route> */}
-        <Route path="/" element={<Landing />}></Route>
-        <Route path="/regist" element={<Regist/>}></Route>
+        <Route path="/" element={<Home />}></Route>
       </Routes>
     </BrowserRouter>
   );
