@@ -5,7 +5,7 @@ import {
 } from '@chakra-ui/react';
 
 
-const Sider = ({onClose}) => {
+const Sider = () => {
 
   return (
     <Box
@@ -20,7 +20,6 @@ const Sider = ({onClose}) => {
       paddingTop='60px'
       backgroundColor="#f9f9f9"
       display={{base:'none', md:'block'}}
-     
     >
       <VStack 
       spacing="15px"
