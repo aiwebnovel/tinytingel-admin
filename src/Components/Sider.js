@@ -1,9 +1,7 @@
-import React , {useState}from 'react';
+import React from 'react';
 import {
   Box,
   VStack,
-  CloseButton,
-
 } from '@chakra-ui/react';
 
 
@@ -15,12 +13,13 @@ const Sider = ({onClose}) => {
       bg="white"
       borderRight="1px"
       borderRightColor="gray.300"
-      w={{md: 60 }}
+      w={{base: 'full', md: 60 }}
       pos="fixed"
       top={0}
       h="full"
       paddingTop='60px'
       backgroundColor="#f9f9f9"
+      display={{base:'none', md:'block'}}
      
     >
       <VStack 
