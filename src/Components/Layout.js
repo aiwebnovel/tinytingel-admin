@@ -12,7 +12,6 @@ import {
   HStack,
   Flex,
 } from '@chakra-ui/react';
-import { CheckIcon } from '@chakra-ui/icons';
 import Sider from './Sider';
 
 const Layout = ({ children }) => {
@@ -70,7 +69,7 @@ const Layout = ({ children }) => {
       </Drawer>
       <Header onOpen={onOpen} />
 
-      <Box backgroundColor="#f5f7fa" marginLeft={{ base: '0', md: '240px' }}>
+      <Box h="full" backgroundColor="#f5f7fa" marginLeft={{ base: '0', md: '240px' }}>
         {children}
       </Box>
     </Box>
