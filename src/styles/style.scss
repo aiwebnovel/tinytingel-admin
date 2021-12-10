@@ -16,8 +16,18 @@ $white-1 : #fff;
     }
 }   
 
+.nav {
+    > a {
+        cursor: pointer;
+
+        &:hover {
+            text-decoration: underline;
+        }
+    }
+}
+
 .MobileNav {
-    > p {
+    > a {
         cursor: pointer;
         background-color: #f9f9f9;
         padding: 10px 0 10px 5px;
@@ -29,3 +39,24 @@ $white-1 : #fff;
     }
 
 }
+
+.SiderBottom {
+    > button {
+        &:hover {
+            font-weight: 600;
+        }
+    }
+}
+
+//members
+
+.DatePickerStyle {
+    width: 100%;
+    border: 1px solid $dark-1;
+}
+
+.react-datepicker__triangle {
+    display:none;
+}
+
+

@@ -1,6 +1,9 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from '../Components/Home';
+import Members from '../Components/Management/Members';
+import LoginLog from '../Components/Management/LoginLog';
+import Questions from '../Components/Management/Questions';
 //import Landing from '../Components/Landing/index';
 //import Regist from '../Components/Landing/Regist';
 
@@ -23,6 +26,9 @@ function Apps() {
     <BrowserRouter>
       <Routes>
         <Route path="/" element={<Home />}></Route>
+        <Route path="/members" element={<Members />}></Route>
+        <Route path="/log" element={<LoginLog />}></Route>
+        <Route path="/questions" element={<Questions />}></Route>
       </Routes>
     </BrowserRouter>
   );

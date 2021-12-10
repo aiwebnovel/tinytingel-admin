@@ -1,4 +1,5 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import Header from './Header';
 import {
   Box,
@@ -45,7 +46,7 @@ const Layout = ({ children }) => {
             <Flex justify="space-between" padding="5px 10px" bg="#f9f9f9">
               <CloseButton onClick={onClose} />
               <HStack>
-                <button>home</button>
+                <Link to='/'>home</Link>
                 <button>Logout</button>
               </HStack>
             </Flex>
@@ -54,14 +55,14 @@ const Layout = ({ children }) => {
                 <Heading as="h4" size="md" marginBottom="5px">
                   회원관리
                 </Heading>
-                <p>회원 현황 조회</p>
-                <p>로그인 기록 조회</p>
+                <Link to='/members'>회원 현황 조회</Link>
+                <Link to='/log'>로그인 기록 조회</Link>
               </Flex>
               <Flex direction="column" align="baseline" className="MobileNav">
                 <Heading as="h4" size="md" marginBottom="5px">
                   문의사항 관리
                 </Heading>
-                <p>문의사항 조회</p>
+                <Link to='/questions'>문의사항 조회</Link>
               </Flex>
             </VStack>
           </Box>
@@ -69,7 +70,7 @@ const Layout = ({ children }) => {
       </Drawer>
       <Header onOpen={onOpen} />
 
-      <Box h="full" backgroundColor="#f5f7fa" marginLeft={{ base: '0', md: '240px' }}>
+      <Box backgroundColor="#f5f7fa" marginLeft={{ base: '0', md: '240px' }}>
         {children}
       </Box>
     </Box>

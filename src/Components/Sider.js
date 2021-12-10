@@ -1,4 +1,5 @@
 import React from 'react';
+import {Link } from 'react-router-dom'
 import { Box, VStack, Heading, Flex, HStack } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
 import '../styles/style.scss';
@@ -25,18 +26,18 @@ const Sider = () => {
           <Heading as="h4" size="md" marginBottom="5px">
             <CheckIcon boxSize={4}/> 회원관리
           </Heading>
-          <p>회원 현황 조회</p>
-          <p>로그인 기록 조회</p>
+          <Link to='/members'>회원 현황 조회</Link>
+          <Link to='/log'>로그인 기록 조회</Link>
         </Flex>
         <Flex direction='column' align='baseline'  className="nav">
           <Heading as="h4" size="md" marginBottom="5px">
             <CheckIcon  boxSize={4}/> 문의사항 관리
           </Heading>
-          <p>문의사항 조회</p>
+          <Link to='/questions'>문의사항 조회</Link>
         </Flex>
       </VStack>
-      <HStack spacing="25px">
-          <button>Home</button>
+      <HStack spacing="25px" className='SiderBottom'>
+          <Link to='/'>Home</Link>
           <button>Logout</button>
       </HStack>
     </Box>
