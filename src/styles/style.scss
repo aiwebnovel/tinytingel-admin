@@ -2,6 +2,7 @@ $background: #f5f7fa;
 $main : #b8c6db;
 $dark-1 : #444;
 $white-1 : #fff;
+$white-2 : #f9f9f9;
 //Header
 
 .UserProfile {
@@ -50,6 +51,26 @@ $white-1 : #fff;
 
 //members
 
+.MemberContainer {
+    padding: 48px;
+
+    @media screen and (max-width: 768px) {
+        padding-right: 36px;
+        padding-left: 36px;
+    }
+}
+
+.MemberCheck {
+    
+   > label {
+        margin-right: 5px;
+
+        > span {
+            margin: 4px;
+        }
+    }
+}
+
 .DatePickerStyle {
     width: 100%;
     border: 1px solid $dark-1;
@@ -59,4 +80,111 @@ $white-1 : #fff;
     display:none;
 }
 
+.TableContainer {
+    padding: 48px;
+}
 
+
+//MemInfo
+
+
+.InfoContainer {
+    padding: 120px 64px;
+
+    @media screen and (max-width: 768px) {
+        padding-right: 36px;
+        padding-left: 36px;
+    }
+}
+
+.InfoBox {
+    display: flex;
+    padding: 15px 8px;
+    gap: 50px;
+    border-bottom : 1px solid $dark-1;
+
+    >h4 {
+        font-weight: 600;
+    }
+    
+
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+        width: 100%;
+        gap: 20px;
+
+    }
+}
+
+
+//MemPay
+
+
+.PaymentContainer {
+    padding: 120px 64px;
+
+    @media screen and (max-width: 768px) {
+        padding-right: 36px;
+        padding-left: 36px;
+    }
+}
+
+.payBox {
+    display: flex;
+    padding: 15px 8px;
+    gap: 50px;
+    border-bottom : 1px solid $dark-1;
+
+    >h4 {
+        font-weight: 600;
+    }
+
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+        width: 100%;
+        gap: 20px;
+
+    }
+}
+
+//QuestionDetail
+
+.QuestionContainer {
+    padding: 120px 64px;
+
+    @media screen and (max-width: 768px) {
+        padding-right: 36px;
+        padding-left: 36px;
+    }
+}
+
+.QuestionBox {
+    background-color: $white-1;
+    display: flex;
+    padding: 15px;
+    gap: 50px;
+    border-bottom : 1px solid #ededed;
+
+    >h4 {
+        font-weight: 600;
+    }
+
+    >p {
+        max-width: 800px;
+    }
+
+    > div > label {
+        margin-right: 5px;
+
+        > span {
+            margin: 4px;
+        }
+    }
+
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+        width: 100%;
+        gap: 20px;
+
+    }
+}

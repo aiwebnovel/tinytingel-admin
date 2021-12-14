@@ -70,7 +70,7 @@ const Layout = ({ children }) => {
       </Drawer>
       <Header onOpen={onOpen} />
 
-      <Box backgroundColor="#f5f7fa" marginLeft={{ base: '0', md: '240px' }}>
+      <Box backgroundColor="#f5f7fa" minH='100vh' marginLeft={{ base: '0', md: '240px' }}>
         {children}
       </Box>
     </Box>

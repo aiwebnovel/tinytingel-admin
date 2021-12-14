@@ -4,7 +4,10 @@ import Home from '../Components/Home';
 import Members from '../Components/Management/Members';
 import LoginLog from '../Components/Management/LoginLog';
 import Questions from '../Components/Management/Questions';
-//import Landing from '../Components/Landing/index';
+import MemInfo from '../Components/Management/MemInfo';
+import Landing from '../Components/Landing/index';
+import MemPay from '../Components/Management/MemPay'
+import QuestionDetail from '../Components/Management/QuestionDetail';
 //import Regist from '../Components/Landing/Regist';
 
 
@@ -25,10 +28,15 @@ function Apps() {
         */
     <BrowserRouter>
       <Routes>
+        <Route path='/landing' element={<Landing/>}/>
+        {/* <Route path="/regist" element={<Regist/>}></Route>  */}
         <Route path="/" element={<Home />}></Route>
         <Route path="/members" element={<Members />}></Route>
+        <Route path="/info" element={<MemInfo />}></Route>
+        <Route path="/payment" element={<MemPay/>}></Route> 
         <Route path="/log" element={<LoginLog />}></Route>
-        <Route path="/questions" element={<Questions />}></Route>
+        <Route path="/questions/*" element={<Questions />}></Route>
+        <Route path="/questions/detail" element={<QuestionDetail />}></Route>
       </Routes>
     </BrowserRouter>
   );

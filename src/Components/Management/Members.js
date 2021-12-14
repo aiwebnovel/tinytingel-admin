@@ -3,7 +3,6 @@ import {
   Box,
   CheckboxGroup,
   Checkbox,
-  HStack,
   Table,
   Thead,
   Tbody,
@@ -16,6 +15,7 @@ import {
   IconButton,
   Select,
 } from '@chakra-ui/react';
+import {Link} from 'react-router-dom';
 import {
   ArrowLeftIcon,
   ChevronLeftIcon,
@@ -32,15 +32,15 @@ const Members = () => {
 
   return (
     <Layout>
-      <Box padding="48px">
-        <Box bg="#fff" padding="48px">
-          <CheckboxGroup colorScheme="#444">
-            <HStack>
+      <Box className='MemberContainer'>
+        <Box bg="#fff" padding='48px'>
+          <CheckboxGroup colorScheme="#444" >
+            <Flex direction={{base:'column', sm:'row'}} className='MemberCheck'>
               <Checkbox value="all">전체</Checkbox>
               <Checkbox value="1">1개월</Checkbox>
               <Checkbox value="3">3개월</Checkbox>
               <Checkbox value="6">6개월</Checkbox>
-            </HStack>
+            </Flex>
           </CheckboxGroup>
           <Flex w='100%' alignItems='center' gridGap={15}>
             <Select placeholder="기준">
@@ -58,7 +58,7 @@ const Members = () => {
           </Box>
         </Box>
       </Box>
-      <Box padding="48px">
+      <Box className='TableContainer'>
         <Box overflowX='auto'>
         <Table variant="simple" bg="#fff" >
           <Thead>
@@ -78,7 +78,7 @@ const Members = () => {
               <Td>yyyy-mm-dd</Td>
               <Td>yyyy-mm-dd</Td>
               <Td>6개월</Td>
-              <Td>수정</Td>
+              <Td><Link to='/info'>수정</Link></Td>
             </Tr>
             <Tr>
               <Td>김동영</Td>
@@ -168,5 +168,5 @@ export default Members;
 const ExcelDownBtn = styled.button`
   background-color : #444;
   color : #fff;
-  padding: 5px 15px;
+  padding: 2px 10px;
 `
