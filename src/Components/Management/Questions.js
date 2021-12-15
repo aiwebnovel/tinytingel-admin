@@ -1,5 +1,5 @@
 import React from 'react';
-import  {Link} from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import {
   Box,
   CheckboxGroup,
@@ -15,7 +15,7 @@ import {
   Tooltip,
   IconButton,
   Select,
-  Input
+  Input,
 } from '@chakra-ui/react';
 import {
   ArrowLeftIcon,
@@ -29,65 +29,69 @@ import styled from 'styled-components';
 const Questions = () => {
   return (
     <Layout>
-             <Box className='MemberContainer'>
-        <Box bg="#fff" padding='48px' textAlign='center'>
-          <Flex w='100%' alignItems='center' gridGap={15}>
+      <Box className="MemberContainer">
+        <Box bg="#fff" padding="48px" textAlign="center">
+          <Flex w="100%" alignItems="center" gridGap={15}>
             <Select placeholder="문의 유형">
               <option value="regist">가입 일자</option>
               <option value="login">로그인 일자</option>
             </Select>
-            <Input placeholder='문의 내용'/>
+            <Input placeholder="문의 내용" />
           </Flex>
-          <Input placeholder='회원명 및 이메일 주소' margin='15px 0'/>
+          <Input placeholder="회원명 및 이메일 주소" margin="15px 0" />
           <SearchBtn>검색</SearchBtn>
         </Box>
       </Box>
-      <Box className='TableContainer'>
-        <Box overflowX='auto'>
-        <Table variant="simple" bg="#fff" fontSize='13px'>
-          <Thead>
-            <Tr>
-              <Th>회원명</Th>
-              <Th>이메일 주소</Th>
-              <Th>문의 유형</Th>
-              <Th>상태</Th>
-              <Th>문의 내용</Th>
-         
-            </Tr>
-          </Thead>
-          <Tbody>
-            <Tr>
-              <Td>이태용</Td>
-              <Td>Taeoxo@gmail.com</Td>
-              <Td>오류신고</Td>
-              <Td>환불</Td>
-              <Td><Link to='detail'>문의 내용 첫문장 일부를 20문자까지..</Link></Td>
-
-            </Tr>
-            <Tr>
-              <Td>김동영</Td>
-              <Td>do0_@gmail.com</Td>
-              <Td>서비스 제안</Td>
-              <Td>미확인</Td>
-              <Td>문의 내용 첫문장 일부를 20문자까지..</Td>
-            </Tr>
-            <Tr>
-              <Td>서영호</Td>
-              <Td>johnnyjsuh@naver.com</Td>
-              <Td>기타</Td>
-              <Td>확인</Td>
-              <Td>문의 내용 첫문장 일부를 20문자까지..</Td>
-            </Tr>
-            <Tr>
-              <Td>나재민</Td>
-              <Td>na.jaemin0813_@naver.com</Td>
-              <Td>이용문의</Td>
-              <Td>확인</Td>
-              <Td>문의 내용 첫문장 일부를 20문자까지..</Td>
-            </Tr>
-          </Tbody>
-
-        </Table>
+      <Box className="TableContainer">
+        <Box overflowX="auto">
+          <Table
+            variant="simple"
+            bg="#fff"
+            fontSize="14px"
+            className="TableStyle"
+          >
+            <Thead>
+              <Tr>
+                <Th>회원명</Th>
+                <Th>이메일 주소</Th>
+                <Th>문의 유형</Th>
+                <Th>상태</Th>
+                <Th>문의 내용</Th>
+              </Tr>
+            </Thead>
+            <Tbody>
+              <Tr>
+                <Td>이태용</Td>
+                <Td>Taeoxo@gmail.com</Td>
+                <Td>오류신고</Td>
+                <Td>환불</Td>
+                <Td>
+                  <Link to="detail">문의 내용 첫문장 일부를 20문자까지..</Link>
+                </Td>
+              </Tr>
+              <Tr>
+                <Td>김동영</Td>
+                <Td>do0_@gmail.com</Td>
+                <Td>서비스 제안</Td>
+                <Td>미확인</Td>
+                <Td>문의 내용 첫문장 일부를 20문자까지..</Td>
+              </Tr>
+              <Tr>
+                <Td>서영호</Td>
+                <Td>johnnyjsuh@naver.com</Td>
+                <Td>기타</Td>
+                <Td>확인</Td>
+                <Td>문의 내용 첫문장 일부를 20문자까지..</Td>
+              </Tr>
+              <Tr>
+                <Td>나재민</Td>
+                <Td>na.jaemin0813_@naver.com</Td>
+                <Td>이용문의</Td>
+                <Td>확인</Td>
+                <Td>문의 내용 첫문장 일부를 20문자까지..</Td>
+              </Tr>
+            </Tbody>
+          </Table>
         </Box>
         <Flex justifyContent="space-between" m={4} alignItems="center">
           <Flex>
@@ -147,9 +151,8 @@ const Questions = () => {
 export default Questions;
 
 const SearchBtn = styled.button`
-  background-color : #b8c6db;
+  background-color: #b8c6db;
   border: 1px solid #b8c6db;
-  border-radius : 5px;
+  border-radius: 5px;
   padding: 2px 15px;
-  
-` 
+`;

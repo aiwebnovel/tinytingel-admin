@@ -11,7 +11,6 @@ import {
   Flex,
   Tooltip,
   IconButton,
-
 } from '@chakra-ui/react';
 import {
   ArrowLeftIcon,
@@ -26,11 +25,11 @@ const LoginLog = () => {
   return (
     <Layout>
       <Box padding="48px">
-        <Box overflowX="auto">
-        <Box mb={25} textAlign='right'>
+        <Box mb={25} textAlign="right">
           <ExcelDownBtn>CSV 내려받기</ExcelDownBtn>
-          </Box>
-          <Table variant="simple" bg="#fff">
+        </Box>
+        <Box overflowX="auto">
+          <Table variant="simple" bg="#fff" className='TableStyle'>
             <Thead>
               <Tr>
                 <Th>회원명</Th>

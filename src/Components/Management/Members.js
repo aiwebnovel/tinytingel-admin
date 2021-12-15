@@ -60,7 +60,7 @@ const Members = () => {
       </Box>
       <Box className='TableContainer'>
         <Box overflowX='auto'>
-        <Table variant="simple" bg="#fff" >
+        <Table variant="simple" bg="#fff" className='TableStyle' >
           <Thead>
             <Tr>
               <Th>회원명</Th>
