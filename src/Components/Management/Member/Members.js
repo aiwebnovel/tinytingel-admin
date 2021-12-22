@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { CSVLink } from 'react-csv';
 import {
   Box,
   CheckboxGroup,
@@ -14,6 +15,7 @@ import {
   Tooltip,
   IconButton,
   Select,
+  Input
 } from '@chakra-ui/react';
 import {Link} from 'react-router-dom';
 import {
@@ -22,7 +24,7 @@ import {
   ChevronRightIcon,
   ArrowRightIcon,
 } from '@chakra-ui/icons';
-import Layout from '../Layout';
+import Layout from '../../Layout';
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
 import styled from 'styled-components';
@@ -36,10 +38,10 @@ const Members = () => {
         <Box bg="#fff" padding='48px'>
           <CheckboxGroup colorScheme="#444" >
             <Flex direction={{base:'column', sm:'row'}} className='MemberCheck'>
-              <Checkbox value="all">전체</Checkbox>
-              <Checkbox value="1">1개월</Checkbox>
-              <Checkbox value="3">3개월</Checkbox>
-              <Checkbox value="6">6개월</Checkbox>
+              <Checkbox value="all" colorScheme='green'>전체</Checkbox>
+              <Checkbox value="1" colorScheme='green'>1개월</Checkbox>
+              <Checkbox value="3" colorScheme='green'>3개월</Checkbox>
+              <Checkbox value="6" colorScheme='green'>6개월</Checkbox>
             </Flex>
           </CheckboxGroup>
           <Flex w='100%' alignItems='center' gridGap={15}>
@@ -53,6 +55,12 @@ const Members = () => {
               onChange={date => setStartDate(date)}
             />
           </Flex>
+          <Box margin='15px 0'>
+            <Flex className='SearchFlex' alignItems='center'>
+            <Input placeholder='검색어를 입력해주세요'/>
+            <button>검색</button>
+            </Flex>
+          </Box>
           <Box mt={15} textAlign='right'>
           <ExcelDownBtn>CSV 내려받기</ExcelDownBtn>
           </Box>
@@ -86,7 +94,7 @@ const Members = () => {
               <Td>yyyy-mm-dd</Td>
               <Td>yyyy-mm-dd</Td>
               <Td>1개월</Td>
-              <Td>수정</Td>
+              <Td><Link to='/info'>수정</Link></Td>
             </Tr>
             <Tr>
               <Td>서영호</Td>
@@ -94,7 +102,7 @@ const Members = () => {
               <Td>yyyy-mm-dd</Td>
               <Td>yyyy-mm-dd</Td>
               <Td>3개월</Td>
-              <Td>수정</Td>
+              <Td><Link to='/info'>수정</Link></Td>
             </Tr>
             <Tr>
               <Td>나재민</Td>
@@ -102,7 +110,7 @@ const Members = () => {
               <Td>yyyy-mm-dd</Td>
               <Td>yyyy-mm-dd</Td>
               <Td>3개월</Td>
-              <Td>수정</Td>
+              <Td><Link to='/info'>수정</Link></Td>
             </Tr>
           </Tbody>
 

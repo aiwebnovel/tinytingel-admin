@@ -1,7 +1,7 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
 import { Box } from '@chakra-ui/react';
-import Layout from '../Layout';
+import Layout from '../../Layout';
 import styled from 'styled-components';
 
 const MemInfo = () => {

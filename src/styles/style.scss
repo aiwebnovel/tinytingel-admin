@@ -10,15 +10,15 @@ $white-2 : #f9f9f9;
     padding: 15px;
     border: 1px solid $dark-1;
 
-    > button {
+    >button {
         width: 100%;
         background-color: $dark-1;
         color: $white-1;
     }
-}   
+}
 
 .nav {
-    > a {
+    >a {
         cursor: pointer;
 
         &:hover {
@@ -28,7 +28,7 @@ $white-2 : #f9f9f9;
 }
 
 .MobileNav {
-    > a {
+    >a {
         cursor: pointer;
         background-color: #f9f9f9;
         padding: 10px 0 10px 5px;
@@ -42,12 +42,31 @@ $white-2 : #f9f9f9;
 }
 
 .SiderBottom {
-    > button {
+    >button {
         &:hover {
             font-weight: 600;
         }
     }
 }
+
+//home
+
+.HomeTd {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+
+    > h4 {
+        font-weight: 600;
+        font-size: 20px;
+    }
+
+    > p {
+        font-size: 18px;
+    }
+}
+
 
 //members
 
@@ -61,11 +80,11 @@ $white-2 : #f9f9f9;
 }
 
 .MemberCheck {
-    
-   > label {
+
+    >label {
         margin-right: 5px;
 
-        > span {
+        >span {
             margin: 4px;
         }
     }
@@ -74,10 +93,25 @@ $white-2 : #f9f9f9;
 .DatePickerStyle {
     width: 100%;
     border: 1px solid $dark-1;
+    padding: 5px;
 }
 
 .react-datepicker__triangle {
-    display:none;
+    display: none;
+}
+
+.SearchFlex {
+    >input {
+        width: 60%;
+    }
+
+    >button {
+        background-color: $main;
+        color: $dark-1;
+        padding: 8px 15px;
+        margin-left: 10px;
+        border-radius: 5px;
+    }
 }
 
 .TableContainer {
@@ -85,10 +119,11 @@ $white-2 : #f9f9f9;
 }
 
 .TableStyle {
-
     min-width: 800px;
 
 }
+
+
 
 
 //MemInfo
@@ -107,12 +142,12 @@ $white-2 : #f9f9f9;
     display: flex;
     padding: 15px 8px;
     gap: 50px;
-    border-bottom : 1px solid $dark-1;
+    border-bottom: 1px solid $dark-1;
 
     >h4 {
         font-weight: 600;
     }
-    
+
 
     @media screen and (max-width: 768px) {
         flex-direction: column;
@@ -139,7 +174,7 @@ $white-2 : #f9f9f9;
     display: flex;
     padding: 15px 8px;
     gap: 50px;
-    border-bottom : 1px solid $dark-1;
+    border-bottom: 1px solid $dark-1;
 
     >h4 {
         font-weight: 600;
@@ -169,7 +204,7 @@ $white-2 : #f9f9f9;
     display: flex;
     padding: 15px;
     gap: 50px;
-    border-bottom : 1px solid #ededed;
+    border-bottom: 1px solid #ededed;
 
     >h4 {
         font-weight: 600;
@@ -179,10 +214,10 @@ $white-2 : #f9f9f9;
         max-width: 800px;
     }
 
-    > div > label {
+    >div>label {
         margin-right: 5px;
 
-        > span {
+        >span {
             margin: 4px;
         }
     }

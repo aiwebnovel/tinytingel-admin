@@ -1,12 +1,12 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import Home from '../Components/Home';
-import Members from '../Components/Management/Members';
+import Members from '../Components/Management/Member/Members';
 import LoginLog from '../Components/Management/LoginLog';
 import Questions from '../Components/Management/Questions';
-import MemInfo from '../Components/Management/MemInfo';
+import MemInfo from '../Components/Management/Member/MemInfo';
 import Landing from '../Components/Landing/index';
-import MemPay from '../Components/Management/MemPay'
+import MemPay from '../Components/Management/Member/MemPay'
 import QuestionDetail from '../Components/Management/QuestionDetail';
 //import Regist from '../Components/Landing/Regist';
 

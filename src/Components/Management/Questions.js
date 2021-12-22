@@ -33,13 +33,19 @@ const Questions = () => {
         <Box bg="#fff" padding="48px" textAlign="center">
           <Flex w="100%" alignItems="center" gridGap={15}>
             <Select placeholder="문의 유형">
-              <option value="regist">가입 일자</option>
-              <option value="login">로그인 일자</option>
+              <option value="이용문의">이용 문의</option>
+              <option value="오류신고">오류 신고</option>
+              <option value="서비스제안">서비스 제안</option>
+              <option value="환불">환불</option>
+              <option value="탈퇴">탈퇴</option>
+              <option value="기타">기타</option>
             </Select>
             <Input placeholder="문의 내용" />
           </Flex>
-          <Input placeholder="회원명 및 이메일 주소" margin="15px 0" />
+          <Flex justifyContent='space-between' alignItems='center'>
+          <Input placeholder="회원명 및 이메일 주소" margin="15px 0" width='90%'/>
           <SearchBtn>검색</SearchBtn>
+          </Flex>
         </Box>
       </Box>
       <Box className="TableContainer">
@@ -154,5 +160,5 @@ const SearchBtn = styled.button`
   background-color: #b8c6db;
   border: 1px solid #b8c6db;
   border-radius: 5px;
-  padding: 2px 15px;
+  padding: 8px 15px;
 `;
