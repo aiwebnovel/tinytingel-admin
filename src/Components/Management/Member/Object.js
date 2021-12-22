@@ -1,0 +1,88 @@
+const TableObject = [
+    {
+        name:'이태용',
+        email:'Taeoxo@gmail.com',
+        createdAt:'yyyy-mm-dd',
+        recentLogin:'yyyy-mm-dd',
+        membership: '6',
+    },
+    {
+        name:'김동영',
+        email:'do0_@gmail.com',
+        createdAt:'yyyy-mm-dd',
+        recentLogin:'yyyy-mm-dd',
+        membership: '1',
+    },
+    {
+        name:'서영호',
+        email:'johnnyjsuh@naver.com',
+        createdAt:'yyyy-mm-dd',
+        recentLogin:'yyyy-mm-dd',
+        membership: '3',
+    },
+    {
+        name:'나재민',
+        email:'na.jaemin0813_@naver.com',
+        createdAt:'yyyy-mm-dd',
+        recentLogin:'yyyy-mm-dd',
+        membership: '3',
+    },
+    {
+        name:'문태일',
+        email:'taeil_@naver.com',
+        createdAt:'yyyy-mm-dd',
+        recentLogin:'yyyy-mm-dd',
+        membership: '3',
+    },
+    {
+        name:'이동혁',
+        email:'sun_@naver.com',
+        createdAt:'yyyy-mm-dd',
+        recentLogin:'yyyy-mm-dd',
+        membership: '6',
+    },
+    {
+        name:'샤오쥔',
+        email:'xiaojun_@naver.com',
+        createdAt:'yyyy-mm-dd',
+        recentLogin:'yyyy-mm-dd',
+        membership: '1',
+    },
+    {
+        name:'이제노',
+        email:'my_jeno@naver.com',
+        createdAt:'yyyy-mm-dd',
+        recentLogin:'yyyy-mm-dd',
+        membership: '1',
+    },
+    {
+        name:'이민혁',
+        email:'aeoLee_@naver.com',
+        createdAt:'yyyy-mm-dd',
+        recentLogin:'yyyy-mm-dd',
+        membership: '1',
+    },
+    {
+        name:'나유타',
+        email:'na.yuta_@naver.com',
+        createdAt:'yyyy-mm-dd',
+        recentLogin:'yyyy-mm-dd',
+        membership: '1',
+    },
+    {
+        name:'황인준',
+        email:'runjun_@naver.com',
+        createdAt:'yyyy-mm-dd',
+        recentLogin:'yyyy-mm-dd',
+        membership: '3',
+    },
+    {
+        name:'종천러',
+        email:'chenle_@naver.com',
+        createdAt:'yyyy-mm-dd',
+        recentLogin:'yyyy-mm-dd',
+        membership: '3',
+    },
+]
+
+export default TableObject;

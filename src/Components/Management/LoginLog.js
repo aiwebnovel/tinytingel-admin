@@ -20,105 +20,59 @@ import {
 } from '@chakra-ui/icons';
 import Layout from '../Layout';
 import styled from 'styled-components';
+import { CSVLink } from 'react-csv';
+import TableObject from './Member/Object';
 
 const LoginLog = () => {
+  const headers = [
+    { label: '회원명', key: 'name' },
+    { label: '이메일', key: 'email' },
+    { label: '가입일자', key: 'createdAt' },
+    { label: '로그인 일자', key: 'recentLogin' },
+    { label: '구독 상품', key: 'membership' },
+  ];
+
+
   return (
     <Layout>
       <Box padding="48px">
         <Box mb={25} textAlign="right">
+          <CSVLink 
+          headers={headers} 
+          data={TableObject}
+          filename={'로그인_기록'}
+            onClick={()=>{
+              if(window.confirm('다운로드 하시겠습니까?')=== true) {
+                console.log('저장');
+              } else {
+                return false
+              }
+            }}
+          >
           <ExcelDownBtn>CSV 내려받기</ExcelDownBtn>
+          </CSVLink>
         </Box>
         <Box overflowX="auto">
-          <Table variant="simple" bg="#fff" className='TableStyle'>
+          <Table variant="simple" bg="#fff" className="TableStyle">
             <Thead>
               <Tr>
                 <Th>회원명</Th>
-                <Th>이메일 주소</Th>
+                <Th>이메일</Th>
                 <Th>가입일자</Th>
                 <Th>로그인일자</Th>
                 <Th>구독상품</Th>
               </Tr>
             </Thead>
             <Tbody>
-              <Tr>
-                <Td>이태용</Td>
-                <Td>Taeoxo@gmail.com</Td>
-                <Td>yyyy-mm-dd</Td>
-                <Td>yyyy-mm-dd</Td>
-                <Td>6개월</Td>
-              </Tr>
-
-              <Tr>
-                <Td>김동영</Td>
-                <Td>do0_@gmail.com</Td>
-                <Td>yyyy-mm-dd</Td>
-                <Td>yyyy-mm-dd</Td>
-                <Td>1개월</Td>
-              </Tr>
-
-              <Tr>
-                <Td>서영호</Td>
-                <Td>johnnyjsuh@naver.com</Td>
-                <Td>yyyy-mm-dd</Td>
-                <Td>yyyy-mm-dd</Td>
-                <Td>3개월</Td>
-              </Tr>
-
-              <Tr>
-                <Td>나재민</Td>
-                <Td>na.jaemin0813_@naver.com</Td>
-                <Td>yyyy-mm-dd</Td>
-                <Td>yyyy-mm-dd</Td>
-                <Td>3개월</Td>
-              </Tr>
-
-              <Tr>
-                <Td>문태일</Td>
-                <Td>taeil_@naver.com</Td>
-                <Td>yyyy-mm-dd</Td>
-                <Td>yyyy-mm-dd</Td>
-                <Td>3개월</Td>
-              </Tr>
-
-              <Tr>
-                <Td>이동혁</Td>
-                <Td>sun_@naver.com</Td>
-                <Td>yyyy-mm-dd</Td>
-                <Td>yyyy-mm-dd</Td>
-                <Td>3개월</Td>
-              </Tr>
-
-              <Tr>
-                <Td>샤오쥔</Td>
-                <Td>xiaojun_@naver.com</Td>
-                <Td>yyyy-mm-dd</Td>
-                <Td>yyyy-mm-dd</Td>
-                <Td>3개월</Td>
-              </Tr>
-
-              <Tr>
-                <Td>이제노</Td>
-                <Td>my_jeno@naver.com</Td>
-                <Td>yyyy-mm-dd</Td>
-                <Td>yyyy-mm-dd</Td>
-                <Td>3개월</Td>
-              </Tr>
-
-              <Tr>
-                <Td>이민혁</Td>
-                <Td>aeoLee_@naver.com</Td>
-                <Td>yyyy-mm-dd</Td>
-                <Td>yyyy-mm-dd</Td>
-                <Td>3개월</Td>
-              </Tr>
-
-              <Tr>
-                <Td>나유타</Td>
-                <Td>na.yuta_@naver.com</Td>
-                <Td>yyyy-mm-dd</Td>
-                <Td>yyyy-mm-dd</Td>
-                <Td>3개월</Td>
-              </Tr>
+              {TableObject.map(item => (
+                <Tr key={item.email}>
+                  <Td>{item.name}</Td>
+                  <Td>{item.email}</Td>
+                  <Td>{item.createdAt}</Td>
+                  <Td>{item.recentLogin}</Td>
+                  <Td>{item.membership}</Td>
+                </Tr>
+              ))}
             </Tbody>
           </Table>
         </Box>
@@ -183,4 +137,8 @@ const ExcelDownBtn = styled.button`
   background-color: #444;
   color: #fff;
   padding: 2px 10px;
+
+  &:hover {
+    background-color : #0098FA;
+  }
 `;
