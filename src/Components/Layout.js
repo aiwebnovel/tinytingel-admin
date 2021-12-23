@@ -46,7 +46,7 @@ const Layout = ({ children }) => {
             <Flex justify="space-between" padding="5px 10px" bg="#f9f9f9">
               <CloseButton onClick={onClose} />
               <HStack>
-                <Link to='/'>home</Link>
+                <Link to='/Home'>home</Link>
                 <button>Logout</button>
               </HStack>
             </Flex>

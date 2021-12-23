@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
   Box,
   FormControl,
@@ -6,12 +6,61 @@ import {
   Input,
   FormHelperText,
   Text,
-  Divider,
+  useToast
 } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
+import axios from 'axios';
 import styled from 'styled-components';
 
 const Landing = () => {
+
+  const [Inputs, SetInputs] = useState({
+    userId:'',
+    userPassword : ''
+  })
+
+  const toast = useToast();
+
+  const  {userId, userPassword} = Inputs;
+
+  const ChangeInput = (e) => {
+    console.log(e.target.value);
+    SetInputs({...Inputs, [e.target.name] : e.target.value});
+  }
+
+  const GoLogin = () => {
+    console.log('login');
+    const config = {
+      method: "post",
+      url:'https://veryshort.best:5051/api/v1/admin/login',
+      data: {
+        id:userId,
+        password:userPassword
+    }
+    }
+
+    axios(config)
+    .then(async(res)=>{
+      console.log(res)
+      toast({
+        title: '로그인 성공!',
+        description: "로그인에 성공했습니다!",
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      })
+    })
+    .catch((error)=>{
+      console.log(error)
+      toast({
+        title: '로그인 실패!',
+        description: "혹시 빈 칸이 있나요? 혹은 가입하지 않은 유저신가요?",
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      })
+    })
+  };
+
   return (
     <LandingBox
       minH="100vh"
@@ -31,18 +80,18 @@ const Landing = () => {
         <Box>
           <FormControl id="email">
             <FormLabel>Email</FormLabel>
-            <Input type="email" />
+            <Input type="email" name='email' onChange={ChangeInput} />
           </FormControl>
           <FormControl id="email">
             <FormLabel>Password</FormLabel>
-            <Input type="email" />
+            <Input type="password" name='password'  onChange={ChangeInput}/>
             <FormHelperText>
               We'll never share your email and password.
             </FormHelperText>
           </FormControl>
         </Box>
-        <Box textAlign='center' marginTop='30px'>
-        <LoginBtn>로그인</LoginBtn>
+        <Box textAlign="center" marginTop="30px">
+          <LoginBtn onClick={GoLogin}>로그인</LoginBtn>
         </Box>
         {/* <Box textAlign='center' marginTop='30px'>
           <Text fontSize='sm'>아직 회원이 아니신가요?</Text>
@@ -68,21 +117,28 @@ const LandingBox = styled(Box)`
 const FormBox = styled(Box)`
   box-shadow: rgba(50, 50, 93, 0.25) 0px 50px 100px -20px,
     rgba(0, 0, 0, 0.3) 0px 30px 60px -30px;
-  
+
   padding: 48px;
-  
+
   @media screen and (max-width: 768px) {
     padding: 48px 24px;
   }
-
 `;
 
 const LoginBtn = styled.button`
-
-  background-color : #b8c6db;
+  background-color: #b8c6db;
   border: 1px solid #b8c6db;
-  border-radius : 10px;
+
+  border-radius: 10px;
   color: #f3f3f3;
   padding: 5px 8px;
   width: 100%;
-`
+
+  transition: all 300ms ease;
+
+  &:hover {
+    background-color: #e6f4f1;
+    border: 1px solid #e6f4f1;
+    color: #444;
+  }
+`;

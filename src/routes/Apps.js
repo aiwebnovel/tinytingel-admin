@@ -28,9 +28,9 @@ function Apps() {
         */
     <BrowserRouter>
       <Routes>
-        <Route path='/landing' element={<Landing/>}/>
+        <Route path='/' element={<Landing/>}/>
         {/* <Route path="/regist" element={<Regist/>}></Route>  */}
-        <Route path="/" element={<Home />}></Route>
+        <Route path="/Home" element={<Home />}></Route>
         <Route path="/members" element={<Members />}></Route>
         <Route path="/info" element={<MemInfo />}></Route>
         <Route path="/payment" element={<MemPay/>}></Route> 
