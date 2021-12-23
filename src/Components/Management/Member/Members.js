@@ -41,6 +41,7 @@ const Members = () => {
 
   const [startDate, setStartDate] = useState(new Date());
   const [checkedItems, setCheckedItems] = useState([false, false, false]);
+  const [activeFilter , setActiveFilter] = useState([]);
   const [selected, setSelected] = useState('');
 
   const allChecked = checkedItems.every(Boolean);
@@ -48,9 +49,42 @@ const Members = () => {
 
   const CheckAll = e => {
     setCheckedItems([e.target.checked, e.target.checked, e.target.checked]);
+    console.log(TableObject);
   };
 
-  const CheckedClick = e => {};
+  const CheckedClick =(e) => {
+    //console.log('checked',checkedItems);
+    const filterTable = TableObject.filter((item)=>(item.membership.includes(e.target.value)));
+    //console.log(filterTable);
+    
+    if(activeFilter.includes(e.target.value)) {
+      const filterIndex = activeFilter.indexOf(e.target.value);
+
+        const newFilter = [...activeFilter];
+        const splitNewFilter = newFilter.splice(filterIndex, 1);
+      console.log(newFilter, splitNewFilter);
+    
+        setActiveFilter(newFilter);
+        console.log(activeFilter)
+
+        let filterList = TableObject.filter((item)=>(
+          activeFilter.includes(item.membership)
+        ));
+
+        console.log(filterList)
+        
+    } else {
+      setActiveFilter([...activeFilter, e.target.value]);
+      console.log(activeFilter)
+
+      let filterList = TableObject.filter((item)=>(
+        activeFilter.includes(item.membership)
+      ));
+
+      console.log(filterList)
+
+    }
+  };
 
   const HandleSelect = e => {
     setSelected(e.target.value);
@@ -85,6 +119,7 @@ const Members = () => {
                   checkedItems[1],
                   checkedItems[2],
                 ]);
+                CheckedClick(e);
               }}
             >
               1개월
@@ -100,6 +135,7 @@ const Members = () => {
                   e.target.checked,
                   checkedItems[2],
                 ]);
+                CheckedClick(e);
               }}
             >
               3개월
@@ -115,6 +151,7 @@ const Members = () => {
                   checkedItems[1],
                   e.target.checked,
                 ]);
+                CheckedClick(e);
               }}
             >
               6개월
