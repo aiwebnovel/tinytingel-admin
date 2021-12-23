@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { CSVLink } from 'react-csv';
 import {
   Box,
-  CheckboxGroup,
   Checkbox,
   Table,
   Thead,
@@ -16,8 +15,6 @@ import {
   IconButton,
   Select,
   Input,
-  Alert,
-  AlertIcon,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import {
@@ -43,32 +40,89 @@ const Members = () => {
   ];
 
   const [startDate, setStartDate] = useState(new Date());
+  const [checkedItems, setCheckedItems] = useState([false, false, false]);
+  const [selected, setSelected] = useState('');
+
+  const allChecked = checkedItems.every(Boolean);
+  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
+
+  const CheckAll = e => {
+    setCheckedItems([e.target.checked, e.target.checked, e.target.checked]);
+  };
+
+  const CheckedClick = e => {};
+
+  const HandleSelect = e => {
+    setSelected(e.target.value);
+  };
 
   return (
     <Layout>
       <Box className="MemberContainer">
         <Box bg="#fff" padding="48px">
-          <CheckboxGroup colorScheme="#444">
-            <Flex
-              direction={{ base: 'column', sm: 'row' }}
-              className="MemberCheck"
+          <Flex
+            direction={{ base: 'column', sm: 'row' }}
+            className="MemberCheck"
+          >
+            <Checkbox
+              name="all"
+              value="all"
+              colorScheme="green"
+              isChecked={allChecked}
+              isIndeterminate={isIndeterminate}
+              onChange={CheckAll}
             >
-              <Checkbox value="all" colorScheme="green">
-                전체
-              </Checkbox>
-              <Checkbox value="1" colorScheme="green">
-                1개월
-              </Checkbox>
-              <Checkbox value="3" colorScheme="green">
-                3개월
-              </Checkbox>
-              <Checkbox value="6" colorScheme="green">
-                6개월
-              </Checkbox>
-            </Flex>
-          </CheckboxGroup>
+              전체
+            </Checkbox>
+            <Checkbox
+              name="month1"
+              value="1"
+              colorScheme="green"
+              isChecked={checkedItems[0]}
+              onChange={e => {
+                setCheckedItems([
+                  e.target.checked,
+                  checkedItems[1],
+                  checkedItems[2],
+                ]);
+              }}
+            >
+              1개월
+            </Checkbox>
+            <Checkbox
+              name="month3"
+              value="3"
+              colorScheme="green"
+              isChecked={checkedItems[1]}
+              onChange={e => {
+                setCheckedItems([
+                  checkedItems[0],
+                  e.target.checked,
+                  checkedItems[2],
+                ]);
+              }}
+            >
+              3개월
+            </Checkbox>
+            <Checkbox
+              name="month6"
+              value="6"
+              colorScheme="green"
+              isChecked={checkedItems[2]}
+              onChange={e => {
+                setCheckedItems([
+                  checkedItems[0],
+                  checkedItems[1],
+                  e.target.checked,
+                ]);
+              }}
+            >
+              6개월
+            </Checkbox>
+          </Flex>
+
           <Flex w="100%" alignItems="center" gridGap={15}>
-            <Select placeholder="기준">
+            <Select placeholder="기준" onChange={HandleSelect}>
               <option value="regist">가입 일자</option>
               <option value="login">로그인 일자</option>
             </Select>
@@ -85,22 +139,19 @@ const Members = () => {
             </Flex>
           </Box>
           <Box mt={15} textAlign="right">
-            <CSVLink 
-            headers={headers}
-            data={TableObject}
-            filename={'회원_현황'}
-            onClick={()=>{
-              if(window.confirm('다운로드 하시겠습니까?')=== true) {
-                console.log('저장');
-              } else {
-                return false
-              }
-              
-            }}
+            <CSVLink
+              headers={headers}
+              data={TableObject}
+              filename={'회원_현황'}
+              onClick={() => {
+                if (window.confirm('다운로드 하시겠습니까?') === true) {
+                  console.log('저장');
+                } else {
+                  return false;
+                }
+              }}
             >
-              <ExcelDownBtn >
-                CSV 내려받기
-              </ExcelDownBtn>
+              <ExcelDownBtn>CSV 내려받기</ExcelDownBtn>
             </CSVLink>
           </Box>
         </Box>
@@ -198,6 +249,6 @@ const ExcelDownBtn = styled.button`
   transition: all 300ms ease;
 
   &:hover {
-    background-color : #0098FA;
+    background-color: #0098fa;
   }
 `;
