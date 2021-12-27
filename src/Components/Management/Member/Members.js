@@ -57,43 +57,34 @@ const Members = () => {
     setCheckedItems([e.target.checked, e.target.checked, e.target.checked]);
     console.log(TableObject);
     setSearchList(TableObject);
+    
   };
 
-  const CheckedClick = value => {
+  const CheckedClick = e => {
 
-      console.log(value)
+    console.log(e.target.value, e.target.checked)
+    console.log([...activeFilter, e.target.value]);
+    // setActiveFilter([...activeFilter, e.target.value]);
 
-      if (activeFilter.includes(value)) {
-      const filterIndex = activeFilter.indexOf(value);
-
-      const newFilter = [...activeFilter];
-      const splitNewFilter = newFilter.splice(filterIndex, 1);
-      console.log(newFilter, splitNewFilter);
-
-      setActiveFilter(newFilter);
+    if(e.target.checked === true) {
+      activeFilter.push(e.target.value);
       console.log(activeFilter);
-
       let filterList = TableObject.filter(item =>
         activeFilter.includes(item.membership)
       );
-
+  
       console.log(filterList);
+  
       setSearchList(filterList);
     } else {
-      
-      //
-      console.log([...activeFilter, value]);
-      setActiveFilter([...activeFilter, value]);
+      activeFilter.splice(activeFilter.indexOf(e.target.value),1);
       console.log(activeFilter);
       let filterList = TableObject.filter(item =>
         activeFilter.includes(item.membership)
       );
-
-      console.log(filterList);
-
       setSearchList(filterList);
     }
-  };
+};
 
   const HandleSelect = e => {
     setSelected(e.target.value);
@@ -107,10 +98,11 @@ const Members = () => {
     if (e.target.value === 'regist') {
       const filterList = TableObject.filter(item => item.createdAt > date);
       console.log(filterList);
+      setSearchList(filterList);
     }
     if (e.target.value === 'login') {
       const filterList = TableObject.filter(item => item.recentLogin > date);
-      console.log(filterList);
+      setSearchList(filterList);
     }
   };
 
@@ -124,10 +116,12 @@ const Members = () => {
       if (keyword.indexOf('@') === -1) {
         let result = TableObject.find(item => item.name === keyword);
         console.log(result);
+        //setSearchList(result);
         //결과가 없으면 undefined 뜸 result === undefined면 결과 없다고 뜨게.
       } else {
         let result2 = TableObject.find(item => item.email === keyword);
         console.log(result2);
+        //setSearchList(result2);
       }
     } else {
       toast({
@@ -140,13 +134,14 @@ const Members = () => {
     }
   };
 
-  const filterData = () => {
-    console.log('filter');
-  };
-
-  useEffect(() => {
-    filterData();
-  }, []);
+  const Reset = () => {
+    setStartDate(new Date());
+    setCheckedItems([false, false, false]);
+    setActiveFilter([]);
+    setSelected('');
+    setKeyword('');
+    setSearchList(TableObject);
+  }
 
   return (
     <Layout>
@@ -177,7 +172,7 @@ const Members = () => {
                   checkedItems[1],
                   checkedItems[2],
                 ]);
-                CheckedClick(e.target.value);
+                CheckedClick(e);
               }}
             >
               1개월
@@ -193,7 +188,7 @@ const Members = () => {
                   e.target.checked,
                   checkedItems[2],
                 ]);
-                CheckedClick(e.target.value);
+                CheckedClick(e);
               }}
             >
               3개월
@@ -209,7 +204,7 @@ const Members = () => {
                   checkedItems[1],
                   e.target.checked,
                 ]);
-                CheckedClick(e.target.value);
+                CheckedClick(e);
               }}
             >
               6개월
@@ -217,7 +212,7 @@ const Members = () => {
           </Flex>
 
           <Flex w="100%" alignItems="center" gridGap={15}>
-            <Select placeholder="기준" onChange={HandleSelect}>
+            <Select className='selectOption' placeholder="날짜를 먼저 선택해주세요" onChange={HandleSelect}>
               <option value="regist">가입 일자</option>
               <option value="login">로그인 일자</option>
             </Select>
@@ -234,7 +229,7 @@ const Members = () => {
             <Flex className="SearchFlex" alignItems="center">
               <form>
                 <Input
-                  placeholder="검색어를 입력해주세요"
+                  placeholder="이름 혹은 이메일을 정확하게 입력해주세요"
                   value={keyword || ''}
                   onChange={e => {
                     setKeyword(e.target.value);
@@ -247,9 +242,10 @@ const Members = () => {
             </Flex>
           </Box>
           <Box mt={15} textAlign="right">
+            <ResetBtn onClick={Reset}>필터링 리셋</ResetBtn>
             <CSVLink
               headers={headers}
-              data={TableObject}
+              data={searchList}
               filename={'회원_현황'}
               onClick={() => {
                 if (window.confirm('다운로드 하시겠습니까?') === true) {
@@ -372,3 +368,16 @@ const ExcelDownBtn = styled.button`
     background-color: #0098fa;
   }
 `;
+
+const ResetBtn = styled.button`
+background-color: #E6F4F1;
+border: 1px solid #E6F4F1;
+color: #444;
+padding: 2px 20px;
+transition: all 300ms ease;
+margin-right: 8px;
+
+&:hover {
+  background-color: #b8c6db;
+}
+`

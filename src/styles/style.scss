@@ -100,9 +100,16 @@ $white-2 : #f9f9f9;
     padding: 5px 15px;
 }
 
+.selectOption {
+    > option:first-child {
+        color :$white-2;
+    }
+}
+
 .react-datepicker__triangle {
     display: none;
 }
+
 
 .SearchFlex {
     > form {
