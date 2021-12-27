@@ -53,38 +53,36 @@ const Members = () => {
   const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
 
   const CheckAll = e => {
-    console.log(e.target.checked)
+    console.log(e.target.checked);
     setCheckedItems([e.target.checked, e.target.checked, e.target.checked]);
     console.log(TableObject);
     setSearchList(TableObject);
-    
   };
 
   const CheckedClick = e => {
-
-    console.log(e.target.value, e.target.checked)
+    console.log(e.target.value, e.target.checked);
     console.log([...activeFilter, e.target.value]);
     // setActiveFilter([...activeFilter, e.target.value]);
 
-    if(e.target.checked === true) {
+    if (e.target.checked === true) {
       activeFilter.push(e.target.value);
       console.log(activeFilter);
       let filterList = TableObject.filter(item =>
         activeFilter.includes(item.membership)
       );
-  
+
       console.log(filterList);
-  
+
       setSearchList(filterList);
     } else {
-      activeFilter.splice(activeFilter.indexOf(e.target.value),1);
+      activeFilter.splice(activeFilter.indexOf(e.target.value), 1);
       console.log(activeFilter);
       let filterList = TableObject.filter(item =>
         activeFilter.includes(item.membership)
       );
       setSearchList(filterList);
     }
-};
+  };
 
   const HandleSelect = e => {
     setSelected(e.target.value);
@@ -111,17 +109,22 @@ const Members = () => {
     console.log(keyword);
 
     if (keyword !== '') {
-      //let result =  TableObject.indexOf(keyword);
-      console.log(keyword.indexOf('@'));
-      if (keyword.indexOf('@') === -1) {
-        let result = TableObject.find(item => item.name === keyword);
+      let patternKor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
+      let patternEng = /[a-zA-Z]/;
+
+      if (patternKor.test(keyword) === true) {
+        // let result = TableObject.filter(item => item.name === keyword);
+        let result = TableObject.filter(item =>
+          item.name.toLocaleLowerCase().includes(keyword)
+        );
         console.log(result);
-        //setSearchList(result);
-        //결과가 없으면 undefined 뜸 result === undefined면 결과 없다고 뜨게.
-      } else {
-        let result2 = TableObject.find(item => item.email === keyword);
+        setSearchList(result);
+      }
+
+      if (patternEng.test(keyword)) {
+        let result2 = TableObject.filter(item => item.email.toLocaleLowerCase().includes(keyword));
         console.log(result2);
-        //setSearchList(result2);
+        setSearchList(result2);
       }
     } else {
       toast({
@@ -141,7 +144,7 @@ const Members = () => {
     setSelected('');
     setKeyword('');
     setSearchList(TableObject);
-  }
+  };
 
   return (
     <Layout>
@@ -212,7 +215,11 @@ const Members = () => {
           </Flex>
 
           <Flex w="100%" alignItems="center" gridGap={15}>
-            <Select className='selectOption' placeholder="날짜를 먼저 선택해주세요" onChange={HandleSelect}>
+            <Select
+              className="selectOption"
+              placeholder="날짜를 먼저 선택해주세요"
+              onChange={HandleSelect}
+            >
               <option value="regist">가입 일자</option>
               <option value="login">로그인 일자</option>
             </Select>
@@ -274,30 +281,29 @@ const Members = () => {
               </Tr>
             </Thead>
             <Tbody>
-            {searchList.map(item => (
-                <Tr key={item.email}>
-                  <Td>{item.name}</Td>
-                  <Td>{item.email}</Td>
-                  <Td>{item.createdAt}</Td>
-                  <Td>{item.recentLogin}</Td>
-                  <Td>{item.membership}</Td>
-                  <Td>
-                    <Link to="/info">보기</Link>
-                  </Td>
+              {searchList.length !== 0 ? (
+                searchList.map(item => (
+                  <Tr key={item.email}>
+                    <Td>{item.name}</Td>
+                    <Td>{item.email}</Td>
+                    <Td>{item.createdAt}</Td>
+                    <Td>{item.recentLogin}</Td>
+                    <Td>{item.membership}</Td>
+                    <Td>
+                      <Link to="/info">보기</Link>
+                    </Td>
+                  </Tr>
+                ))
+              ) : (
+                <Tr>
+                  <Td></Td>
+                  <Td></Td>
+                  <Td></Td>
+                  <Td>결과가 없습니다</Td>
+                  <Td></Td>
+                  <Td></Td>
                 </Tr>
-              ))}
-              {/* {TableObject.map(item => (
-                <Tr key={item.email}>
-                  <Td>{item.name}</Td>
-                  <Td>{item.email}</Td>
-                  <Td>{item.createdAt}</Td>
-                  <Td>{item.recentLogin}</Td>
-                  <Td>{item.membership}</Td>
-                  <Td>
-                    <Link to="/info">보기</Link>
-                  </Td>
-                </Tr>
-              ))} */}
+              )}
             </Tbody>
           </Table>
         </Box>
@@ -370,14 +376,14 @@ const ExcelDownBtn = styled.button`
 `;
 
 const ResetBtn = styled.button`
-background-color: #E6F4F1;
-border: 1px solid #E6F4F1;
-color: #444;
-padding: 2px 20px;
-transition: all 300ms ease;
-margin-right: 8px;
+  background-color: #e6f4f1;
+  border: 1px solid #e6f4f1;
+  color: #444;
+  padding: 2px 20px;
+  transition: all 300ms ease;
+  margin-right: 8px;
 
-&:hover {
-  background-color: #b8c6db;
-}
-`
+  &:hover {
+    background-color: #b8c6db;
+  }
+`;
