@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+//import { Link } from 'react-router-dom';
 import { Box, CheckboxGroup, Checkbox, Flex } from '@chakra-ui/react';
 import Layout from '../Layout';
 import styled from 'styled-components';

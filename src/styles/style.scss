@@ -94,9 +94,10 @@ $white-2 : #f9f9f9;
 }
 
 .DatePickerStyle {
-    width: 100%;
-    border: 1px solid $dark-1;
-    padding: 5px;
+    border: 1px solid #f0faff;
+    border-radius: 15px;
+    background-color: #f0faff;
+    padding: 5px 15px;
 }
 
 .react-datepicker__triangle {
@@ -104,6 +105,8 @@ $white-2 : #f9f9f9;
 }
 
 .SearchFlex {
+    > form {
+        width: 100%;
     >input {
         width: 60%;
     }
@@ -115,6 +118,7 @@ $white-2 : #f9f9f9;
         margin-left: 10px;
         border-radius: 5px;
     }
+}
 }
 
 .TableContainer {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { CSVLink } from 'react-csv';
 import {
   Box,
@@ -15,6 +15,7 @@ import {
   IconButton,
   Select,
   Input,
+  useToast,
 } from '@chakra-ui/react';
 import { Link } from 'react-router-dom';
 import {
@@ -26,11 +27,13 @@ import {
 import Layout from '../../Layout';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import ko from 'date-fns/locale/ko';
 import styled from 'styled-components';
 
 import TableObject from './Object';
 
 const Members = () => {
+  const toast = useToast();
   const headers = [
     { label: '회원명', key: 'name' },
     { label: '이메일', key: 'email' },
@@ -41,54 +44,109 @@ const Members = () => {
 
   const [startDate, setStartDate] = useState(new Date());
   const [checkedItems, setCheckedItems] = useState([false, false, false]);
-  const [activeFilter , setActiveFilter] = useState([]);
+  const [activeFilter, setActiveFilter] = useState([]);
   const [selected, setSelected] = useState('');
+  const [keyword, setKeyword] = useState('');
+  const [searchList, setSearchList] = useState(TableObject);
 
   const allChecked = checkedItems.every(Boolean);
   const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
 
   const CheckAll = e => {
+    console.log(e.target.checked)
     setCheckedItems([e.target.checked, e.target.checked, e.target.checked]);
     console.log(TableObject);
+    setSearchList(TableObject);
   };
 
-  const CheckedClick =(e) => {
-    //console.log('checked',checkedItems);
-    const filterTable = TableObject.filter((item)=>(item.membership.includes(e.target.value)));
-    //console.log(filterTable);
-    
-    if(activeFilter.includes(e.target.value)) {
-      const filterIndex = activeFilter.indexOf(e.target.value);
+  const CheckedClick = value => {
 
-        const newFilter = [...activeFilter];
-        const splitNewFilter = newFilter.splice(filterIndex, 1);
+      console.log(value)
+
+      if (activeFilter.includes(value)) {
+      const filterIndex = activeFilter.indexOf(value);
+
+      const newFilter = [...activeFilter];
+      const splitNewFilter = newFilter.splice(filterIndex, 1);
       console.log(newFilter, splitNewFilter);
-    
-        setActiveFilter(newFilter);
-        console.log(activeFilter)
 
-        let filterList = TableObject.filter((item)=>(
-          activeFilter.includes(item.membership)
-        ));
+      setActiveFilter(newFilter);
+      console.log(activeFilter);
 
-        console.log(filterList)
-        
-    } else {
-      setActiveFilter([...activeFilter, e.target.value]);
-      console.log(activeFilter)
-
-      let filterList = TableObject.filter((item)=>(
+      let filterList = TableObject.filter(item =>
         activeFilter.includes(item.membership)
-      ));
+      );
 
-      console.log(filterList)
+      console.log(filterList);
+      setSearchList(filterList);
+    } else {
+      
+      //
+      console.log([...activeFilter, value]);
+      setActiveFilter([...activeFilter, value]);
+      console.log(activeFilter);
+      let filterList = TableObject.filter(item =>
+        activeFilter.includes(item.membership)
+      );
 
+      console.log(filterList);
+
+      setSearchList(filterList);
     }
   };
 
   const HandleSelect = e => {
     setSelected(e.target.value);
+    console.log(e.target.value, startDate);
+    let year = startDate.getFullYear();
+    let month = startDate.getMonth() + 1;
+    let day = startDate.getDate();
+    let date = `${year}-${month}-${day}`;
+    console.log(date);
+
+    if (e.target.value === 'regist') {
+      const filterList = TableObject.filter(item => item.createdAt > date);
+      console.log(filterList);
+    }
+    if (e.target.value === 'login') {
+      const filterList = TableObject.filter(item => item.recentLogin > date);
+      console.log(filterList);
+    }
   };
+
+  const HandleSearch = e => {
+    e.preventDefault();
+    console.log(keyword);
+
+    if (keyword !== '') {
+      //let result =  TableObject.indexOf(keyword);
+      console.log(keyword.indexOf('@'));
+      if (keyword.indexOf('@') === -1) {
+        let result = TableObject.find(item => item.name === keyword);
+        console.log(result);
+        //결과가 없으면 undefined 뜸 result === undefined면 결과 없다고 뜨게.
+      } else {
+        let result2 = TableObject.find(item => item.email === keyword);
+        console.log(result2);
+      }
+    } else {
+      toast({
+        title: '검색어를 입력해주세요.',
+        description: '정확한 이름 혹은 이메일(@ 뒤까지 포함)을 입력해주세요.',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    }
+  };
+
+  const filterData = () => {
+    console.log('filter');
+  };
+
+  useEffect(() => {
+    filterData();
+  }, []);
 
   return (
     <Layout>
@@ -119,7 +177,7 @@ const Members = () => {
                   checkedItems[1],
                   checkedItems[2],
                 ]);
-                CheckedClick(e);
+                CheckedClick(e.target.value);
               }}
             >
               1개월
@@ -135,7 +193,7 @@ const Members = () => {
                   e.target.checked,
                   checkedItems[2],
                 ]);
-                CheckedClick(e);
+                CheckedClick(e.target.value);
               }}
             >
               3개월
@@ -151,7 +209,7 @@ const Members = () => {
                   checkedItems[1],
                   e.target.checked,
                 ]);
-                CheckedClick(e);
+                CheckedClick(e.target.value);
               }}
             >
               6개월
@@ -165,14 +223,27 @@ const Members = () => {
             </Select>
             <DatePicker
               className="DatePickerStyle"
+              dateFormat="yyyy년 MM월 dd일"
               selected={startDate}
+              maxDate={new Date()}
               onChange={date => setStartDate(date)}
+              locale={ko}
             />
           </Flex>
           <Box margin="15px 0">
             <Flex className="SearchFlex" alignItems="center">
-              <Input placeholder="검색어를 입력해주세요" />
-              <button>검색</button>
+              <form>
+                <Input
+                  placeholder="검색어를 입력해주세요"
+                  value={keyword || ''}
+                  onChange={e => {
+                    setKeyword(e.target.value);
+                  }}
+                />
+                <button type="submit" onClick={HandleSearch}>
+                  검색
+                </button>
+              </form>
             </Flex>
           </Box>
           <Box mt={15} textAlign="right">
@@ -207,7 +278,7 @@ const Members = () => {
               </Tr>
             </Thead>
             <Tbody>
-              {TableObject.map(item => (
+            {searchList.map(item => (
                 <Tr key={item.email}>
                   <Td>{item.name}</Td>
                   <Td>{item.email}</Td>
@@ -219,6 +290,18 @@ const Members = () => {
                   </Td>
                 </Tr>
               ))}
+              {/* {TableObject.map(item => (
+                <Tr key={item.email}>
+                  <Td>{item.name}</Td>
+                  <Td>{item.email}</Td>
+                  <Td>{item.createdAt}</Td>
+                  <Td>{item.recentLogin}</Td>
+                  <Td>{item.membership}</Td>
+                  <Td>
+                    <Link to="/info">보기</Link>
+                  </Td>
+                </Tr>
+              ))} */}
             </Tbody>
           </Table>
         </Box>
