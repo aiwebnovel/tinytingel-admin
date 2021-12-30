@@ -31,6 +31,7 @@ import ko from 'date-fns/locale/ko';
 import styled from 'styled-components';
 
 import TableObject from './Object';
+import { parseWithOptions } from 'date-fns/fp';
 
 const Members = () => {
   const toast = useToast();
@@ -48,9 +49,27 @@ const Members = () => {
   const [selected, setSelected] = useState('');
   const [keyword, setKeyword] = useState('');
   const [searchList, setSearchList] = useState(TableObject);
+  
+  const [currentPage, setCurrent] = useState(1) //현재 페이지;
+  const [postPerPage, setPostPerPage] = useState(10); //페이지당 포스트 개수
+
+
+  //현재 페이지 가져오기
+  const indexOfLast = currentPage * postPerPage; //1*10 = 10번 포스트
+  const indexOfFirst = indexOfLast - postPerPage //10-10 = 0번 포스트
+
 
   const allChecked = checkedItems.every(Boolean);
   const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
+
+  const currentPosts = () => {
+    let currentPosts = 0;
+    currentPosts = TableObject.slice(indexOfFirst, indexOfLast);
+    console.log(currentPosts);
+    return currentPosts;
+   
+  }
+
 
   const CheckAll = e => {
     console.log(e.target.checked);
@@ -145,6 +164,10 @@ const Members = () => {
     setKeyword('');
     setSearchList(TableObject);
   };
+
+  useEffect(()=>{
+    currentPosts();
+  },[])
 
   return (
     <Layout>
@@ -311,16 +334,12 @@ const Members = () => {
           <Flex>
             <Tooltip label="First Page">
               <IconButton
-                //onClick={() => gotoPage(0)}
-                //isDisabled={!canPreviousPage}
                 icon={<ArrowLeftIcon h={3} w={3} />}
                 mr={4}
               />
             </Tooltip>
             <Tooltip label="Previous Page">
               <IconButton
-                //onClick={previousPage}
-                //isDisabled={!canPreviousPage}
                 icon={<ChevronLeftIcon h={6} w={6} />}
               />
             </Tooltip>
@@ -330,11 +349,11 @@ const Members = () => {
             <Text flexShrink="0" mr={8}>
               Page{' '}
               <Text fontWeight="bold" as="span">
-                {/* {pageIndex + 1} */}1
+                1
               </Text>{' '}
               of{' '}
               <Text fontWeight="bold" as="span">
-                {/* {pageOptions.length} */}5
+               5
               </Text>
             </Text>
           </Flex>
@@ -342,15 +361,13 @@ const Members = () => {
           <Flex>
             <Tooltip label="Next Page">
               <IconButton
-                // onClick={nextPage}
-                //isDisabled={!canNextPage}
+              
                 icon={<ChevronRightIcon h={6} w={6} />}
               />
             </Tooltip>
             <Tooltip label="Last Page">
               <IconButton
-                //onClick={() => gotoPage(pageCount - 1)}
-                //isDisabled={!canNextPage}
+               
                 icon={<ArrowRightIcon h={3} w={3} />}
                 ml={4}
               />

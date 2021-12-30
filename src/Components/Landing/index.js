@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   Box,
   FormControl,
@@ -10,37 +10,38 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import styled from 'styled-components';
+import { IdState } from '../../config/Recoil';
+import { useRecoilState } from 'recoil';
+import * as configUrl from '../../config/Config';
 
 const Landing = () => {
 
+  const toast = useToast();
+  const [Id, setId] = useRecoilState(IdState);
   const [Inputs, SetInputs] = useState({
     userId:'',
     userPassword : ''
   })
-
-  const toast = useToast();
 
   const  {userId, userPassword} = Inputs;
 
   const ChangeInput = (e) => {
     console.log(e.target.value);
     SetInputs({...Inputs, [e.target.name] : e.target.value});
+
+    console.log(userId, userPassword);
   }
 
   const GoLogin = () => {
     console.log('login');
-    const config = {
-      method: "post",
-      url:'https://veryshort.best:5051/api/v1/admin/login',
-      data: {
+
+    axios.post(`${configUrl.SERVER_URL}/login`, {
         id:userId,
         password:userPassword
-    }
-    }
-
-    axios(config)
+    })
     .then(async(res)=>{
-      console.log(res)
+      console.log(res);
+      setId(res.data.token)
       toast({
         title: '로그인 성공!',
         description: "로그인에 성공했습니다!",
@@ -78,13 +79,13 @@ const Landing = () => {
           ADMIN LOGIN
         </Text>
         <Box>
-          <FormControl id="email">
+          <FormControl id="email" style={{marginBottom: '5px'}}>
             <FormLabel>Email</FormLabel>
-            <Input type="email" name='email' onChange={ChangeInput} />
+            <Input type="email" name='userId' onChange={ChangeInput} />
           </FormControl>
-          <FormControl id="email">
+          <FormControl id="password">
             <FormLabel>Password</FormLabel>
-            <Input type="password" name='password'  onChange={ChangeInput}/>
+            <Input type="password" name='userPassword'  onChange={ChangeInput}/>
             <FormHelperText>
               We'll never share your email and password.
             </FormHelperText>

@@ -1,0 +1,1 @@
+export const SERVER_URL = 'https://veryshort.best:5051/api/v1/admin'

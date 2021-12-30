@@ -12,6 +12,9 @@ $white-2 : #f9f9f9;
     width: 230px;
     padding: 15px;
     border: 1px solid $dark-1;
+    background-color: $white-1;
+    z-index: 5;
+
 
     >button {
         width: 100%;
