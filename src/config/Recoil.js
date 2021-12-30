@@ -6,6 +6,7 @@ const { persistAtom } = recoilPersist({
     storage:localStorage
 })
 
+
 export const IdState = atom({
     key:'IdState', //구분 되는 고유한 키
     default:'',  //기본 값,
@@ -18,5 +19,19 @@ export const adminId = selector({
         const Id = get(IdState);
 
         return Id;
+    }
+})
+
+export const adminName = atom({
+    key:"adminName",
+    default:'',
+    effects_UNSTABLE:[persistAtom]
+})
+
+export const Name = selector({
+    key:'Name',
+    get: ({get})=> {
+        const name = get(adminName)
+        return name;
     }
 })

@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import styled from 'styled-components';
-import { IdState } from '../../config/Recoil';
+import { IdState, adminName } from '../../config/Recoil';
 import { useRecoilState } from 'recoil';
 import * as configUrl from '../../config/Config';
 
@@ -18,6 +18,7 @@ const Landing = () => {
 
   const toast = useToast();
   const [Id, setId] = useRecoilState(IdState);
+  const [name, setName] = useRecoilState(adminName);
   const [Inputs, SetInputs] = useState({
     userId:'',
     userPassword : ''
@@ -42,6 +43,7 @@ const Landing = () => {
     .then(async(res)=>{
       console.log(res);
       setId(res.data.token)
+      setName(userId)
       toast({
         title: '로그인 성공!',
         description: "로그인에 성공했습니다!",

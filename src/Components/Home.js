@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Box, SimpleGrid, Text } from '@chakra-ui/react';
 import Layout from './Layout';
@@ -6,13 +6,42 @@ import styled from 'styled-components';
 import * as config from '../config/Config';
 
 const Home = () => {
+
+  const [Data, setDate] = useState({
+    signIn: "",
+  signInDaily: "",
+  subscribers: "",
+  subscribers1: "",
+  subscribers6: "",
+  subscribers12: "",
+  subscribersDaily: ""
+  });
+
+  const {signIn,signInDaily,subscribers, subscribers1, subscribers6,  subscribers12, subscribersDaily} = Data;
+
   useEffect(() => {
+    
+    const admin = JSON.parse(localStorage.getItem('admin'));
+    //console.log(admin);
+
+
     axios
       .get(`${config.SERVER_URL}/main`, {
-        headers: { admincode: 'Ap1K0S2s0Ik' },
+        headers: { admincode: admin.IdState},
       })
       .then(res => {
-        console.log(res.data);
+        let result = res.data;
+        console.log(result);
+        setDate({
+        ...Data,
+        signIn: result.signIn,
+        signInDaily: result.signInDaily,
+        subscribers: result.subscribers,
+        subscribers1: result.subscribers1,
+        subscribers6: result.subscribers6,
+        subscribers12: result.subscribers12,
+        subscribersDaily: result.subscribersDaily
+        });
         
       })
       .catch(err => {
@@ -31,49 +60,37 @@ const Home = () => {
         >
           🗂 Dash Board
         </Text>
-        <TableGrid columns={{ sm: 2, md: 4 }} spacing="20px">
+        <TableGrid columns={{ sm: 2, md: 3 }} spacing="20px">
           <Box bg="#fff" height="130px" className="HomeTd">
             <h4>누적 가입회원</h4>
-            <p>123명</p>
+            <p>{signIn} 명</p>
           </Box>
           <Box bg="#fff" height="130px" className="HomeTd">
             <h4>당일 가입회원</h4>
-            <p>1명</p>
+            <p>{signInDaily} 명</p>
+          </Box>
+          <Box bg="#fff" height="130px" className="HomeTd">
+            <h4>당일 구독회원</h4>
+            <p>{subscribersDaily} 명</p>
           </Box>
           <Box bg="#fff" height="130px" className="HomeTd">
             <h4>누적 구독회원</h4>
-            <p>52명</p>
+            <p>{subscribers} 명</p>
           </Box>
           <Box bg="#fff" height="130px" className="HomeTd">
             <h4>누적 1개월 구독회원</h4>
-            <p>38명</p>
+            <p>{subscribers1} 명</p>
           </Box>
           <Box bg="#fff" height="130px" className="HomeTd">
             <h4>누적 6개월 구독회원</h4>
-            <p>14명</p>
+            <p>{subscribers6} 명</p>
           </Box>
           <Box bg="#fff" height="130px" className="HomeTd">
             <h4>누적 1년 구독 회원</h4>
-            <p>14명</p>
+            <p>{subscribers12} 명</p>
           </Box>
-          <Box bg="#fff" height="130px" className="HomeTd">
-            <h4>현재 이용회원</h4>
-            <p>37명</p>
-          </Box>
-          <Box bg="#fff" height="130px" className="HomeTd">
-            <h4>1개월 구독회원</h4>
-            <p>123명</p>
-          </Box>
-          <Box bg="#fff" height="130px" className="HomeTd">
-            <h4>6개월 구독회원</h4>
-            <p>123명</p>
-          </Box>
-          <Box bg="#fff" height="130px" className="HomeTd">
-            <h4>1년 구독회원</h4>
-            <p>123명</p>
-          </Box>
-          <Box bg="#fff" height="130px" className="HomeTd"></Box>
-          <Box bg="#fff" height="130px" className="HomeTd"></Box>
+
+
         </TableGrid>
       </Box>
     </Layout>

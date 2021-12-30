@@ -1,11 +1,11 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Box, Avatar, Flex, Divider } from '@chakra-ui/react';
 import { HamburgerIcon } from '@chakra-ui/icons';
 import "../styles/style.scss";
 
 const Header = ({ onOpen }) => {
   const [isShow, SetShow] = useState(false);
-
+  const admin = JSON.parse(localStorage.getItem('admin'));
   const HandleShow = () => {
     SetShow(!isShow);
   };
@@ -40,9 +40,9 @@ const Header = ({ onOpen }) => {
           right="0px"
           className="UserProfile"
         >
-          <p>Admin 님</p>
+          <h4>{admin.adminName} 님</h4>
           <Divider/>
-          <p>ADMIN</p>
+          <p>라이팅젤 관리자</p>
           <button>로그아웃</button>
         </Box>
       )}
