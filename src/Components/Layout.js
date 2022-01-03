@@ -14,9 +14,15 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import Sider from './Sider';
+import styled from 'styled-components';
 
 const Layout = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const AdminLogOut = () => {
+    localStorage.clear();
+    window.location.replace('/');
+  }
 
   return (
     <Box minH="100vh">
@@ -46,8 +52,8 @@ const Layout = ({ children }) => {
             <Flex justify="space-between" padding="5px 10px" bg="#f9f9f9">
               <CloseButton onClick={onClose} />
               <HStack>
-                <Link to='/'>home</Link>
-                <button>Logout</button>
+                <Link to='/'>Home</Link>
+                <button onClick={AdminLogOut}>Logout</button>
               </HStack>
             </Flex>
             <VStack spacing="35px" align="stretch" padding='30px'>
@@ -78,3 +84,4 @@ const Layout = ({ children }) => {
 };
 
 export default Layout;
+

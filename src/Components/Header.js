@@ -10,6 +10,11 @@ const Header = ({ onOpen }) => {
     SetShow(!isShow);
   };
 
+  const AdminLogOut = () => {
+    localStorage.clear();
+    window.location.replace('/');
+  }
+
   return (
     <>
       <Box backgroundColor="#f5f7fa" padding="10px">
@@ -43,7 +48,7 @@ const Header = ({ onOpen }) => {
           <h4>{admin.adminName} 님</h4>
           <Divider/>
           <p>라이팅젤 관리자</p>
-          <button>로그아웃</button>
+          <button onClick={AdminLogOut}>로그아웃</button>
         </Box>
       )}
     </>

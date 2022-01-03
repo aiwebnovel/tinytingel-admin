@@ -54,21 +54,8 @@ const Members = () => {
   const [postPerPage, setPostPerPage] = useState(10); //페이지당 포스트 개수
 
 
-  //현재 페이지 가져오기
-  const indexOfLast = currentPage * postPerPage; //1*10 = 10번 포스트
-  const indexOfFirst = indexOfLast - postPerPage //10-10 = 0번 포스트
-
-
   const allChecked = checkedItems.every(Boolean);
   const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
-
-  const currentPosts = () => {
-    let currentPosts = 0;
-    currentPosts = TableObject.slice(indexOfFirst, indexOfLast);
-    console.log(currentPosts);
-    return currentPosts;
-   
-  }
 
 
   const CheckAll = e => {
@@ -165,9 +152,6 @@ const Members = () => {
     setSearchList(TableObject);
   };
 
-  useEffect(()=>{
-    currentPosts();
-  },[])
 
   return (
     <Layout>
