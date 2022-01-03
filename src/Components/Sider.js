@@ -37,7 +37,7 @@ const Sider = () => {
         </Flex>
       </VStack>
       <HStack spacing="25px" className='SiderBottom'>
-          <Link to='/Home'>Home</Link>
+          <Link to='/'>Home</Link>
           <button>Logout</button>
       </HStack>
     </Box>

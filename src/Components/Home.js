@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState , useCallback} from 'react';
 import axios from 'axios';
 import { Box, SimpleGrid, Text } from '@chakra-ui/react';
 import Layout from './Layout';
@@ -19,35 +19,37 @@ const Home = () => {
 
   const {signIn,signInDaily,subscribers, subscribers1, subscribers6,  subscribers12, subscribersDaily} = Data;
 
-  useEffect(() => {
-    
+  const fetchData = useCallback(async() => {
+
     const admin = JSON.parse(localStorage.getItem('admin'));
-    //console.log(admin);
-
-
-    axios
-      .get(`${config.SERVER_URL}/main`, {
-        headers: { admincode: admin.IdState},
-      })
-      .then(res => {
-        let result = res.data;
-        console.log(result);
-        setDate({
-        ...Data,
-        signIn: result.signIn,
-        signInDaily: result.signInDaily,
-        subscribers: result.subscribers,
-        subscribers1: result.subscribers1,
-        subscribers6: result.subscribers6,
-        subscribers12: result.subscribers12,
-        subscribersDaily: result.subscribersDaily
-        });
-        
-      })
-      .catch(err => {
-        console.log(err);
+    
+    await axios
+    .get(`${config.SERVER_URL}/main`, {
+      headers: { admincode: admin.IdState},
+    })
+    .then(res => {
+      let result = res.data;
+      console.log(result);
+      setDate({
+      ...Data,
+      signIn: result.signIn,
+      signInDaily: result.signInDaily,
+      subscribers: result.subscribers,
+      subscribers1: result.subscribers1,
+      subscribers6: result.subscribers6,
+      subscribers12: result.subscribers12,
+      subscribersDaily: result.subscribersDaily
       });
-  },[]);
+      
+    })
+    .catch(err => {
+      console.log(err);
+    });
+  },[])
+
+  useEffect(() => {
+    fetchData();    
+  },[fetchData]);
 
   return (
     <Layout>

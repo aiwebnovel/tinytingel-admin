@@ -21,21 +21,19 @@ function Apps() {
     <BrowserRouter>
       <Routes>
         {admin ? (
-          <Route path="/" element={<Home />}></Route>
-        ) : (
           <>
-            <Route path="/" element={<Landing />} />
-            <Route path="/members" element={<Members />}></Route>
-            <Route path="/info" element={<MemInfo />}></Route>
-            <Route path="/payment" element={<MemPay />}></Route>
-            <Route path="/log" element={<LoginLog />}></Route>
-            <Route path="/questions/*" element={<Questions />}></Route>
-            <Route
-              path="/questions/detail"
-              element={<QuestionDetail />}
-            ></Route>
+          <Route path="/" element={<Home />}></Route>
+          <Route path="/members" element={<Members />}></Route>
+          <Route path="/info" element={<MemInfo />}></Route>
+          <Route path="/payment" element={<MemPay />}></Route>
+          <Route path="/log" element={<LoginLog />}></Route>
+          <Route path="/questions/*" element={<Questions />}></Route>
+          <Route path="/questions/detail" element={<QuestionDetail />}></Route>
           </>
+        ) : (
+          <Route path="/" element={<Landing />} />
         )}
+       
       </Routes>
     </BrowserRouter>
   );
