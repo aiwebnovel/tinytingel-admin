@@ -14,7 +14,7 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import Sider from './Sider';
-import styled from 'styled-components';
+
 
 const Layout = ({ children }) => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -76,7 +76,7 @@ const Layout = ({ children }) => {
       </Drawer>
       <Header onOpen={onOpen} />
 
-      <Box backgroundColor="#f5f7fa" minH='100vh' marginLeft={{ base: '0', md: '240px' }}>
+      <Box backgroundColor="#f5f7fa" minH='100vh' marginLeft={{ base: '0', lg: '240px' }}>
         {children}
       </Box>
     </Box>

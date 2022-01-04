@@ -56,7 +56,7 @@ const LoginLog = () => {
         let result = res.data;
         let configData = result.config;
         let list = result.data.list;
-        console.log(list)
+        console.log(list);
         setMaxPage(configData.maxPage);
         setList(list);
       })
@@ -88,15 +88,32 @@ const LoginLog = () => {
             <ExcelDownBtn>CSV 내려받기</ExcelDownBtn>
           </CSVLink>
         </Box>
-        <Box overflowX="auto">
+        <Box
+          overflowX="auto"
+          css={{
+            '&::-webkit-scrollbar': {
+              //스크롤바 전체영역
+              width: '5px',
+            },
+            '&::-webkit-scrollbar-track': {
+              //스크롤바 움직이는 영역
+              backgroundColor: '#fff',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              //스크롤
+              backgroundColor: '#E6F4F1',
+              borderRadius: '5px',
+            },
+          }}
+        >
           <Table variant="simple" bg="#fff" className="TableStyle">
             <Thead>
               <Tr>
                 <Th>회원명</Th>
                 <Th>이메일</Th>
-                <Th>로그인일자</Th>
-                <Th>가입일자</Th>
-                <Th>구독상품</Th>
+                <Th style={{padding: '12px'}}>로그인일자</Th>
+                <Th style={{padding: '12px'}}>가입일자</Th>
+                <Th style={{padding: '12px'}}>멤버십</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -105,7 +122,11 @@ const LoginLog = () => {
                   <Tr key={item.user_uid}>
                     <Td>{item.user_name}</Td>
                     <Td>{item.user_identifier}</Td>
-                    <Td>{item.user_logInDate !== null ? item.user_logInDate : '기록 없음'}</Td>
+                    <Td>
+                      {item.user_logInDate !== null
+                        ? item.user_logInDate
+                        : 'none'}
+                    </Td>
                     <Td>{item.user_signInDate.slice(0, 11)}</Td>
                     <Td>{item.user_membership_count}</Td>
                   </Tr>
@@ -113,10 +134,11 @@ const LoginLog = () => {
             </Tbody>
           </Table>
         </Box>
-        <Flex justifyContent="space-between" m={4} alignItems="center">
-          <Flex>
+        <Flex m={4} alignItems="center" justifyContent="center">
+          <Flex justifyContent="space-between" >
             <Tooltip label="First Page">
               <IconButton
+              size='sm'
                 onClick={() => {
                   setCurrent(1);
                   if (currentPage === 1) {
@@ -135,6 +157,7 @@ const LoginLog = () => {
             </Tooltip>
             <Tooltip label="Previous Page">
               <IconButton
+              size='sm'
                 onClick={() => {
                   setCurrent(currentPage - 1);
                   fetchData();
@@ -146,10 +169,10 @@ const LoginLog = () => {
           </Flex>
 
           <Flex alignItems="center">
-            <Text flexShrink="0" mr={8}>
-              Page{' '}
+            <Text flexShrink="0" ml={5} mr={5}>
               <Text fontWeight="bold" as="span">
-                {/* {pageIndex + 1} */}{currentPage}
+                {/* {pageIndex + 1} */}
+                {currentPage}
               </Text>{' '}
               of{' '}
               <Text fontWeight="bold" as="span">
@@ -161,6 +184,7 @@ const LoginLog = () => {
           <Flex>
             <Tooltip label="Next Page">
               <IconButton
+              size='sm'
                 onClick={() => {
                   setCurrent(currentPage + 1);
                   fetchData();
@@ -171,9 +195,10 @@ const LoginLog = () => {
             </Tooltip>
             <Tooltip label="Last Page">
               <IconButton
+              size='sm'
                 onClick={() => {
                   setCurrent(maxPage);
-                  
+
                   if (currentPage === maxPage) {
                     toast({
                       title: '마지막 페이지',
@@ -201,6 +226,8 @@ const ExcelDownBtn = styled.button`
   background-color: #444;
   color: #fff;
   padding: 2px 10px;
+  font-size: 15px;
+  transition: all 300ms ease;
 
   &:hover {
     background-color: #0098fa;

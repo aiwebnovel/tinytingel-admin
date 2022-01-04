@@ -16,7 +16,7 @@ const Sider = () => {
   return (
     <Box
       transition="300ms ease"
-      w={{ base: 'full', md: 60 }}
+      w={{ base: 'full', lg: 60 }}
       flexDirection="column"
       justifyContent="space-between"
       alignItems="center"
@@ -24,7 +24,7 @@ const Sider = () => {
       top={0}
       h="full"
       bg="#fff"
-      display={{ base: 'none', md: 'flex' }}
+      display={{ base: 'none', lg: 'flex' }}
       boxShadow="rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;"
       padding="30px 0"
     >

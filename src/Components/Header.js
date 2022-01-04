@@ -19,13 +19,13 @@ const Header = ({ onOpen }) => {
     <>
       <Box backgroundColor="#f5f7fa" padding="10px">
         <Flex
-          justify={{ base: 'space-between', md: 'flex-end' }}
+          justify={{ base: 'space-between', lg: 'flex-end' }}
           align="center"
         >
           <HamburgerIcon
             boxSize={6}
             onClick={onOpen}
-            display={{ base: 'block', md: 'none' }}
+            display={{ base: 'block', lg: 'none' }}
             style={{cursor:'pointer'}}
           />
           <Avatar

@@ -105,6 +105,11 @@ $white-2 : #f9f9f9;
     border-radius: 15px;
     background-color: #f0faff;
     padding: 5px 15px;
+
+    @media screen and (max-width: 480px) {
+        width: 100%;
+    }
+
 }
 
 .selectOption {
@@ -132,8 +137,22 @@ $white-2 : #f9f9f9;
         margin-left: 10px;
         border-radius: 5px;
     }
+
+    @media screen and (max-width: 480px) {
+       > input { 
+           width: 100%;
+       }
+
+       > button {
+        width: 100%;
+        margin-left: 0;
+        margin-top: 10px;
+       }
+    }
+
 }
 }
+
 
 .TableContainer {
     padding: 48px;
@@ -141,6 +160,7 @@ $white-2 : #f9f9f9;
 
 .TableStyle {
     min-width: 800px;
+    
 
 }
 

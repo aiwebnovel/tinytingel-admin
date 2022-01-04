@@ -25,13 +25,13 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   ArrowRightIcon,
+  InfoIcon
 } from '@chakra-ui/icons';
 import Layout from '../../Layout';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ko from 'date-fns/locale/ko';
 import styled from 'styled-components';
-import TableObject from '../Member/Object';
 
 const Members = () => {
   const toast = useToast();
@@ -41,11 +41,11 @@ const Members = () => {
     { label: '이메일', key: 'user_identifier' },
     { label: '로그인 일자', key: 'user_logInDate' },
     { label: '가입일자', key: 'user_signInDate' },
-    { label: '구독 상품', key: 'user_membership_count' },
+    { label: '멤버십', key: 'user_membership_count' },
   ];
 
   const [currentPage, setCurrent] = useState(1); //현재 페이지;
-  const [postPerPage, setPostPerPage] = useState(30); //페이지당 포스트 개수
+  const [postPerPage, setPostPerPage] = useState(20); //페이지당 포스트 개수
   const [List, setList] = useState([]);
   const [maxPage, setMaxPage] = useState('');
 
@@ -187,7 +187,7 @@ const Members = () => {
   return (
     <Layout>
       <Box className="MemberContainer">
-        <Box bg="#fff" padding="48px">
+        <Box bg="#fff" padding="36px">
           <Flex
             direction={{ base: 'column', sm: 'row' }}
             className="MemberCheck"
@@ -252,7 +252,7 @@ const Members = () => {
             </Checkbox>
           </Flex>
 
-          <Flex w="100%" alignItems="center" gridGap={15}>
+          <Flex w="100%" alignItems="center" gridGap={15} direction={{ base: 'column', sm: 'row' }} mt={{base:'15px', sm:'0'}}>
             <Select
               className="selectOption"
               placeholder="날짜를 먼저 선택해주세요"
@@ -271,7 +271,7 @@ const Members = () => {
             />
           </Flex>
           <Box margin="15px 0">
-            <Flex className="SearchFlex" alignItems="center">
+            <Flex className="SearchFlex" alignItems="center" >
               <form>
                 <Input
                   placeholder="이름 혹은 이메일을 정확하게 입력해주세요"
@@ -286,8 +286,8 @@ const Members = () => {
               </form>
             </Flex>
           </Box>
-          <Box mt={15} textAlign="right">
-            <ResetBtn onClick={Reset}>필터링 리셋</ResetBtn>
+          <Flex mt={25} justifyContent='flex-end'>
+            <ResetBtn onClick={Reset}>필터 초기화</ResetBtn>
             <CSVLink
               headers={headers}
               data={searchList}
@@ -302,20 +302,36 @@ const Members = () => {
             >
               <ExcelDownBtn>CSV 내려받기</ExcelDownBtn>
             </CSVLink>
-          </Box>
+          </Flex>
         </Box>
+
       </Box>
       <Box className="TableContainer">
-        <Box overflowX="auto">
+        <Box overflowX="auto"  css={{
+    '&::-webkit-scrollbar': {
+      //스크롤바 전체영역
+      width: '5px',
+    },
+    '&::-webkit-scrollbar-track': {
+      //스크롤바 움직이는 영역
+      backgroundColor: '#fff',
+      
+    },
+    '&::-webkit-scrollbar-thumb': {
+      //스크롤
+      backgroundColor: '#E6F4F1',
+      borderRadius: '5px',
+    },
+  }}>
           <Table variant="simple" bg="#fff" className="TableStyle">
             <Thead>
               <Tr>
                 <Th>회원명</Th>
                 <Th>이메일</Th>
                 <Th>가입일자</Th>
-                <Th>로그인일자</Th>
-                <Th>구독상품</Th>
-                <Th>보기</Th>
+                <Th style={{padding: '12px'}}>로그인일자</Th>
+                <Th style={{padding: '12px'}}>멤버십</Th>
+                <Th style={{padding: '12px'}}>보기</Th>
               </Tr>
             </Thead>
             <Tbody>
@@ -327,12 +343,14 @@ const Members = () => {
                     <Td>
                       {item.user_logInDate !== null
                         ? item.user_logInDate
-                        : '기록 없음'}
+                        : 'none'}
                     </Td>
                     <Td>{item.user_signInDate.slice(0, 11)}</Td>
                     <Td>{item.user_membership_count}</Td>
                     <Td>
-                      <LinkBtn to={`/members/${item.user_uid}`}>상세</LinkBtn>
+                      <Link to={`/members/${item.user_uid}`}>
+                        <InfoIcon w={5} h={5}/>
+                        </Link>
                     </Td>
                   </Tr>
                 ))
@@ -349,10 +367,11 @@ const Members = () => {
             </Tbody>
           </Table>
         </Box>
-        <Flex justifyContent="space-between" m={4} alignItems="center">
-          <Flex>
+        <Flex  m={4} alignItems="center" justifyContent="center">
+          <Flex justifyContent="space-between">
             <Tooltip label="First Page">
               <IconButton
+              size='sm'
                 onClick={() => {
                   setCurrent(1);
                   if (currentPage === 1) {
@@ -369,8 +388,9 @@ const Members = () => {
                 mr={4}
               />
             </Tooltip>
-            <Tooltip label="Previous Page">
+    
               <IconButton
+                size='sm'
                 onClick={() => {
                   setCurrent(currentPage - 1);
                   fetchData();
@@ -378,12 +398,11 @@ const Members = () => {
                 isDisabled={currentPage === 1 && true}
                 icon={<ChevronLeftIcon h={6} w={6} />}
               />
-            </Tooltip>
+      
           </Flex>
 
-          <Flex alignItems="center">
-            <Text flexShrink="0" mr={8}>
-              Page{' '}
+          <Flex alignItems="center" flexShrink="0" ml={5} mr={5}>
+          <Text >
               <Text fontWeight="bold" as="span">
                 {currentPage}
               </Text>{' '}
@@ -395,9 +414,8 @@ const Members = () => {
           </Flex>
 
           <Flex>
-            <Tooltip>
               <IconButton
-                label="Next Page"
+                size='sm'
                 onClick={() => {
                   setCurrent(currentPage + 1);
                   fetchData();
@@ -405,9 +423,10 @@ const Members = () => {
                 isDisabled={currentPage === maxPage && true}
                 icon={<ChevronRightIcon h={6} w={6} />}
               />
-            </Tooltip>
+
             <Tooltip label="Last Page">
               <IconButton
+              size='sm'
                 onClick={() => {
                   setCurrent(maxPage);
 
@@ -438,7 +457,9 @@ const ExcelDownBtn = styled.button`
   background-color: #444;
   color: #fff;
   padding: 2px 10px;
+  font-size: 15px;
   transition: all 300ms ease;
+  word-break: keep-all;
 
   &:hover {
     background-color: #0098fa;
@@ -449,24 +470,14 @@ const ResetBtn = styled.button`
   background-color: #e6f4f1;
   border: 1px solid #e6f4f1;
   color: #444;
-  padding: 2px 20px;
+  padding: 2px 10px;
+  font-size: 15px;
   transition: all 300ms ease;
   margin-right: 8px;
+  word-break: keep-all;
 
   &:hover {
     background-color: #b8c6db;
   }
 `;
 
-const LinkBtn = styled(Link)`
-  background-color : #E6F4F1;
-  color: #444;
-  padding: 5px 8px;
-  border-radius: 5px;
-  font-size: 14px;
-  transition: all 300ms ease;
-  
-  &:hover {
-    background-color: #b8c6db;
-  }
-`

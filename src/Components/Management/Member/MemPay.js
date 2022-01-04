@@ -34,15 +34,61 @@ const MemPay = () => {
       .then(res => {
         const result = res.data.data.list[0];
         console.log(result)
+        
+        if(result.buyLog_plan === null) {
+          if(result.buyLog_price === '25000') {
+
+            let MonthLater = moment(result.buyLog_signInDate).add('1','months').toDate();
+            let formatMonth = moment(MonthLater).format('YYYY-MM-DD');
+            console.log(formatMonth);
+            setData({
+              ...Data,
+              buyLog_tid: result.buyLog_tid,
+              buyLog_plan: result.buyLog_plan,
+              buyLog_UsingDate: formatMonth,
+              buyLog_price: result.buyLog_price,
+              buyLog_signInDate: result.buyLog_signInDate,
+            })
+          }
+          if(result.buyLog_price === '60000') {
+            let MonthLater = moment(result.buyLog_signInDate).add('3','months').toDate();
+            let formatMonth = moment(MonthLater).format('YYYY-MM-DD');
+            console.log(formatMonth);
+            setData({
+              ...Data,
+              buyLog_tid: result.buyLog_tid,
+              buyLog_plan: result.buyLog_plan,
+              buyLog_UsingDate: formatMonth,
+              buyLog_price: result.buyLog_price,
+              buyLog_signInDate: result.buyLog_signInDate,
+            })
+          }
+          if(result.buyLog_price === '90000') {
+            let MonthLater = moment(result.buyLog_signInDate).add('6','months').toDate();
+            let formatMonth = moment(MonthLater).format('YYYY-MM-DD');
+            console.log(formatMonth);
+            setData({
+              ...Data,
+              buyLog_tid: result.buyLog_tid,
+              buyLog_plan: result.buyLog_plan,
+              buyLog_UsingDate: formatMonth,
+              buyLog_price: result.buyLog_price,
+              buyLog_signInDate: result.buyLog_signInDate,
+            })
+          }
+        }else {
         let MonthLater = moment(result.buyLog_signInDate).add(result.buyLog_plan,'months').toDate();
+        let formatMonth = moment(MonthLater).format('YYYY-MM-DD');
+        console.log(formatMonth);
         setData({
           ...Data,
           buyLog_tid: result.buyLog_tid,
           buyLog_plan: result.buyLog_plan,
-          buyLog_UsingDate: MonthLater ,
+          buyLog_UsingDate: formatMonth,
           buyLog_price: result.buyLog_price,
           buyLog_signInDate: result.buyLog_signInDate,
         })
+      }
       })
       .catch(err => {
         console.log(err);
