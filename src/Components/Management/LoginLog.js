@@ -23,7 +23,7 @@ import {
 import Layout from '../Layout';
 import styled from 'styled-components';
 import { CSVLink } from 'react-csv';
-import TableObject from './Member/Object';
+
 import * as config from '../../config/Config';
 
 const LoginLog = () => {
@@ -38,7 +38,7 @@ const LoginLog = () => {
   ];
 
   const [currentPage, setCurrent] = useState(1); //현재 페이지;
-  const [postPerPage, setPostPerPage] = useState(20); //페이지당 포스트 개수
+  const [postPerPage, setPostPerPage] = useState(30); //페이지당 포스트 개수
   const [List, setList] = useState([]);
   const [maxPage, setMaxPage] = useState('');
 
@@ -56,6 +56,7 @@ const LoginLog = () => {
         let result = res.data;
         let configData = result.config;
         let list = result.data.list;
+        console.log(list)
         setMaxPage(configData.maxPage);
         setList(list);
       })

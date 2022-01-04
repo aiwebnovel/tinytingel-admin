@@ -17,7 +17,7 @@ const Home = () => {
   subscribersDaily: ""
   });
 
-  const {signIn,signInDaily,subscribers, subscribers1, subscribers6,  subscribers12, subscribersDaily} = Data;
+  const {signIn,signInDaily,subscribers, subscribers1, subscribers3,  subscribers6, subscribersDaily} = Data;
 
   const fetchData = useCallback(async() => {
 
@@ -36,8 +36,8 @@ const Home = () => {
       signInDaily: result.signInDaily,
       subscribers: result.subscribers,
       subscribers1: result.subscribers1,
+      subscribers3: result.subscribers3,
       subscribers6: result.subscribers6,
-      subscribers12: result.subscribers12,
       subscribersDaily: result.subscribersDaily
       });
       
@@ -84,12 +84,12 @@ const Home = () => {
             <p>{subscribers1} 명</p>
           </Box>
           <Box bg="#fff" height="130px" className="HomeTd">
-            <h4>누적 6개월 구독회원</h4>
-            <p>{subscribers6} 명</p>
+            <h4>누적 3개월 구독회원</h4>
+            <p>{subscribers3} 명</p>
           </Box>
           <Box bg="#fff" height="130px" className="HomeTd">
-            <h4>누적 1년 구독 회원</h4>
-            <p>{subscribers12} 명</p>
+            <h4>누적 6개월 구독 회원</h4>
+            <p>{subscribers6} 명</p>
           </Box>
 
 
