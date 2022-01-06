@@ -29,7 +29,7 @@ const Home = () => {
     })
     .then(res => {
       let result = res.data;
-      console.log(result);
+      //console.log(result);
       setDate({
       ...Data,
       signIn: result.signIn,

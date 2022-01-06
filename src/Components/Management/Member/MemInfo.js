@@ -17,6 +17,7 @@ const MemInfo = () => {
     user_name: '',
     payment_date: '',
     signInDate: '',
+    buyLog_UsingDate:''
   });
 
   const {
@@ -26,6 +27,7 @@ const MemInfo = () => {
     user_name,
     payment_date,
     signInDate,
+    buyLog_UsingDate
   } = Data;
 
   const fetchData = useCallback(async () => {
@@ -45,6 +47,7 @@ const MemInfo = () => {
           user_name: result.name,
           payment_date: result.payment_date,
           signInDate: result.signInDate,
+        
         });
       })
       .catch(err => {
@@ -59,7 +62,7 @@ const MemInfo = () => {
   return (
     <Layout>
       <Box className="InfoContainer">
-        <Box>
+        <Box className='InfoContent'>
           <div className="InfoBox">
             <h4>이름</h4>
             <p>{user_name}</p>
@@ -73,7 +76,7 @@ const MemInfo = () => {
             <p>{signInDate.slice(0, 11)}</p>
             {/* <p>{`${moment(billStart).format('YYYY-MM-DD')} ~ ${exp}`}</p> */}
           </div>
-          <div className="InfoBox">
+          <div className="InfoBox" style={{backgroundColor: '#f9f9f9'}}>
             <h4>결제내역</h4>
             {payment_date !== '' ? (
               <Link
@@ -90,7 +93,7 @@ const MemInfo = () => {
             <h4>구독상품</h4>
             <p>
               {payment_date !== ''
-                ? '6개월 정기결제'
+                ? membership_count
                 : '멤버십을 구독하지 않은 회원입니다.'}
             </p>
           </div>
@@ -118,12 +121,12 @@ const MemInfo = () => {
                 : '멤버십을 구독하지 않은 회원입니다.'}
             </p>
           </div>
-          <BtnBox>
+        </Box>
+        <BtnBox>
             <Back onClick={()=>{
               navigate(`/members`);
             }}>뒤로 가기</Back>
           </BtnBox>
-        </Box>
       </Box>
     </Layout>
   );

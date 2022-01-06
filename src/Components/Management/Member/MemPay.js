@@ -103,14 +103,14 @@ const MemPay = () => {
   return (
     <Layout>
       <Box className='PaymentContainer'>
-        <Box>
+        <Box className='InfoContent'>
           <div className="payBox">
             <h4>주문번호</h4>
             <p>{buyLog_tid}</p>
           </div>
           <div className="payBox">
             <h4>구독 상품</h4>
-            <p>{buyLog_plan !==null ? `${buyLog_plan}개월 정기결제` : '구독해지' }</p>
+            <p>{buyLog_plan !==null ? `${buyLog_plan}개월 정기결제` : '구독 취소' }</p>
           </div>
           <div className="payBox">
             <h4>이용 기간</h4>
@@ -132,12 +132,13 @@ const MemPay = () => {
             <h4>결제 수단</h4>
             <p>신용카드/체크카드</p>
           </div>
-          <BtnBox>
+         
+        </Box>
+        <BtnBox>
             <Back onClick={()=>{
               navigate(`/members/${id}`);
             }}>뒤로 가기</Back>
           </BtnBox>
-        </Box>
       </Box>
     </Layout>
   );

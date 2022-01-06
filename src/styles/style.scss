@@ -44,15 +44,54 @@ $white-2 : #f9f9f9;
     }
 }
 
+.MobileNavTop {
+    > a, button {
+        font-weight: 600;
+    }
+
+    > a {
+        background-color: #b8c6db;
+        border-radius: 5px;
+        color: #444;
+        padding: 5px 13px;
+        transition: all 300ms ease;
+      
+        &:hover {
+          background-color: #0098fa;
+          color: #fff;
+        }
+    }
+
+    > button {
+        background-color : #FF5A52;
+       
+        border-radius: 5px;
+        color : #fff;
+        padding: 5px 13px;
+        transition: all 300ms ease;
+    
+        &:hover {
+          background-color:#D83536;
+          color: #fff;
+        }
+    }
+}
+
 .MobileNav {
-    >a {
+    
+    > h4 {
+        padding-left: 15px;
+    }
+
+    > a {
         cursor: pointer;
-        background-color: #f9f9f9;
-        padding: 10px 0 10px 5px;
+        padding: 5px 0 5px 25px;
         width: 100%;
+        transition: all 300ms ease;
 
         &:hover {
-            background-color: $main;
+            background-color: $mint;
+           font-weight: 600;
         }
     }
 
@@ -171,7 +210,10 @@ $white-2 : #f9f9f9;
 
 
 .InfoContainer {
+    width: 100%;
+    max-width: 1200px;
     padding: 120px 64px;
+    margin: 0 auto;
 
     @media screen and (max-width: 768px) {
         padding-right: 36px;
@@ -179,11 +221,16 @@ $white-2 : #f9f9f9;
     }
 }
 
+.InfoContent {
+    border: 1px solid $dark-1;
+    background-color: $white-1;
+}
+
 .InfoBox {
     display: flex;
-    padding: 15px 8px;
+    padding: 15px;
     gap: 50px;
-    border-bottom: 1px solid $dark-1;
+ 
 
     >h4 {
         font-weight: 600;
@@ -203,8 +250,11 @@ $white-2 : #f9f9f9;
 
 
 .PaymentContainer {
+    width: 100%;
+    max-width: 1200px;
     padding: 120px 64px;
-
+    margin: 0 auto; 
+    
     @media screen and (max-width: 768px) {
         padding-right: 36px;
         padding-left: 36px;
@@ -213,10 +263,9 @@ $white-2 : #f9f9f9;
 
 .payBox {
     display: flex;
-    padding: 15px 8px;
+    padding: 15px;
     gap: 50px;
-    border-bottom: 1px solid $dark-1;
-
+    
     >h4 {
         font-weight: 600;
     }

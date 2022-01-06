@@ -170,7 +170,7 @@ const Members = () => {
         let result = res.data;
         let configData = result.config;
         let list = result.data.list;
-        console.log(list);
+        //console.log(list);
         setMaxPage(configData.maxPage);
         setList(list);
         setSearchList(list);
