@@ -21,7 +21,7 @@ import {
   ChevronRightIcon,
   ArrowRightIcon,
 } from '@chakra-ui/icons';
-import Layout from '../Layout';
+import Layout from '../Layout.jsx';
 import styled from 'styled-components';
 
 const Questions = () => {

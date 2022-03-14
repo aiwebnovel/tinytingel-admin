@@ -1,7 +1,7 @@
 import React from 'react';
 //import { Link } from 'react-router-dom';
 import { Box, CheckboxGroup, Checkbox, Flex } from '@chakra-ui/react';
-import Layout from '../Layout';
+import Layout from '../Layout.jsx';
 import styled from 'styled-components';
 
 const QuestionDetail = () => {

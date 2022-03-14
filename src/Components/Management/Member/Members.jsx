@@ -27,7 +27,7 @@ import {
   ArrowRightIcon,
   InfoIcon
 } from '@chakra-ui/icons';
-import Layout from '../../Layout';
+import Layout from '../../Layout.jsx';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ko from 'date-fns/locale/ko';
@@ -52,7 +52,7 @@ const Members = () => {
   const [startDate, setStartDate] = useState(new Date());
   const [checkedItems, setCheckedItems] = useState([false, false, false]);
   const [activeFilter, setActiveFilter] = useState([]);
-  const [selected, setSelected] = useState('');
+  const [selected, setSelected] = useState('default');
   const [keyword, setKeyword] = useState('');
   const [searchList, setSearchList] = useState('');
 
@@ -96,18 +96,18 @@ const Members = () => {
     let month = startDate.getMonth() + 1;
     let day = startDate.getDate();
     let date = `${year}-${month}-${day}`;
-    //console.log(date);
+    console.log(date);
 
     if (e.target.value === 'regist') {
       const filterList = searchList.filter(
         item => item.user_signInDate.slice(0, 11) > date
       );
-      //console.log(filterList);
+      console.log(filterList);
       setSearchList(filterList);
     }
     if (e.target.value === 'login') {
       const filterList = searchList.filter(item => item.user_logInDate > date);
-      //console.log(filterList)
+      console.log(filterList)
       setSearchList(filterList);
     }
   };
@@ -151,7 +151,7 @@ const Members = () => {
     setStartDate(new Date());
     setCheckedItems([false, false, false]);
     setActiveFilter([]);
-    setSelected('');
+    setSelected('default');
     setKeyword('');
     setSearchList(List);
   };
@@ -170,7 +170,7 @@ const Members = () => {
         let result = res.data;
         let configData = result.config;
         let list = result.data.list;
-        //console.log(list);
+        console.log(list);
         setMaxPage(configData.maxPage);
         setList(list);
         setSearchList(list);
@@ -255,9 +255,11 @@ const Members = () => {
           <Flex w="100%" alignItems="center" gridGap={15} direction={{ base: 'column', sm: 'row' }} mt={{base:'15px', sm:'0'}}>
             <Select
               className="selectOption"
-              placeholder="날짜를 먼저 선택해주세요"
+              //placeholder="날짜를 먼저 선택해주세요"
+              defaultValue={selected}
               onChange={HandleSelect}
             >
+              <option value='default' disabled>날짜를 먼저 선택해주세요</option>
               <option value="regist">가입 일자</option>
               <option value="login">로그인 일자</option>
             </Select>

@@ -1,8 +1,8 @@
 import React, { useEffect, useCallback, useState } from 'react';
 import axios from 'axios';
 import { Link, useParams, useNavigate } from 'react-router-dom';
-import { Box } from '@chakra-ui/react';
-import Layout from '../../Layout';
+import { Box, Heading } from '@chakra-ui/react';
+import Layout from '../../Layout.jsx';
 import styled from 'styled-components';
 
 import * as config from '../../../config/Config';
@@ -63,6 +63,9 @@ const MemInfo = () => {
     <Layout>
       <Box className="InfoContainer">
         <Box className='InfoContent'>
+        <Heading as='h4' size='lg' margin='15px 0 15px 15px' >
+          💡 Info
+        </Heading>
           <div className="InfoBox">
             <h4>이름</h4>
             <p>{user_name}</p>

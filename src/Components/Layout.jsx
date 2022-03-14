@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Header from './Header';
+import Header from './Header.jsx';
 import {
   Box,
   Heading,
@@ -14,7 +14,7 @@ import {
   Flex,
 } from '@chakra-ui/react';
 import { CheckIcon } from '@chakra-ui/icons';
-import Sider from './Sider';
+import Sider from './Sider.jsx';
 
 
 const Layout = ({ children }) => {

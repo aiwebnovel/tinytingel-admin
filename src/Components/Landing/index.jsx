@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import {
   Box,
+  Flex,
   FormControl,
   FormLabel,
   Input,
@@ -10,15 +11,14 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import styled from 'styled-components';
-import { IdState, adminName } from '../../config/Recoil';
-import { useRecoilState } from 'recoil';
-import * as configUrl from '../../config/Config';
+import { adminState } from '../../config/Recoil';
+import { useSetRecoilState } from 'recoil';
+import * as server from '../../config/Config';
 
 const Landing = () => {
 
   const toast = useToast();
-  const [Id, setId] = useRecoilState(IdState);
-  const [name, setName] = useRecoilState(adminName);
+  const setAdminState = useSetRecoilState(adminState);
   const [Inputs, SetInputs] = useState({
     userId:'',
     userPassword : ''
@@ -30,26 +30,57 @@ const Landing = () => {
     console.log(e.target.value);
     SetInputs({...Inputs, [e.target.name] : e.target.value});
 
-    console.log(userId, userPassword);
+    // console.log(userId, userPassword);
   }
 
-  const GoLogin = () => {
-    console.log('login');
+  const GoLogin = (e) => {
+    e.preventDefault();
 
-    axios.post(`${configUrl.SERVER_URL}/login`, {
+    axios.post(`${server.SERVER_URL}/login`, {
         id:userId,
         password:userPassword
     })
     .then(async(res)=>{
-      console.log(res);
-      setId(res.data.token)
-      setName(userId)
-      toast({
-        title: '로그인 성공!',
-        description: "로그인에 성공했습니다!",
-        status: 'success',
-        duration: 5000,
-        isClosable: true,
+      // console.log(res);
+      const token = res.data.data.token;
+     
+      await axios.get(`${server.SERVER_URL}/profile`,{
+        headers: {Authorization: `Bearer ${token}`}
+      })
+      .then((response)=>{
+        console.log(response);
+        const data = response.data.data;
+
+        setAdminState({
+          ...adminState,
+          token:token,
+          id:data.id,
+          name:data.name,
+          admin_uid:data.admin_uid,
+          is_root:data.is_root,
+          login_at: data.login_at,
+          create_at: data.create_at,
+          update_at: data.update_at,
+          delete_at: data.delete_at
+        });
+
+        toast({
+          title: '로그인 성공!',
+          description: "로그인에 성공했습니다!",
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        })
+      })
+      .catch((error)=>{
+        console.log(error);
+        toast({
+          title: '프로필을 가져오지 못했습니다',
+          description: "유저 프로필을 가져오지 못했습니다.",
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        })
       })
     })
     .catch((error)=>{
@@ -72,21 +103,22 @@ const Landing = () => {
       alignItems="center"
     >
       <FormBox bg="#fff" borderRadius="15px">
-        <Text
-          fontSize="4xl"
-          textAlign="center"
-          fontWeight="600"
-          marginBottom="30px"
+        <Flex
+        direction={'column'}
+        align='center'
+        justify={'center'}
+        marginBottom='30px'
         >
-          ADMIN LOGIN
-        </Text>
+          <Img src='/logo2.png' alt='로고'/>
+        </Flex>
+        <form>
         <Box>
-          <FormControl id="email" style={{marginBottom: '5px'}}>
-            <FormLabel>Email</FormLabel>
+          <FormControl id="email" style={{marginBottom: '10px'}}>
+            <FormLabel>ADMIN EMAIL</FormLabel>
             <Input type="email" name='userId' onChange={ChangeInput} />
           </FormControl>
           <FormControl id="password">
-            <FormLabel>Password</FormLabel>
+            <FormLabel>ADMIN PASSWORD</FormLabel>
             <Input type="password" name='userPassword'  onChange={ChangeInput}/>
             <FormHelperText>
               We'll never share your email and password.
@@ -94,8 +126,9 @@ const Landing = () => {
           </FormControl>
         </Box>
         <Box textAlign="center" marginTop="30px">
-          <LoginBtn onClick={GoLogin}>로그인</LoginBtn>
+          <LoginBtn type='submit' onClick={GoLogin} >로그인</LoginBtn>
         </Box>
+        </form>
         {/* <Box textAlign='center' marginTop='30px'>
           <Text fontSize='sm'>아직 회원이 아니신가요?</Text>
           <Divider margin='5px 0'/>
@@ -109,8 +142,8 @@ const Landing = () => {
 export default Landing;
 
 const LandingBox = styled(Box)`
-  background-color: #b8c6db;
-  background-image: linear-gradient(315deg, #b8c6db 0%, #f5f7fa 74%);
+  background-color: #b1b5e6;
+  background-image: linear-gradient(315deg, #b1b5e6 0%, #f5f7fa 74%);
 
   @media screen and (max-width: 768px) {
     padding: 0 15px;
@@ -129,8 +162,8 @@ const FormBox = styled(Box)`
 `;
 
 const LoginBtn = styled.button`
-  background-color: #b8c6db;
-  border: 1px solid #b8c6db;
+  background-color: #b1b5e6;
+  border: 1px solid #b1b5e6;
 
   border-radius: 10px;
   color: #f3f3f3;
@@ -145,3 +178,7 @@ const LoginBtn = styled.button`
     color: #444;
   }
 `;
+
+const Img = styled.img`
+  width: 150px;
+`

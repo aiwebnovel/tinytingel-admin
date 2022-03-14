@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChakraProvider, theme } from '@chakra-ui/react';
-import Apps from './routes/Apps';
+import Apps from './routes/Apps.jsx';
 import { RecoilRoot } from 'recoil';
 
 function App() {

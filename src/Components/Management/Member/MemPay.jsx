@@ -1,8 +1,8 @@
 import React, {useEffect, useCallback, useState} from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Layout from '../../Layout';
-import { Box } from '@chakra-ui/react';
+import Layout from '../../Layout.jsx';
+import { Box, Heading } from '@chakra-ui/react';
 import moment from 'moment';
 import styled from 'styled-components';
 
@@ -104,6 +104,9 @@ const MemPay = () => {
     <Layout>
       <Box className='PaymentContainer'>
         <Box className='InfoContent'>
+        <Heading as='h4' size='lg' margin='15px 0 15px 15px' >
+          💡 Receipt
+        </Heading>
           <div className="payBox">
             <h4>주문번호</h4>
             <p>{buyLog_tid}</p>

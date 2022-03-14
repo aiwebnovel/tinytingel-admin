@@ -1,21 +1,21 @@
 import React, { useEffect } from 'react';
 import axios from 'axios';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from '../Components/Home';
-import Members from '../Components/Management/Member/Members';
-import LoginLog from '../Components/Management/LoginLog';
-import Questions from '../Components/Management/Questions';
-import MemInfo from '../Components/Management/Member/MemInfo';
-import Landing from '../Components/Landing/index';
-import MemPay from '../Components/Management/Member/MemPay';
-import QuestionDetail from '../Components/Management/QuestionDetail';
-import { IdState } from '../config/Recoil';
-import { useRecoilState, useRecoilValue } from 'recoil';
+import Home from '../Components/Home.jsx';
+import Members from '../Components/Management/Member/Members.jsx';
+import LoginLog from '../Components/Management/LoginLog.jsx';
+import Questions from '../Components/Management/Questions.jsx';
+import MemInfo from '../Components/Management/Member/MemInfo.jsx';
+import Landing from '../Components/Landing/index.jsx';
+import MemPay from '../Components/Management/Member/MemPay.jsx';
+import QuestionDetail from '../Components/Management/QuestionDetail.jsx';
+
 
 function Apps() {
-  console.log(useRecoilValue(IdState));
-  const admin = useRecoilValue(IdState);
 
+  const admin = JSON.parse(localStorage.getItem('admin'));
+  console.log(admin);
+  
   return (
     //추가 될 부분
     <BrowserRouter>

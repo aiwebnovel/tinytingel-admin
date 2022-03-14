@@ -20,7 +20,7 @@ import {
   ChevronRightIcon,
   ArrowRightIcon,
 } from '@chakra-ui/icons';
-import Layout from '../Layout';
+import Layout from '../Layout.jsx';
 import styled from 'styled-components';
 import { CSVLink } from 'react-csv';
 
@@ -56,7 +56,7 @@ const LoginLog = () => {
         let result = res.data;
         let configData = result.config;
         let list = result.data.list;
-        console.log(list);
+        //console.log(list);
         setMaxPage(configData.maxPage);
         setList(list);
       })
