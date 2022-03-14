@@ -35,8 +35,12 @@ $white-2 : #f9f9f9;
 }
 
 .nav {
+
+    padding: 0 30px;
+
     >a {
         cursor: pointer;
+        text-indent : 10px;
 
         &:hover {
             text-decoration: underline;

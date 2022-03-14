@@ -27,9 +27,12 @@ function Apps() {
           <Route path="/members/:id" element={<MemInfo />}></Route>
           <Route path="/members/:id/payment" element={<MemPay />}>
           </Route>
-          <Route path="/log" element={<LoginLog />}></Route>
+          <Route path="/loginlog" element={<LoginLog />}></Route>
+          <Route path="/paymentlog" element={<LoginLog />}></Route>
+   
           <Route path="/questions/*" element={<Questions />}></Route>
           <Route path="/questions/detail" element={<QuestionDetail />}></Route>
+          <Route path="/prompts" element={<LoginLog />}></Route>
           </>
         ) : (
           <Route path="/" element={<Landing />} />
