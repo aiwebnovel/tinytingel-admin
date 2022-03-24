@@ -8,12 +8,9 @@ import styled from 'styled-components';
 const Headings = styled.h3`
 
 margin-bottom : 5px;
-font-size : 1.1rem;
+font-size : 1rem;
 font-weight : 600;
 
-  &::before {
-    content : "📌 "
-  }
 `
 
 const Sider = () => {

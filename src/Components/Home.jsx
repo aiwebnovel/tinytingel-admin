@@ -7,8 +7,6 @@ import * as server from '../config/Config';
 
 const Home = () => {
 
- 
-
   return (
     <Layout>
       <Box h={{ md: '100%', lg: '100vh' }}>

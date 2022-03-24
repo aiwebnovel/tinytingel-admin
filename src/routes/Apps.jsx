@@ -9,12 +9,13 @@ import MemInfo from '../Components/Management/Member/MemInfo.jsx';
 import Landing from '../Components/Landing/index.jsx';
 import MemPay from '../Components/Management/Member/MemPay.jsx';
 import QuestionDetail from '../Components/Management/QuestionDetail.jsx';
+import Prompts from '../Components/Management/Prompts'
 
 
 function Apps() {
 
   const admin = JSON.parse(localStorage.getItem('admin'));
-  console.log(admin);
+
   
   return (
     //추가 될 부분
@@ -32,7 +33,7 @@ function Apps() {
    
           <Route path="/questions/*" element={<Questions />}></Route>
           <Route path="/questions/detail" element={<QuestionDetail />}></Route>
-          <Route path="/prompts" element={<LoginLog />}></Route>
+          <Route path="/prompts" element={<Prompts />}></Route>
           </>
         ) : (
           <Route path="/" element={<Landing />} />
