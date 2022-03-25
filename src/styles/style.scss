@@ -35,16 +35,32 @@ $white-2 : #f9f9f9;
 }
 
 .nav {
-
+    cursor: pointer;
     padding: 0 30px;
 
-    >a {
-        cursor: pointer;
+    ul > a {
+      
+        text-indent: 20px;
 
-        &:hover {
-            text-decoration: underline;
+         > li {
+            list-style: none;
+            padding: 2px 0;
         }
     }
+
+
+    &:hover {
+        //text-decoration: underline;
+        background-color: $blue-1;
+    }
+}
+
+.toogleTrue {
+    display: block;
+}
+
+.toogleFalse {
+    display: none;
 }
 
 .MobileNavTop {

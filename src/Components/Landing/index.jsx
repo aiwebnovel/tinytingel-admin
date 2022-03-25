@@ -129,11 +129,6 @@ const Landing = () => {
           <LoginBtn type='submit' onClick={GoLogin} >로그인</LoginBtn>
         </Box>
         </form>
-        {/* <Box textAlign='center' marginTop='30px'>
-          <Text fontSize='sm'>아직 회원이 아니신가요?</Text>
-          <Divider margin='5px 0'/>
-          <Link to='/regist' style={{textDecoration:'underline'}}>회원가입</Link>
-        </Box> */}
       </FormBox>
     </LandingBox>
   );

@@ -121,10 +121,10 @@ const Prompts = () => {
                   />
                 </Th>
                 <Th>서비스 항목</Th>
-                <Th style={{ padding: '12px' }}>작성자</Th>
-                <Th style={{ padding: '12px' }}>작성일자</Th>
-                <Th style={{ padding: '12px' }}>최종수정일자</Th>
-                <Th style={{ padding: '12px' }}>상세보기</Th>
+                <Th style={{ padding: '6px' }}>작성자</Th>
+                <Th style={{ padding: '6px' }}>작성일자</Th>
+                <Th style={{ padding: '6px' }}>최종수정일자</Th>
+                <Th style={{ padding: '6px' }}>상세보기</Th>
               </Tr>
             </Thead>
             <Tbody>
