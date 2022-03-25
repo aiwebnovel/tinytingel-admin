@@ -32,21 +32,24 @@ const DetailBtn = styled.button`
 const Prompts = () => {
   const toast = useToast();
 
-  const [checkedItems, setCheckedItems] = useState([false, false, false]);
+  const [checkedItems, setCheckedItems] = useState([]);
+  const [idList, setIdList] = useState([]);
   const [currentPage, setCurrent] = useState(1); //현재 페이지;
   const [postPerPage, setPostPerPage] = useState(20); //페이지당 포스트 개수
   const [List, setList] = useState([]);
   const [maxPage, setMaxPage] = useState('');
 
-  const allChecked = checkedItems.every(Boolean);
-  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
+  const isIndeterminate = checkedItems.some(Boolean) 
 
   const CheckAll = e => {
     console.log(e.target.checked);
-    setCheckedItems([e.target.checked, e.target.checked, e.target.checked]);
-    //console.log(List);
-    // setSearchList(List);
+    setCheckedItems(e.target.checked ? idList : []);
+    console.log(checkedItems);
   };
+
+  const CheckEach = (e) => {
+    console.log(e.target)
+  }
 
   //   const fetchData = useCallback(async () => {
   //     const admin = JSON.parse(localStorage.getItem('admin'));
@@ -85,7 +88,13 @@ const Prompts = () => {
       .then(response => {
         console.log(response);
         const list = response.data.data;
+        let idList = [];
+        const ids = list.map((item,i) => (
+          idList[i] = item.uid
+        ))
         setList(list);
+        setIdList(ids);
+        console.log(list.length, idList.length)
       })
       .catch(error => {
         console.log(error);
@@ -128,7 +137,7 @@ const Prompts = () => {
                     name="all"
                     value="all"
                     colorScheme="green"
-                      isChecked={allChecked}
+                      isChecked={checkedItems.length === idList.length}
                       isIndeterminate={isIndeterminate}
                       onChange={CheckAll}
                   />
@@ -147,17 +156,10 @@ const Prompts = () => {
                     <td className='CheckBox textCenter'>
                       <Checkbox
                         name="list"
-                        value={item.user_uid}
+                        value={item.uid}
                         colorScheme="green"
-                          isChecked={checkedItems[0]}
-                          onChange={e => {
-                            setCheckedItems([
-                              e.target.checked,
-                              checkedItems[1],
-                              checkedItems[2],
-                            ]);
-                           // CheckedClick(e);
-                          }}
+                          isChecked={checkedItems.includes(item.uid)}
+                          onChange={CheckEach}
                       />
                     </td>
                     <td className='textLeft'>{item.name}</td>
