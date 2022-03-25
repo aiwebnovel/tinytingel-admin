@@ -6,6 +6,7 @@ $mint : #E6F4F1;
 $dark-1 : #444;
 $white-1 : #fff;
 $white-2 : #f9f9f9;
+$gray-1 : #E2E8F0;
 //Header
 
 .UserProfile {
@@ -218,11 +219,60 @@ $white-2 : #f9f9f9;
 
 .TableStyle {
     min-width: 800px;
-    
-
 }
 
 
+//Table Custom
+
+.CustomTableStyle {
+    min-width: 800px;
+    background-color: #fff;
+}
+
+.CheckBox{
+    //padding: 0 10px;
+    width: 60px; 
+
+    > label {
+        margin-top: 5px;
+    }
+}
+
+.textLeft {
+    text-align: left;
+}
+
+.textCenter {
+    text-align : center;
+}
+
+
+.Custom-tr {
+    height: 48px;
+    border: 1px solid #ededed;
+    border-left: 0;
+    border-right: 0;
+}
+
+.Custom-thead-tr {
+    background-color: #f9f9f9;
+}
+ 
+.Custom-th1 {
+    width: 190px;
+}
+
+.Custom-th2 {
+    width: 100px;
+}
+
+.Custom-th3 {
+    width: 150px;
+}
+
+.Custom-th4 {
+    width: 100px;
+}
 
 
 //MemInfo

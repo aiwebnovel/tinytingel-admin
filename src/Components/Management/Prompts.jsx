@@ -1,14 +1,8 @@
-import React, { useCallback, useEffect, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import {
   Box,
   Checkbox,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   Text,
   Flex,
   Tooltip,
@@ -23,17 +17,36 @@ import {
 } from '@chakra-ui/icons';
 import Layout from '../Layout.jsx';
 import styled from 'styled-components';
-import { CSVLink } from 'react-csv';
+import moment from 'moment';
 
 import * as config from '../../config/Config';
+
+const DetailBtn = styled.button`
+  background-color : #0098FA;
+  color : #fff;
+  padding : 2px 10px;
+  border-radius: 5px;
+`
+
 
 const Prompts = () => {
   const toast = useToast();
 
+  const [checkedItems, setCheckedItems] = useState([false, false, false]);
   const [currentPage, setCurrent] = useState(1); //현재 페이지;
   const [postPerPage, setPostPerPage] = useState(20); //페이지당 포스트 개수
   const [List, setList] = useState([]);
   const [maxPage, setMaxPage] = useState('');
+
+  const allChecked = checkedItems.every(Boolean);
+  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
+
+  const CheckAll = e => {
+    console.log(e.target.checked);
+    setCheckedItems([e.target.checked, e.target.checked, e.target.checked]);
+    //console.log(List);
+    // setSearchList(List);
+  };
 
   //   const fetchData = useCallback(async () => {
   //     const admin = JSON.parse(localStorage.getItem('admin'));
@@ -107,55 +120,55 @@ const Prompts = () => {
             },
           }}
         >
-          <Table variant="simple" bg="#fff" className="TableStyle">
-            <Thead>
-              <Tr>
-                <Th>
+          <table className="CustomTableStyle">
+            <thead>
+              <tr className='Custom-tr Custom-thead-tr'>
+                <th className='CheckBox textCenter'>
                   <Checkbox
                     name="all"
                     value="all"
                     colorScheme="green"
-                    //   isChecked={allChecked}
-                    //   isIndeterminate={isIndeterminate}
-                    //   onChange={CheckAll}
+                      isChecked={allChecked}
+                      isIndeterminate={isIndeterminate}
+                      onChange={CheckAll}
                   />
-                </Th>
-                <Th>서비스 항목</Th>
-                <Th style={{ padding: '6px' }}>작성자</Th>
-                <Th style={{ padding: '6px' }}>작성일자</Th>
-                <Th style={{ padding: '6px' }}>최종수정일자</Th>
-                <Th style={{ padding: '6px' }}>상세보기</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
+                </th>
+                <th className='Custom-th1 textLeft'>서비스 항목</th>
+                <th className='Custom-th2'>작성자</th>
+                <th className='Custom-th3'>작성일자</th>
+                <th className='Custom-th3'>최종수정일자</th>
+                <th className='Custom-th4'>상세보기</th>
+              </tr>
+            </thead>
+            <tbody>
               {List &&
                 List.map(item => (
-                  <Tr key={item.uid}>
-                    <Td>
+                  <tr key={item.name} className='Custom-tr'>
+                    <td className='CheckBox textCenter'>
                       <Checkbox
                         name="list"
                         value={item.user_uid}
                         colorScheme="green"
-                        //   isChecked={checkedItems[0]}
-                        //   onChange={e => {
-                        //     setCheckedItems([
-                        //       e.target.checked,
-                        //       checkedItems[1],
-                        //       checkedItems[2],
-                        //     ]);
-                        //     CheckedClick(e);
-                        //   }}
+                          isChecked={checkedItems[0]}
+                          onChange={e => {
+                            setCheckedItems([
+                              e.target.checked,
+                              checkedItems[1],
+                              checkedItems[2],
+                            ]);
+                           // CheckedClick(e);
+                          }}
                       />
-                    </Td>
-                    <Td>{item.name}</Td>
-                    <Td>{item.admin_uid}</Td>
-                    <Td>{item.create_at}</Td>
-                    <Td>{item.update_at}</Td>
-                    <Td><button>상세보기</button></Td>
-                  </Tr>
+                    </td>
+                    <td className='textLeft'>{item.name}</td>
+                    <td className='textCenter'>관리자</td>
+                    <td className='textCenter'>{moment(item.create_at).format('YYYY-MM-DD')}</td>
+                    <td className='textCenter'>{moment(item.update_at).format('YYYY-MM-DD')}</td>
+                    <td className='textCenter'><DetailBtn>보기</DetailBtn></td>
+                  </tr>
                 ))}
-            </Tbody>
-          </Table>
+            </tbody>
+          </table>
         </Box>
         <Flex m={4} alignItems="center" justifyContent="center">
           <Flex justifyContent="space-between">
