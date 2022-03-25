@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import {Link} from 'react-router-dom';
 import axios from 'axios';
 import {
   Box,
@@ -164,7 +165,9 @@ const Prompts = () => {
     <Layout>
       <Box padding="48px">
         <HStack justify="flex-end" mb={25} spacing="15px">
+          <Link to='/prompts/detail'>
           <PlusSquareIcon w={5} h={5} style={{ cursor: 'pointer' }} />
+          </Link>
           <DeleteIcon
             onClick={onOpen}
             w={5}

@@ -1,14 +1,15 @@
 import React from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
-import Home from '../Components/Home.jsx';
-import Members from '../Components/Management/Member/Members.jsx';
-import LoginLog from '../Components/Management/LoginLog.jsx';
-import Questions from '../Components/Management/Questions.jsx';
-import MemInfo from '../Components/Management/Member/MemInfo.jsx';
-import Landing from '../Components/Landing/index.jsx';
-import MemPay from '../Components/Management/Member/MemPay.jsx';
-import QuestionDetail from '../Components/Management/QuestionDetail.jsx';
-import Prompts from '../Components/Management/Prompts'
+import Home from 'Components/Home.jsx';
+import Members from 'Components/Management/Member/Members.jsx';
+import LoginLog from 'Components/Management/LoginLog.jsx';
+import Questions from 'Components/Management/Questions.jsx';
+import MemInfo from 'Components/Management/Member/MemInfo.jsx';
+import Landing from 'Components/Landing/index.jsx';
+import MemPay from 'Components/Management/Member/MemPay.jsx';
+import QuestionDetail from 'Components/Management/QuestionDetail.jsx';
+import Prompts from 'Components/Management/Prompts'
+import PromptDetail from 'Components/Management/PromptDetail.jsx';
 
 
 function Apps() {
@@ -33,6 +34,7 @@ function Apps() {
           <Route path="/questions/*" element={<Questions />}></Route>
           <Route path="/questions/detail" element={<QuestionDetail />}></Route>
           <Route path="/prompts" element={<Prompts />}></Route>
+          <Route path='/prompts/detail' element={<PromptDetail/>}/>
           </>
         ) : (
           <Route path="/" element={<Landing />} />
