@@ -1,9 +1,9 @@
 import React, { useEffect, useState , useCallback} from 'react';
 import axios from 'axios';
 import { Box, SimpleGrid, Text } from '@chakra-ui/react';
-import Layout from './Layout.jsx';
+import Layout from 'Common/Layout.jsx';
 import styled from 'styled-components';
-import * as server from '../config/Config';
+import * as server from 'config/Config';
 
 const Home = () => {
 

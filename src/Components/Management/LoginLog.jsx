@@ -20,11 +20,11 @@ import {
   ChevronRightIcon,
   ArrowRightIcon,
 } from '@chakra-ui/icons';
-import Layout from '../Layout.jsx';
+import Layout from 'Common/Layout.jsx';
 import styled from 'styled-components';
 import { CSVLink } from 'react-csv';
 
-import * as config from '../../config/Config';
+import * as config from 'config/Config';
 
 const LoginLog = () => {
   const toast = useToast();

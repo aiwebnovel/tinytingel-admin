@@ -11,9 +11,9 @@ import {
 } from '@chakra-ui/react';
 import axios from 'axios';
 import styled from 'styled-components';
-import { adminState } from '../../config/Recoil';
+import { adminState } from 'config/Recoil';
 import { useSetRecoilState } from 'recoil';
-import * as server from '../../config/Config';
+import * as server from 'config/Config';
 
 const Landing = () => {
 

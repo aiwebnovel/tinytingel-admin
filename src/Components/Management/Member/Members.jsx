@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import * as config from '../../../config/Config';
+import * as config from 'config/Config';
 import { CSVLink } from 'react-csv';
 import {
   Box,
@@ -27,7 +27,7 @@ import {
   ArrowRightIcon,
   InfoIcon
 } from '@chakra-ui/icons';
-import Layout from '../../Layout.jsx';
+import Layout from 'Common/Layout.jsx';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ko from 'date-fns/locale/ko';
