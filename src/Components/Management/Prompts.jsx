@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import {Link} from 'react-router-dom';
+import {Link, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import {
   Box,
@@ -72,6 +72,7 @@ const CancelBtn = styled.button`
 
 const Prompts = () => {
   const toast = useToast();
+  const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   //체크된 아이템
@@ -153,7 +154,19 @@ const Prompts = () => {
         //console.log(list.length, idList.length);
       })
       .catch(error => {
-        console.log(error);
+        console.log(error.response);
+        if(error.response.status === 412) {
+          localStorage.clear();
+          navigate('/');
+          setTimeout( 
+            toast({
+            title: '토큰이 만료됐습니다.',
+            description: '새로 로그인 해주세요!',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          }), 5000);
+        }
       });
   };
 
