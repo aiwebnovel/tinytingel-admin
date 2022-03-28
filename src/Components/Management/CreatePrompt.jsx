@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { Box, Flex, Button, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import Layout from 'Common/Layout';
@@ -68,6 +68,7 @@ const CreatePropmt = () => {
   const toast = useToast();
   const admin = JSON.parse(localStorage.getItem('admin'));
   const adminState = admin.adminState;
+  const cursor = useRef();
 
   const [loading, setLoading] = useState(false);
   const [prompts, setPrompt] = useState({
@@ -165,6 +166,20 @@ const CreatePropmt = () => {
     });
   };
 
+  const addText = () => {
+  console.log(cursor, cursor.current.selectionStart);  
+  let textValue = cursor.current.value;
+  const cursorStart = cursor.current.selectionStart;
+
+  const startValue = textValue.substring(cursorStart,0);
+  const endValue =  textValue.substring(cursorStart);
+  console.log(startValue);
+  console.log(endValue);
+
+  cursor.current.value = startValue + `{}` + endValue;
+
+  }
+
   return (
     <Layout>
       <Box padding="48px">
@@ -189,9 +204,9 @@ const CreatePropmt = () => {
           >
             <label htmlFor="prompt">prompt </label>
             <TextareaBox>
-              <textarea id="prompt" value={prompt} onChange={ChangeValues} />
+              <textarea id="prompt" value={prompt} onChange={ChangeValues} ref={cursor}/>
               <ButtonBox>
-                <Button>사용자 입력부분</Button>
+                <Button onClick={addText}>사용자 입력부분</Button>
               </ButtonBox>
             </TextareaBox>
           </Flex>
