@@ -70,6 +70,7 @@ const Landing = () => {
             toast({
               title: '프로필을 가져오지 못했습니다',
               description: '유저 프로필을 가져오지 못했습니다.',
+              position: 'top',
               status: 'success',
               duration: 5000,
               isClosable: true,
@@ -81,6 +82,7 @@ const Landing = () => {
         toast({
           title: '로그인 실패!',
           description: '혹시 빈 칸이 있나요? 혹은 가입하지 않은 유저신가요?',
+          position: 'top',
           status: 'error',
           duration: 5000,
           isClosable: true,

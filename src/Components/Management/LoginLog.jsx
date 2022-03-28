@@ -145,6 +145,7 @@ const LoginLog = () => {
                     toast({
                       title: '맨 처음 페이지',
                       description: '맨 처음 페이지에요!',
+                      position: 'top-right',
                       status: 'info',
                       duration: 5000,
                       isClosable: true,
@@ -203,6 +204,7 @@ const LoginLog = () => {
                     toast({
                       title: '마지막 페이지',
                       description: '마지막 페이지에요!',
+                       position: 'top-right',
                       status: 'info',
                       duration: 5000,
                       isClosable: true,

@@ -84,7 +84,7 @@ const Prompts = () => {
   //현재 페이지
   const [currentPage, setCurrent] = useState(1);
   //페이지당 포스트 개수
-  const [postPerPage, setPostPerPage] = useState(20);
+  const [postPerPage, setPostPerPage] = useState(30);
   //최대 페이지
   const [maxPage, setMaxPage] = useState('');
 
@@ -147,9 +147,10 @@ const Prompts = () => {
       .then(response => {
         console.log(response);
         const list = response.data.data;
+        const orderList = list.sort((a,b)=> new Date(b.update_at)- new Date(a.update_at));
         let idList = [];
         const ids = list.map((item, i) => (idList[i] = item.uid));
-        setList(list);
+        setList(orderList);
         setIdList(ids);
         //console.log(list.length, idList.length);
       })
@@ -157,11 +158,12 @@ const Prompts = () => {
         console.log(error.response);
         if(error.response.status === 412) {
           localStorage.clear();
-          navigate('/');
+          navigate('/', {replace:true});
           setTimeout( 
             toast({
             title: '토큰이 만료됐습니다.',
             description: '새로 로그인 해주세요!',
+            position: 'top-right',
             status: 'error',
             duration: 5000,
             isClosable: true,
@@ -266,6 +268,7 @@ const Prompts = () => {
                     toast({
                       title: '맨 처음 페이지',
                       description: '맨 처음 페이지에요!',
+                      position: 'top-right',
                       status: 'info',
                       duration: 5000,
                       isClosable: true,
@@ -324,6 +327,7 @@ const Prompts = () => {
                     toast({
                       title: '마지막 페이지',
                       description: '마지막 페이지에요!',
+                      position: 'top-right',
                       status: 'info',
                       duration: 5000,
                       isClosable: true,

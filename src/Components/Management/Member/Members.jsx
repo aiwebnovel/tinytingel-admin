@@ -140,6 +140,7 @@ const Members = () => {
       toast({
         title: '검색어를 입력해주세요.',
         description: '정확한 이름 혹은 이메일(@ 뒤까지 포함)을 입력해주세요.',
+        position: 'top-right',
         status: 'error',
         duration: 5000,
         isClosable: true,
@@ -380,6 +381,7 @@ const Members = () => {
                     toast({
                       title: '맨 처음 페이지',
                       description: '맨 처음 페이지에요!',
+                      position: 'top-right',
                       status: 'info',
                       duration: 5000,
                       isClosable: true,
@@ -436,6 +438,7 @@ const Members = () => {
                     toast({
                       title: '마지막 페이지',
                       description: '마지막 페이지에요!',
+                      position: 'top-right',
                       status: 'info',
                       duration: 5000,
                       isClosable: true,
