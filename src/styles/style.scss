@@ -222,16 +222,17 @@ $gray-1 : #E2E8F0;
 }
 
 
-//Table Custom
+//Table Custom - prompt
 
 .CustomTableStyle {
     min-width: 800px;
+    width: 100%;
     background-color: #fff;
 }
 
 .CheckBox{
     //padding: 0 10px;
-    width: 60px; 
+    min-width: 60px; 
 
     > label {
         margin-top: 5px;
@@ -259,19 +260,19 @@ $gray-1 : #E2E8F0;
 }
  
 .Custom-th1 {
-    width: 190px;
+    min-width: 190px;
 }
 
 .Custom-th2 {
-    width: 100px;
+    min-width: 100px;
 }
 
 .Custom-th3 {
-    width: 150px;
+    min-width: 150px;
 }
 
 .Custom-th4 {
-    width: 100px;
+    min-width: 100px;
 }
 
 //custom input, textarea
@@ -279,6 +280,73 @@ $gray-1 : #E2E8F0;
 .custom-label {
     width: 100px;
 }
+
+//makePromtpt
+
+.makePromtLabelInput {
+    margin-bottom : 23px;
+
+    > label {    
+        width: 150px;
+        font-weight: 600;
+        word-break: keep-all;
+        margin-bottom : 3px;
+    }
+
+    > input {
+        width: 100%;
+        border: 1px solid $dark-1;
+        padding: 5px 8px;
+    }
+
+}
+
+.makePromtLabelInputTwo {
+    margin-bottom : 23px;
+
+    > label {    
+        width: 150px;
+        font-weight: 600;
+        word-break: keep-all;
+        margin-bottom : 3px;
+    }
+    > input {
+        width: 100%;
+        border: 1px solid $dark-1;
+        padding: 5px 8px;
+    }
+}
+
+.makePromtLabelTextarea {
+    margin-bottom : 23px;
+    
+    > label {    
+        width: 150px;
+        font-weight: 600;
+        word-break: keep-all;
+        margin-bottom : 3px;
+    }
+
+    > textarea  {
+        width: 100%;
+        border: 1px solid $dark-1;
+        resize: none;
+
+        height: 150px;
+        overflow: auto;
+        padding: 5px 8px;
+
+    }
+
+    > div > textarea {
+            resize: none;
+            width: 100%;
+            height: 150px;
+            overflow: auto;
+            padding: 5px 8px;
+    }
+}
+
 
 
 //MemInfo
