@@ -178,7 +178,7 @@ const Prompts = () => {
     <Layout>
       <Box padding="48px">
         <HStack justify="flex-end" mb={25} spacing="15px">
-          <Link to='/prompts/detail'>
+          <Link to='/prompts/create'>
           <PlusSquareIcon w={5} h={5} style={{ cursor: 'pointer' }} />
           </Link>
           <DeleteIcon
@@ -248,7 +248,7 @@ const Prompts = () => {
                       {moment(item.update_at).format('YYYY-MM-DD')}
                     </td>
                     <td className="textCenter">
-                      <DetailBtn>보기</DetailBtn>
+                      <Link to={`/prompts/${item.uid}`}><DetailBtn>보기</DetailBtn></Link>
                     </td>
                   </tr>
                 ))}

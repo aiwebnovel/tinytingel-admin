@@ -10,6 +10,7 @@ import MemPay from 'Components/Management/Member/MemPay.jsx';
 import QuestionDetail from 'Components/Management/QuestionDetail.jsx';
 import Prompts from 'Components/Management/Prompts'
 import PromptDetail from 'Components/Management/PromptDetail.jsx';
+import CreatePropmt from 'Components/Management/CreatePrompt';
 
 
 function Apps() {
@@ -34,7 +35,8 @@ function Apps() {
           <Route path="/questions/*" element={<Questions />}></Route>
           <Route path="/questions/detail" element={<QuestionDetail />}></Route>
           <Route path="/prompts" element={<Prompts />}></Route>
-          <Route path='/prompts/detail' element={<PromptDetail/>}/>
+          <Route path='/prompts/create' element={<CreatePropmt/>}/>
+          <Route path='/prompts/:id' element={<PromptDetail/>}/>
           </>
         ) : (
           <Route path="/" element={<Landing />} />
