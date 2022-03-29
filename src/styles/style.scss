@@ -6,6 +6,7 @@ $mint : #E6F4F1;
 $dark-1 : #444;
 $white-1 : #fff;
 $white-2 : #f9f9f9;
+$gray-1 : #E2E8F0;
 //Header
 
 .UserProfile {
@@ -19,33 +20,50 @@ $white-2 : #f9f9f9;
         font-size: 20px;
         font-weight: 600;
         text-align: right;
+        border-bottom : 1px solid $dark-1;
+        padding-bottom: 5px;
     }
 
     > p {
         text-align: right;
-        margin: 15px 0; 
+        margin: 10px 0; 
     }
 
     >button {
         width: 100%;
         background-color: $point;
-        border-radius: 10px;
+        border-radius: 5px;
         color: $white-1;
     }
 }
 
 .nav {
-
+    cursor: pointer;
     padding: 0 30px;
 
-    >a {
-        cursor: pointer;
-        text-indent : 10px;
+    ul > a {
+      
+        text-indent: 20px;
 
-        &:hover {
-            text-decoration: underline;
+         > li {
+            list-style: none;
+            padding: 2px 0;
         }
     }
+
+
+    &:hover {
+        //text-decoration: underline;
+        background-color: $blue-1;
+    }
+}
+
+.toogleTrue {
+    display: block;
+}
+
+.toogleFalse {
+    display: none;
 }
 
 .MobileNavTop {
@@ -203,10 +221,133 @@ $white-2 : #f9f9f9;
 
 .TableStyle {
     min-width: 800px;
-    
+}
+
+
+//Table Custom - prompt
+
+.CustomTableStyle {
+    min-width: 800px;
+    width: 100%;
+    background-color: #fff;
+}
+
+.CheckBox{
+    //padding: 0 10px;
+    min-width: 60px; 
+
+    > label {
+        margin-top: 5px;
+    }
+}
+
+.textLeft {
+    text-align: left;
+}
+
+.textCenter {
+    text-align : center;
+}
+
+
+.Custom-tr {
+    height: 48px;
+    border: 1px solid #ededed;
+    border-left: 0;
+    border-right: 0;
+}
+
+.Custom-thead-tr {
+    background-color: #f9f9f9;
+}
+ 
+.Custom-th1 {
+    min-width: 190px;
+}
+
+.Custom-th2 {
+    min-width: 100px;
+}
+
+.Custom-th3 {
+    min-width: 150px;
+}
+
+.Custom-th4 {
+    min-width: 100px;
+}
+
+//custom input, textarea
+
+.custom-label {
+    width: 100px;
+}
+
+//makePromtpt
+
+.makePromtLabelInput {
+    margin-bottom : 23px;
+
+    > label {    
+        width: 150px;
+        font-weight: 600;
+        word-break: keep-all;
+        margin-bottom : 5px;
+    }
+
+    > input {
+        width: 100%;
+        border: 1px solid $dark-1;
+        padding: 5px 8px;
+    }
 
 }
 
+.makePromtLabelInputTwo {
+    margin-bottom : 23px;
+
+    > label {    
+        width: 150px;
+        font-weight: 600;
+        word-break: keep-all;
+        margin-bottom : 5px;
+    }
+    > input {
+        width: 100%;
+        border: 1px solid $dark-1;
+        padding: 5px 8px;
+    }
+}
+
+.makePromtLabelTextarea {
+    margin-bottom : 23px;
+
+    > label {    
+        width: 150px;
+        font-weight: 600;
+        word-break: keep-all;
+        margin-bottom : 5px;
+    }
+
+    > textarea  {
+        width: 100%;
+        border: 1px solid $dark-1;
+        resize: none;
+
+        height: 150px;
+        overflow: auto;
+        padding: 5px 8px;
+
+    }
+
+    > div > textarea {
+            resize: none;
+            width: 100%;
+            height: 150px;
+            overflow: auto;
+            padding: 5px 8px;
+    }
+}
 
 
 

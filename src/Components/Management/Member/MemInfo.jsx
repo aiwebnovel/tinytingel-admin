@@ -2,10 +2,10 @@ import React, { useEffect, useCallback, useState } from 'react';
 import axios from 'axios';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import { Box, Heading } from '@chakra-ui/react';
-import Layout from '../../Layout.jsx';
+import Layout from 'Common/Layout.jsx';
 import styled from 'styled-components';
 
-import * as config from '../../../config/Config';
+import * as config from 'config/Config';
 
 const MemInfo = () => {
   const { id } = useParams();

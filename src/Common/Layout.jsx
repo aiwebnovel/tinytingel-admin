@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import Header from './Header.jsx';
+import Header from 'Components/Header';
 import {
   Box,
   Heading,
@@ -77,7 +77,7 @@ const Layout = ({ children }) => {
       </Drawer>
       <Header onOpen={onOpen} />
 
-      <Box backgroundColor="#f5f7fa" minH='100vh' marginLeft={{ base: '0', lg: '240px' }}>
+      <Box backgroundColor="#f5f7fa" minH='100vh' marginLeft={{ base: '0', lg: '220px' }}>
         {children}
       </Box>
     </Box>

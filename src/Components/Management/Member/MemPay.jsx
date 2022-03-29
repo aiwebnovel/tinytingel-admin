@@ -1,12 +1,12 @@
 import React, {useEffect, useCallback, useState} from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import Layout from '../../Layout.jsx';
+import Layout from 'Common/Layout';
 import { Box, Heading } from '@chakra-ui/react';
 import moment from 'moment';
 import styled from 'styled-components';
 
-import * as config from '../../../config/Config';
+import * as config from 'config/Config';
 
 const MemPay = () => {
   const { id } = useParams();
