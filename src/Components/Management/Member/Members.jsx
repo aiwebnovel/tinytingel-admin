@@ -1,16 +1,11 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import * as config from 'config/Config';
+import {Link, useNavigate} from 'react-router-dom';
+import * as server from 'config/Config';
 import { CSVLink } from 'react-csv';
 import {
   Box,
   Checkbox,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   Text,
   Flex,
   Tooltip,
@@ -19,7 +14,6 @@ import {
   Input,
   useToast,
 } from '@chakra-ui/react';
-import { Link } from 'react-router-dom';
 import {
   ArrowLeftIcon,
   ChevronLeftIcon,
@@ -32,16 +26,23 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ko from 'date-fns/locale/ko';
 import styled from 'styled-components';
+import moment from 'moment';
 
 const Members = () => {
   const toast = useToast();
+  const navigate = useNavigate();
+  const admin = JSON.parse(localStorage.getItem('admin'));
+  const adminState = admin.adminState;
 
   const headers = [
-    { label: '회원명', key: 'user_name' },
-    { label: '이메일', key: 'user_identifier' },
-    { label: '로그인 일자', key: 'user_logInDate' },
-    { label: '가입일자', key: 'user_signInDate' },
-    { label: '멤버십', key: 'user_membership_count' },
+    { label: '회원명', key: 'user.name' },
+    { label: '이메일 주소', key: 'user.email' },
+    { label: '가입일자', key: 'user.create_at' },
+    { label: '최근 로그인', key: 'user.login_at' },
+    { label: '구독상품', key: 'membership.current' },
+    { label: '구독일시', key: 'membership.start_date'},
+    { label: '결제일자', key: 'membership.start_date' },
+
   ];
 
   const [currentPage, setCurrent] = useState(1); //현재 페이지;
@@ -50,42 +51,36 @@ const Members = () => {
   const [maxPage, setMaxPage] = useState('');
 
   const [startDate, setStartDate] = useState(new Date());
-  const [checkedItems, setCheckedItems] = useState([false, false, false]);
-  const [activeFilter, setActiveFilter] = useState([]);
+
+  //체크된 아이템
+  const [checkedItems, setCheckedItems] = useState([]);
+  //체크용 id 리스트
+  const [idList, setIdList] = useState([]);
+  //필터용 체크
+  const [filterChecked, setCheckedFilter] = useState([false,false,false])
   const [selected, setSelected] = useState('default');
   const [keyword, setKeyword] = useState('');
   const [searchList, setSearchList] = useState('');
 
-  const allChecked = checkedItems.every(Boolean);
-  const isIndeterminate = checkedItems.some(Boolean) && !allChecked;
+  const isIndeterminate = checkedItems.some(Boolean)
 
   const CheckAll = e => {
-    // console.log(e.target.checked);
-    setCheckedItems([e.target.checked, e.target.checked, e.target.checked]);
-    //console.log(List);
-    setSearchList(List);
+    console.log(e.target.checked);
+    setCheckedItems(e.target.checked ? idList : []);
   };
 
-  const CheckedClick = e => {
-  
-    if (e.target.checked === true) {
-      activeFilter.push(e.target.value);
-      //console.log(activeFilter);
-      let before = List.map(item => String(item.user_membership_count));
-      let filterList = List.filter(item =>
-        activeFilter.includes(String(item.user_membership_count))
-      );
+  const CheckFilteredAll = e => {
+    setCheckedFilter([e.target.checked, e.target.checked, e.target.checked]);
+  }
 
 
-      setSearchList(filterList);
-    } else {
-      activeFilter.splice(activeFilter.indexOf(e.target.value), 1);
-      //console.log(activeFilter);
-      let filterList = List.filter(item =>
-        activeFilter.includes(item.user_membership_count)
-      );
-      //console.log(filterList);
-      setSearchList(filterList);
+  const CheckEach = (e,id) => {
+    console.log(e.target);
+    if(e.target.checked) {
+      setCheckedItems([...checkedItems, id])
+    }
+    else {
+      setCheckedItems(checkedItems.filter((item)=> item !== id));
     }
   };
 
@@ -151,39 +146,66 @@ const Members = () => {
   const Reset = () => {
     setStartDate(new Date());
     setCheckedItems([false, false, false]);
-    setActiveFilter([]);
     setSelected('default');
     setKeyword('');
     setSearchList(List);
   };
 
   const fetchData = useCallback(async () => {
-    const admin = JSON.parse(localStorage.getItem('admin'));
 
-    await axios
-      .get(
-        `${config.SERVER_URL}/user/list/login?page=${currentPage}&count=${postPerPage}`,
-        {
-          headers: { admincode: admin.IdState },
+    const today = new Date();
+    const formatToday = moment(today).format('YYYY-MM-DD');
+
+    const config = {
+      method: "post",
+      url: `${server.SERVER_URL}/user/list/search`,
+      headers: {Authorization: `Bearer ${adminState.token}` },
+      data: {
+        page:currentPage,
+        count:postPerPage,
+        membershipList:[0,1,3,6],
+        serviceList:["iamport","innopay","nopassbook","none"],
+        keyword:"",
+        periodOption:{
+            "option":"create_at",
+            "startDate":"2020-09-30",
+            "endDate": formatToday
         }
-      )
-      .then(res => {
-        let result = res.data;
-        let configData = result.config;
-        let list = result.data.list;
-        console.log(list);
-        setMaxPage(configData.maxPage);
-        setList(list);
-        setSearchList(list);
+      },
+    }
+
+    await axios(config)
+      .then(response => {
+        const data = response.data.data;
+        console.log(data);
+        // setMaxPage(configData.maxPage);
+        setSearchList(data);
+  
+        let idList = [];
+        const ids = data.map((item, i) => (idList[i] = item.user.user_uid));
+        setIdList(ids);
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        console.log(error);
+        // if(error.response.status === 412) {
+        //   localStorage.clear();
+        //   navigate('/', {replace:true});
+        //   setTimeout( 
+        //     toast({
+        //     title: '토큰이 만료됐습니다.',
+        //     description: '새로 로그인 해주세요!',
+        //     position: 'top-right',
+        //     status: 'error',
+        //     duration: 5000,
+        //     isClosable: true,
+        //   }), 5000);
+        // }
       });
   }, [currentPage]);
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, []);
 
   return (
     <Layout>
@@ -196,58 +218,58 @@ const Members = () => {
             <Checkbox
               name="all"
               value="all"
-              colorScheme="green"
-              isChecked={allChecked}
-              isIndeterminate={isIndeterminate}
-              onChange={CheckAll}
+              colorScheme="blue"
+              // isChecked={filterChecked}
+              // isIndeterminate={isIndeterminate}
+              // onChange={CheckFilteredAll}
             >
               전체
             </Checkbox>
             <Checkbox
               name="month1"
               value="1"
-              colorScheme="green"
-              isChecked={checkedItems[0]}
-              onChange={e => {
-                setCheckedItems([
-                  e.target.checked,
-                  checkedItems[1],
-                  checkedItems[2],
-                ]);
-                CheckedClick(e);
-              }}
+              colorScheme="blue"
+              // isChecked={filterChecked[0]}
+              // onChange={e => {
+              //   setCheckedFilter([
+              //     e.target.checked,
+              //     filterChecked[1],
+              //     filterChecked[2],
+              //   ]);
+              //   // CheckedClick(e);
+              // }}
             >
               1개월
             </Checkbox>
             <Checkbox
               name="month3"
               value="3"
-              colorScheme="green"
-              isChecked={checkedItems[1]}
-              onChange={e => {
-                setCheckedItems([
-                  checkedItems[0],
-                  e.target.checked,
-                  checkedItems[2],
-                ]);
-                CheckedClick(e);
-              }}
+              colorScheme="blue"
+              // isChecked={filterChecked[1]}
+              // onChange={e => {
+              //   setCheckedFilter([
+              //     filterChecked[0],
+              //     e.target.checked,
+              //     filterChecked[2],
+              //   ]);
+              //   // CheckedClick(e);
+              // }}
             >
               3개월
             </Checkbox>
             <Checkbox
               name="month6"
               value="6"
-              colorScheme="green"
-              isChecked={checkedItems[2]}
-              onChange={e => {
-                setCheckedItems([
-                  checkedItems[0],
-                  checkedItems[1],
-                  e.target.checked,
-                ]);
-                CheckedClick(e);
-              }}
+              colorScheme="blue"
+              // isChecked={filterChecked[2]}
+              // onChange={e => {
+              //   setCheckedFilter([
+              //     filterChecked[0],
+              //     filterChecked[1],
+              //     e.target.checked,
+              //   ]);
+              //   // CheckedClick(e);
+              // }}
             >
               6개월
             </Checkbox>
@@ -256,13 +278,13 @@ const Members = () => {
           <Flex w="100%" alignItems="center" gridGap={15} direction={{ base: 'column', sm: 'row' }} mt={{base:'15px', sm:'0'}}>
             <Select
               className="selectOption"
-              //placeholder="날짜를 먼저 선택해주세요"
               defaultValue={selected}
               onChange={HandleSelect}
+              maxW='300px'
             >
-              <option value='default' disabled>날짜를 먼저 선택해주세요</option>
-              <option value="regist">가입 일자</option>
-              <option value="login">로그인 일자</option>
+              <option value='default' disabled>날짜 기준을 먼저 선택해주세요</option>
+              <option value="create_at">가입 일자</option>
+              <option value="login_at">로그인 일자</option>
             </Select>
             <DatePicker
               className="DatePickerStyle"
@@ -326,49 +348,76 @@ const Members = () => {
       borderRadius: '5px',
     },
   }}>
-          <Table variant="simple" bg="#fff" className="TableStyle">
-            <Thead>
-              <Tr>
-                <Th>회원명</Th>
-                <Th>이메일</Th>
-                <Th>가입일자</Th>
-                <Th style={{padding: '12px'}}>로그인일자</Th>
-                <Th style={{padding: '12px'}}>멤버십</Th>
-                <Th style={{padding: '12px'}}>보기</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
+          <table className="MemberCustomTableStyle">
+            <thead>
+              <tr className='MemberCustom-tr MemberCustom-thead-tr'>
+              <th className="MemberCheckBox textCenter">
+                  <Checkbox
+                    name="all"
+                    value="all"
+                    colorScheme="blue"
+                    isChecked={checkedItems.length === idList.length}
+                    isIndeterminate={isIndeterminate}
+                    onChange={CheckAll}
+                  />
+                </th>
+                <th className='MemberCustom-th1 textLeft'>회원명</th>
+                <th className='MemberCustom-th2 textLeft'>이메일 주소</th>
+                <th className='MemberCustom-th3 textCenter'>가입일자</th>
+                <th className='MemberCustom-th4 textCenter'>최근 로그인</th>
+                <th className='MemberCustom-th5 textCenter'>구독상품</th>
+                <th className='MemberCustom-th6 textCenter'>구독일시</th>
+                <th className='MemberCustom-th7 textCenter'>결제일자</th>
+                <th className='MemberCustom-th8 textCenter'>수정</th>
+              </tr>
+            </thead>
+            <tbody>
               {searchList.length !== 0 ? (
                 searchList.map(item => (
-                  <Tr key={item.user_uid}>
-                    <Td>{item.user_name}</Td>
-                    <Td>{item.user_identifier}</Td>
-                    <Td>
-                      {item.user_logInDate !== null
-                        ? item.user_logInDate
-                        : 'none'}
-                    </Td>
-                    <Td>{item.user_signInDate.slice(0, 11)}</Td>
-                    <Td>{item.user_membership_count}</Td>
-                    <Td>
+                  <tr key={item.user.user_uid} className='MemberCustom-tr'>
+                      <td className="CheckBox textCenter">
+                      <Checkbox
+                        name="list"
+                        value={item.user.user_uid}
+                        colorScheme="blue"
+                        isChecked={checkedItems.includes(item.user.user_uid)}
+                        onChange={(e) => CheckEach(e, item.user.user_uid)}
+                      />
+                    </td>
+                    <td>{item.user.name}</td>
+                    <td>{item.user.email}</td>
+                    <td className='textCenter'>{moment(item.user.create_at).format('YYYY-MM-DD')}</td>
+                    <td className='textCenter'>
+                      {item.user.login_at !== null
+                        ? moment(item.user.login_at).format('YYYY-MM-DD')
+                        : '기록 없음'}
+                    </td>
+                    <td className='textCenter'>
+                      {item.membership.bill_service !== 'none' ? `${item.membership.current}개월` : '없음'}
+                      </td>
+                    <td className='textCenter'>{item.membership.start_date !== null ? moment(item.membership.start_date).format('YYYY-MM-DD') : '없음' }</td>
+                    <td className='textCenter'>{item.membership.start_date !== null ? moment(item.membership.start_date).format('YYYY-MM-DD') : '없음' }</td>
+                    <td className='textCenter'>
                       <Link to={`/members/${item.user_uid}`}>
                         <InfoIcon w={5} h={5}/>
                         </Link>
-                    </Td>
-                  </Tr>
+                    </td>
+                  </tr>
                 ))
               ) : (
-                <Tr>
-                  <Td></Td>
-                  <Td></Td>
-                  <Td></Td>
-                  <Td>결과가 없습니다</Td>
-                  <Td></Td>
-                  <Td></Td>
-                </Tr>
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>결과가 없습니다</td>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                </tr>
               )}
-            </Tbody>
-          </Table>
+            </tbody>
+          </table>
         </Box>
         <Flex  m={4} alignItems="center" justifyContent="center">
           <Flex justifyContent="space-between">
@@ -409,8 +458,8 @@ const Members = () => {
           <Text >
               <Text fontWeight="bold" as="span">
                 {currentPage}
-              </Text>{' '}
-              of{' '}
+              </Text>
+              of
               <Text fontWeight="bold" as="span">
                 {maxPage}
               </Text>

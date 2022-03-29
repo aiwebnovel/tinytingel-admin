@@ -215,7 +215,7 @@ const Prompts = () => {
                   <Checkbox
                     name="all"
                     value="all"
-                    colorScheme="green"
+                    colorScheme="blue"
                     isChecked={checkedItems.length === idList.length}
                     isIndeterminate={isIndeterminate}
                     onChange={CheckAll}
@@ -236,7 +236,7 @@ const Prompts = () => {
                       <Checkbox
                         name="list"
                         value={item.uid}
-                        colorScheme="green"
+                        colorScheme="blue"
                         isChecked={checkedItems.includes(item.uid)}
                         onChange={(e) => CheckEach(e, item.uid)}
                       />
