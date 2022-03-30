@@ -110,29 +110,6 @@ const Prompts = () => {
     console.log('delete')
   }
 
-  //   const fetchData = useCallback(async () => {
-  //     const admin = JSON.parse(localStorage.getItem('admin'));
-
-  //     await axios
-  //       .get(
-  //         `${config.SERVER_URL}/user/list/login?page=${currentPage}&count=${postPerPage}`,
-  //         {
-  //           headers: { admincode: admin.IdState },
-  //         }
-  //       )
-  //       .then(res => {
-  //         let result = res.data;
-  //         let configData = result.config;
-  //         let list = result.data.list;
-  //         //console.log(list);
-  //         setMaxPage(configData.maxPage);
-  //         setList(list);
-  //       })
-  //       .catch(err => {
-  //         console.log(err);
-  //       });
-  //   }, [currentPage]);
-
   const fetchData = async () => {
     const admin = JSON.parse(localStorage.getItem('admin'));
     const adminState = admin.adminState;

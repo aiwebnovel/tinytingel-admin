@@ -47,7 +47,6 @@ const Members = () => {
 
   const [currentPage, setCurrent] = useState(1); //현재 페이지;
   const [postPerPage, setPostPerPage] = useState(20); //페이지당 포스트 개수
-  const [List, setList] = useState([]);
   const [maxPage, setMaxPage] = useState('');
 
   const [startDate, setStartDate] = useState(new Date());
@@ -56,22 +55,40 @@ const Members = () => {
   const [checkedItems, setCheckedItems] = useState([]);
   //체크용 id 리스트
   const [idList, setIdList] = useState([]);
+  //membershipList 기본
+  const [membershipList, setMembershipList] = useState([0,1,3,6]);
+
   //필터용 체크
   const [filterChecked, setCheckedFilter] = useState([false,false,false])
+  //필터용 체크 value 
+  const [filterCheckValue, setCheckedFilterValue] = useState([]);
   const [selected, setSelected] = useState('default');
   const [keyword, setKeyword] = useState('');
   const [searchList, setSearchList] = useState('');
 
+  const allChecked = filterChecked.every(Boolean)
   const isIndeterminate = checkedItems.some(Boolean)
+
+
+  const CheckFilteredAll = e => {
+    console.log(e.target.value);
+    setCheckedFilter([e.target.checked, e.target.checked, e.target.checked]);
+  }
+
+  const CheckFilterValue = e => {
+    if(e.target.checked) {
+      setCheckedFilterValue([...filterCheckValue, e.target.value]);
+      console.log(filterCheckValue);
+    }else {
+      setCheckedFilterValue([...filterCheckValue, e.target.value]);
+      console.log(filterCheckValue);
+    }
+  }
 
   const CheckAll = e => {
     console.log(e.target.checked);
     setCheckedItems(e.target.checked ? idList : []);
   };
-
-  const CheckFilteredAll = e => {
-    setCheckedFilter([e.target.checked, e.target.checked, e.target.checked]);
-  }
 
 
   const CheckEach = (e,id) => {
@@ -111,7 +128,17 @@ const Members = () => {
     e.preventDefault();
     //console.log(keyword);
 
-    if (keyword !== '') {
+    if (keyword === '') {
+      toast({
+              title: '검색어를 입력해주세요.',
+              description: '정확한 이름 혹은 이메일(@ 뒤까지 포함)을 입력해주세요.',
+              position: 'top-right',
+              status: 'error',
+              duration: 5000,
+              isClosable: true,
+            });
+
+    }else{
       let patternKor = /[ㄱ-ㅎ|ㅏ-ㅣ|가-힣]/;
       let patternEng = /[a-zA-Z]/;
 
@@ -131,27 +158,17 @@ const Members = () => {
         //console.log(result2);
         setSearchList(result2);
       }
-    } else {
-      toast({
-        title: '검색어를 입력해주세요.',
-        description: '정확한 이름 혹은 이메일(@ 뒤까지 포함)을 입력해주세요.',
-        position: 'top-right',
-        status: 'error',
-        duration: 5000,
-        isClosable: true,
-      });
-    }
+    } 
   };
 
   const Reset = () => {
     setStartDate(new Date());
-    setCheckedItems([false, false, false]);
+    setCheckedFilter([false, false, false]);
     setSelected('default');
     setKeyword('');
-    setSearchList(List);
   };
 
-  const fetchData = useCallback(async () => {
+  const fetchData = async () => {
 
     const today = new Date();
     const formatToday = moment(today).format('YYYY-MM-DD');
@@ -165,7 +182,7 @@ const Members = () => {
         count:postPerPage,
         membershipList:[0,1,3,6],
         serviceList:["iamport","innopay","nopassbook","none"],
-        keyword:"",
+        keyword:keyword,
         periodOption:{
             "option":"create_at",
             "startDate":"2020-09-30",
@@ -177,8 +194,9 @@ const Members = () => {
     await axios(config)
       .then(response => {
         const data = response.data.data;
+        const config = response.data.config;
         console.log(data);
-        // setMaxPage(configData.maxPage);
+        setMaxPage(config.maxPage);
         setSearchList(data);
   
         let idList = [];
@@ -188,24 +206,24 @@ const Members = () => {
       .catch(error => {
         console.log(error);
         // if(error.response.status === 412) {
-        //   localStorage.clear();
-        //   navigate('/', {replace:true});
-        //   setTimeout( 
-        //     toast({
-        //     title: '토큰이 만료됐습니다.',
-        //     description: '새로 로그인 해주세요!',
-        //     position: 'top-right',
-        //     status: 'error',
-        //     duration: 5000,
-        //     isClosable: true,
-        //   }), 5000);
-        // }
+          localStorage.clear();
+          navigate('/', {replace:true});
+          setTimeout( 
+            toast({
+            title: '토큰이 만료됐습니다.',
+            description: '새로 로그인 해주세요!',
+            position: 'top-right',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          }), 5000);
+        
       });
-  }, [currentPage]);
+  };
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [currentPage, maxPage]);
 
   return (
     <Layout>
@@ -219,9 +237,9 @@ const Members = () => {
               name="all"
               value="all"
               colorScheme="blue"
-              // isChecked={filterChecked}
-              // isIndeterminate={isIndeterminate}
-              // onChange={CheckFilteredAll}
+              isChecked={allChecked}
+              isIndeterminate={isIndeterminate}
+              onChange={CheckFilteredAll}
             >
               전체
             </Checkbox>
@@ -229,15 +247,15 @@ const Members = () => {
               name="month1"
               value="1"
               colorScheme="blue"
-              // isChecked={filterChecked[0]}
-              // onChange={e => {
-              //   setCheckedFilter([
-              //     e.target.checked,
-              //     filterChecked[1],
-              //     filterChecked[2],
-              //   ]);
-              //   // CheckedClick(e);
-              // }}
+              isChecked={filterChecked[0]}
+              onChange={e => {
+                setCheckedFilter([
+                  e.target.checked,
+                  filterChecked[1],
+                  filterChecked[2],
+                ]);
+                CheckFilterValue(e);
+              }}
             >
               1개월
             </Checkbox>
@@ -245,15 +263,15 @@ const Members = () => {
               name="month3"
               value="3"
               colorScheme="blue"
-              // isChecked={filterChecked[1]}
-              // onChange={e => {
-              //   setCheckedFilter([
-              //     filterChecked[0],
-              //     e.target.checked,
-              //     filterChecked[2],
-              //   ]);
-              //   // CheckedClick(e);
-              // }}
+              isChecked={filterChecked[1]}
+              onChange={e => {
+                setCheckedFilter([
+                  filterChecked[0],
+                  e.target.checked,
+                  filterChecked[2],
+                ]);
+                CheckFilterValue(e);
+              }}
             >
               3개월
             </Checkbox>
@@ -261,15 +279,15 @@ const Members = () => {
               name="month6"
               value="6"
               colorScheme="blue"
-              // isChecked={filterChecked[2]}
-              // onChange={e => {
-              //   setCheckedFilter([
-              //     filterChecked[0],
-              //     filterChecked[1],
-              //     e.target.checked,
-              //   ]);
-              //   // CheckedClick(e);
-              // }}
+              isChecked={filterChecked[2]}
+              onChange={e => {
+                setCheckedFilter([
+                  filterChecked[0],
+                  filterChecked[1],
+                  e.target.checked,
+                ]);
+                CheckFilterValue(e);
+              }}
             >
               6개월
             </Checkbox>
@@ -305,7 +323,7 @@ const Members = () => {
                     setKeyword(e.target.value);
                   }}
                 />
-                <button type="submit" onClick={HandleSearch}>
+                <button type="submit" onClick={fetchData}>
                   검색
                 </button>
               </form>
@@ -393,10 +411,10 @@ const Members = () => {
                         : '기록 없음'}
                     </td>
                     <td className='textCenter'>
-                      {item.membership.bill_service !== 'none' ? `${item.membership.current}개월` : '없음'}
+                      {item.membership.bill_service !== 'none' ? `${item.membership.current}개월` : 'X'}
                       </td>
-                    <td className='textCenter'>{item.membership.start_date !== null ? moment(item.membership.start_date).format('YYYY-MM-DD') : '없음' }</td>
-                    <td className='textCenter'>{item.membership.start_date !== null ? moment(item.membership.start_date).format('YYYY-MM-DD') : '없음' }</td>
+                    <td className='textCenter'>{item.membership.start_date !== null ? moment(item.membership.start_date).format('YYYY-MM-DD') : 'X' }</td>
+                    <td className='textCenter'>{item.membership.start_date !== null ? moment(item.membership.start_date).format('YYYY-MM-DD') : 'X' }</td>
                     <td className='textCenter'>
                       <Link to={`/members/${item.user_uid}`}>
                         <InfoIcon w={5} h={5}/>
@@ -446,7 +464,6 @@ const Members = () => {
                 size='sm'
                 onClick={() => {
                   setCurrent(currentPage - 1);
-                  fetchData();
                 }}
                 isDisabled={currentPage === 1 && true}
                 icon={<ChevronLeftIcon h={6} w={6} />}
@@ -471,7 +488,7 @@ const Members = () => {
                 size='sm'
                 onClick={() => {
                   setCurrent(currentPage + 1);
-                  fetchData();
+                 
                 }}
                 isDisabled={currentPage === maxPage && true}
                 icon={<ChevronRightIcon h={6} w={6} />}
