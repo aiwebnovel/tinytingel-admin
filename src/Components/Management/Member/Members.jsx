@@ -32,7 +32,6 @@ const Members = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const admin = JSON.parse(localStorage.getItem('admin'));
-  const adminState = admin.adminState;
 
   const headers = [
     { label: '회원명', key: 'user.name' },
@@ -49,7 +48,7 @@ const Members = () => {
   const [postPerPage, setPostPerPage] = useState(20); //페이지당 포스트 개수
   const [maxPage, setMaxPage] = useState('');
 
-  const [startDate, setStartDate] = useState(new Date());
+  const [startDate, setStartDate] = useState(new Date('January 1, 2020'));
 
   //체크된 아이템
   const [checkedItems, setCheckedItems] = useState([]);
@@ -62,7 +61,9 @@ const Members = () => {
   const [filterChecked, setCheckedFilter] = useState([false,false,false])
   //필터용 체크 value 
   const [filterCheckValue, setCheckedFilterValue] = useState([]);
-  const [selected, setSelected] = useState('default');
+
+
+  const [selected, setSelected] = useState('create_at');
   const [keyword, setKeyword] = useState('');
   const [searchList, setSearchList] = useState('');
 
@@ -73,15 +74,20 @@ const Members = () => {
   const CheckFilteredAll = e => {
     console.log(e.target.value);
     setCheckedFilter([e.target.checked, e.target.checked, e.target.checked]);
+
   }
 
   const CheckFilterValue = e => {
-    if(e.target.checked) {
-      setCheckedFilterValue([...filterCheckValue, e.target.value]);
+    if(e.target.checked === true) {
+      setCheckedFilterValue([...filterCheckValue, parseInt(e.target.value)]);
+     setMembershipList(filterCheckValue)
       console.log(filterCheckValue);
+      
     }else {
-      setCheckedFilterValue([...filterCheckValue, e.target.value]);
-      console.log(filterCheckValue);
+
+      const filter = filterCheckValue.splice(filterCheckValue.indexOf(parseInt(e.target.value)),1);
+      setMembershipList(filter);
+       console.log(membershipList);
     }
   }
 
@@ -108,20 +114,20 @@ const Members = () => {
     let month = startDate.getMonth() + 1;
     let day = startDate.getDate();
     let date = `${year}-${month}-${day}`;
-    console.log(date);
+    // console.log(date);
 
-    if (e.target.value === 'regist') {
-      const filterList = searchList.filter(
-        item => item.user_signInDate.slice(0, 11) > date
-      );
-      console.log(filterList);
-      setSearchList(filterList);
-    }
-    if (e.target.value === 'login') {
-      const filterList = searchList.filter(item => item.user_logInDate > date);
-      console.log(filterList)
-      setSearchList(filterList);
-    }
+    // if (e.target.value === 'regist') {
+    //   const filterList = searchList.filter(
+    //     item => item.user_signInDate.slice(0, 11) > date
+    //   );
+    //   console.log(filterList);
+    //   setSearchList(filterList);
+    // }
+    // if (e.target.value === 'login') {
+    //   const filterList = searchList.filter(item => item.user_logInDate > date);
+    //   console.log(filterList)
+    //   setSearchList(filterList);
+    // }
   };
 
   const HandleSearch = e => {
@@ -168,7 +174,7 @@ const Members = () => {
     setKeyword('');
   };
 
-  const fetchData = async () => {
+  const fetchData = useCallback(async () => {
 
     const today = new Date();
     const formatToday = moment(today).format('YYYY-MM-DD');
@@ -176,16 +182,16 @@ const Members = () => {
     const config = {
       method: "post",
       url: `${server.SERVER_URL}/user/list/search`,
-      headers: {Authorization: `Bearer ${adminState.token}` },
+      headers: {Authorization: `Bearer ${admin.adminState.token}` },
       data: {
         page:currentPage,
         count:postPerPage,
-        membershipList:[0,1,3,6],
+        membershipList: membershipList,
         serviceList:["iamport","innopay","nopassbook","none"],
         keyword:keyword,
         periodOption:{
-            "option":"create_at",
-            "startDate":"2020-09-30",
+            "option":selected,
+            "startDate":startDate,
             "endDate": formatToday
         }
       },
@@ -195,7 +201,7 @@ const Members = () => {
       .then(response => {
         const data = response.data.data;
         const config = response.data.config;
-        console.log(data);
+        // console.log(data);
         setMaxPage(config.maxPage);
         setSearchList(data);
   
@@ -206,24 +212,24 @@ const Members = () => {
       .catch(error => {
         console.log(error);
         // if(error.response.status === 412) {
-          localStorage.clear();
-          navigate('/', {replace:true});
-          setTimeout( 
-            toast({
-            title: '토큰이 만료됐습니다.',
-            description: '새로 로그인 해주세요!',
-            position: 'top-right',
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
-          }), 5000);
+          // localStorage.clear();
+          // navigate('/', {replace:true});
+          // setTimeout( 
+          //   toast({
+          //   title: '토큰이 만료됐습니다.',
+          //   description: '새로 로그인 해주세요!',
+          //   position: 'top-right',
+          //   status: 'error',
+          //   duration: 5000,
+          //   isClosable: true,
+          // }), 5000);
         
       });
-  };
+  },[selected, startDate,currentPage, maxPage]);
 
   useEffect(() => {
     fetchData();
-  }, [currentPage, maxPage]);
+  }, [fetchData]);
 
   return (
     <Layout>
@@ -235,7 +241,7 @@ const Members = () => {
           >
             <Checkbox
               name="all"
-              value="all"
+              value="0,1,3,6"
               colorScheme="blue"
               isChecked={allChecked}
               isIndeterminate={isIndeterminate}
@@ -427,8 +433,8 @@ const Members = () => {
                   <td></td>
                   <td></td>
                   <td></td>
-                  <td></td>
                   <td>결과가 없습니다</td>
+                  <td></td>
                   <td></td>
                   <td></td>
                   <td></td>
@@ -475,8 +481,8 @@ const Members = () => {
           <Text >
               <Text fontWeight="bold" as="span">
                 {currentPage}
-              </Text>
-              of
+              </Text>{" "}
+              of{" "}
               <Text fontWeight="bold" as="span">
                 {maxPage}
               </Text>

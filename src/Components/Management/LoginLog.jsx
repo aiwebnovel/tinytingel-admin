@@ -26,7 +26,6 @@ const LoginLog = () => {
   const toast = useToast();
   const navigate = useNavigate();
   const admin = JSON.parse(localStorage.getItem('admin'));
-  const adminState = admin.adminState;
 
   const headers = [
     { label: '로그인 일자', key: 'user.login_at' },
@@ -39,7 +38,7 @@ const LoginLog = () => {
   ];
 
   const [currentPage, setCurrent] = useState(1); //현재 페이지;
-  const [postPerPage, setPostPerPage] = useState(20); //페이지당 포스트 개수
+  const [postPerPage, setPostPerPage] = useState(1000); //페이지당 포스트 개수
   const [List, setList] = useState([]);
   const [maxPage, setMaxPage] = useState('');
 
@@ -50,7 +49,7 @@ const LoginLog = () => {
     const config = {
       method: 'post',
       url: `${server.SERVER_URL}/user/list/search`,
-      headers: { Authorization: `Bearer ${adminState.token}` },
+      headers: { Authorization: `Bearer ${admin.adminState.token}` },
       data: {
         page: currentPage,
         count: postPerPage,
@@ -245,8 +244,8 @@ const LoginLog = () => {
               <Text fontWeight="bold" as="span">
                 {/* {pageIndex + 1} */}
                 {currentPage}
-              </Text>
-              of
+              </Text>{" "}
+              of{" "}
               <Text fontWeight="bold" as="span">
                 {maxPage}
               </Text>

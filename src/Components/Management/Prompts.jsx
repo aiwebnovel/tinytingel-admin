@@ -84,7 +84,7 @@ const Prompts = () => {
   //현재 페이지
   const [currentPage, setCurrent] = useState(1);
   //페이지당 포스트 개수
-  const [postPerPage, setPostPerPage] = useState(30);
+  const [postPerPage, setPostPerPage] = useState(20);
   //최대 페이지
   const [maxPage, setMaxPage] = useState('');
 
