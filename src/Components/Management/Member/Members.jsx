@@ -55,7 +55,7 @@ const Members = () => {
   //체크용 id 리스트
   const [idList, setIdList] = useState([]);
   //membershipList 기본
-  const [membershipList, setMembershipList] = useState([0, 1, 3, 6]);
+  const [membershipList, setMembershipList] = useState(['0', '1', '3', '6']);
 
   //필터용 체크
   const [filterChecked, setCheckedFilter] = useState([false, false, false]);
@@ -70,22 +70,24 @@ const Members = () => {
   const isIndeterminate = checkedItems.some(Boolean);
 
   const CheckFilteredAll = e => {
-    console.log(e.target.value);
     setCheckedFilter([e.target.checked, e.target.checked, e.target.checked]);
+    filterCheckValue.push('0', '1', '3', '6');
+    console.log(filterCheckValue);
   };
 
   const CheckFilterValue = e => {
     if (e.target.checked === true) {
-      setCheckedFilterValue([...filterCheckValue, parseInt(e.target.value)]);
-      setMembershipList(filterCheckValue);
+      filterCheckValue.push(e.target.value);
+      //const filter = membershipList.filter(item => filterCheckValue.includes(item))
       console.log(filterCheckValue);
+      setMembershipList(filterCheckValue);
     } else {
-      const filter = filterCheckValue.splice(
-        filterCheckValue.indexOf(parseInt(e.target.value)),
-        1
+      filterCheckValue.splice(filterCheckValue.indexOf(e.target.value), 1);
+      const filter = membershipList.filter(item =>
+        filterCheckValue.includes(item)
       );
-      setMembershipList(filter);
-      console.log(membershipList);
+      // setMembershipList(filter)
+      console.log(filterCheckValue, filter);
     }
   };
 
@@ -110,7 +112,7 @@ const Members = () => {
   const Reset = () => {
     setStartDate(new Date('January 1, 2020'));
     setCheckedFilter([false, false, false]);
-    setMembershipList([0, 1, 3, 6]);
+    setMembershipList(['0', '1', '3', '6']);
     setSelected('create_at');
     setKeyword('');
   };
@@ -164,12 +166,11 @@ const Members = () => {
         //   isClosable: true,
         // }), 5000);
       });
-  }, [selected, startDate, keyword, currentPage, maxPage]);
+  }, [membershipList, selected, startDate, keyword, currentPage, maxPage]);
 
-  useEffect(()=>{
+  useEffect(() => {
     fetchData();
-  },[currentPage])
-
+  }, [currentPage]);
 
   return (
     <Layout>
@@ -268,16 +269,22 @@ const Members = () => {
             />
           </Flex>
           <Box margin="15px 0">
-            <Flex className="SearchFlex" alignItems="center" justify='space-between'> 
-                <input
-                  type={'text'}
-                  placeholder="검색할 키워드를 입력해주세요"
-                  value={keyword || ''}
-                  onChange={e => {
-                    setKeyword(e.target.value);
-                  }}
-                />
-             <Button onClick={fetchData}><SearchIcon/></Button>
+            <Flex
+              className="SearchFlex"
+              alignItems="center"
+              justify="space-between"
+            >
+              <input
+                type={'text'}
+                placeholder="검색할 키워드를 입력해주세요"
+                value={keyword || ''}
+                onChange={e => {
+                  setKeyword(e.target.value);
+                }}
+              />
+              <Button onClick={fetchData}>
+                <SearchIcon />
+              </Button>
             </Flex>
           </Box>
           <Flex mt={25} justifyContent="flex-end">
@@ -431,10 +438,9 @@ const Members = () => {
             <IconButton
               size="sm"
               onClick={() => {
-                setCurrent((currentPage)=> currentPage - 1);
+                setCurrent(currentPage => currentPage - 1);
                 fetchData();
               }}
-              
               isDisabled={currentPage === 1 && true}
               icon={<ChevronLeftIcon h={6} w={6} />}
             />
@@ -456,7 +462,7 @@ const Members = () => {
             <IconButton
               size="sm"
               onClick={() => {
-                setCurrent((currentPage)=> currentPage + 1);
+                setCurrent(currentPage => currentPage + 1);
                 fetchData();
               }}
               isDisabled={currentPage === maxPage && true}
