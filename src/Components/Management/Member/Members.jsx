@@ -45,7 +45,7 @@ const Members = () => {
   ];
 
   const [currentPage, setCurrent] = useState(1); //현재 페이지;
-  const [postPerPage, setPostPerPage] = useState(20); //페이지당 포스트 개수
+  const [postPerPage, setPostPerPage] = useState(30); //페이지당 포스트 개수
   const [maxPage, setMaxPage] = useState('');
 
   const [startDate, setStartDate] = useState(new Date('January 1, 2021'));
@@ -63,7 +63,7 @@ const Members = () => {
   const [membershipList, setMembershipList] = useState(['0', '1', '3', '6']);
 
   //필터용 체크
-  const [filterChecked, setCheckedFilter] = useState([false, false, false]);
+  const [filterChecked, setCheckedFilter] = useState([false, false, false, false]);
   //필터용 체크 value
   const [filterCheckValue, setCheckedFilterValue] = useState([]);
 
@@ -75,14 +75,14 @@ const Members = () => {
   const isIndeterminate = checkedItems.some(Boolean);
 
   const CheckFilteredAll = e => {
-    setCheckedFilter([e.target.checked, e.target.checked, e.target.checked]);
+    setCheckedFilter([e.target.checked, e.target.checked, e.target.checked, e.target.checked]);
     if (e.target.checked === true) {
-      filterCheckValue.push('1', '3', '6');
+      filterCheckValue.push('0','1', '3', '6');
 
       const set = [...new Set(filterCheckValue)];
       setCheckedFilterValue(set);
       setMembershipList(set);
-
+      console.log(set)
     }
 
     if (e.target.checked === false) {
@@ -103,6 +103,7 @@ const Members = () => {
       const set = [...new Set(filterCheckValue)];
       setCheckedFilterValue(set);
       setMembershipList(set);
+      console.log(set)
 
     }
   };
@@ -127,7 +128,7 @@ const Members = () => {
 
   const Reset = () => {
     setStartDate(new Date('January 1, 2021'));
-    setCheckedFilter([false, false, false]);
+    setCheckedFilter([false, false, false, false]);
     setMembershipList(['0', '1', '3', '6']);
     setCheckedFilterValue([])
     setSelected('create_at');
@@ -208,8 +209,8 @@ const Members = () => {
               전체
             </Checkbox>
             <Checkbox
-              name="month1"
-              value="1"
+              name="noMembership"
+              value="0"
               colorScheme="blue"
               isChecked={filterChecked[0]}
               onChange={e => {
@@ -217,6 +218,24 @@ const Members = () => {
                   e.target.checked,
                   filterChecked[1],
                   filterChecked[2],
+                  filterChecked[3],
+                ]);
+                CheckFilterValue(e);
+              }}
+            >
+             구독 안함
+            </Checkbox>
+            <Checkbox
+              name="month1"
+              value="1"
+              colorScheme="blue"
+              isChecked={filterChecked[1]}
+              onChange={e => {
+                setCheckedFilter([
+                  filterChecked[0],
+                  e.target.checked,
+                  filterChecked[2],
+                  filterChecked[3],
                 ]);
                 CheckFilterValue(e);
               }}
@@ -227,12 +246,13 @@ const Members = () => {
               name="month3"
               value="3"
               colorScheme="blue"
-              isChecked={filterChecked[1]}
+              isChecked={filterChecked[2]}
               onChange={e => {
                 setCheckedFilter([
                   filterChecked[0],
+                  filterChecked[1],
                   e.target.checked,
-                  filterChecked[2],
+                  filterChecked[3],
                 ]);
                 CheckFilterValue(e);
               }}
@@ -243,11 +263,12 @@ const Members = () => {
               name="month6"
               value="6"
               colorScheme="blue"
-              isChecked={filterChecked[2]}
+              isChecked={filterChecked[3]}
               onChange={e => {
                 setCheckedFilter([
                   filterChecked[0],
                   filterChecked[1],
+                  filterChecked[2],
                   e.target.checked,
                 ]);
                 CheckFilterValue(e);
@@ -300,7 +321,9 @@ const Members = () => {
                   setKeyword(e.target.value);
                 }}
               />
-              <Button onClick={fetchData}>
+              <Button onClick={()=> {
+                setCurrent(1)
+                fetchData()}}>
                 <SearchIcon />
               </Button>
             </Flex>
@@ -457,7 +480,7 @@ const Members = () => {
               size="sm"
               onClick={() => {
                 setCurrent(currentPage => currentPage - 1);
-                fetchData();
+          
               }}
               isDisabled={currentPage === 1 && true}
               icon={<ChevronLeftIcon h={6} w={6} />}
@@ -481,7 +504,7 @@ const Members = () => {
               size="sm"
               onClick={() => {
                 setCurrent(currentPage => currentPage + 1);
-                fetchData();
+               
               }}
               isDisabled={currentPage === maxPage && true}
               icon={<ChevronRightIcon h={6} w={6} />}
@@ -492,7 +515,7 @@ const Members = () => {
                 size="sm"
                 onClick={() => {
                   setCurrent(maxPage);
-                  fetchData();
+      
                   if (currentPage === maxPage) {
                     toast({
                       title: '마지막 페이지',
