@@ -48,7 +48,12 @@ const Members = () => {
   const [postPerPage, setPostPerPage] = useState(20); //페이지당 포스트 개수
   const [maxPage, setMaxPage] = useState('');
 
-  const [startDate, setStartDate] = useState(new Date('January 1, 2020'));
+  const [startDate, setStartDate] = useState(new Date('January 1, 2021'));
+
+  const renderDayContents = (date) => {
+
+    return <span title={date}>{date}</span>;
+  };
 
   //체크된 아이템
   const [checkedItems, setCheckedItems] = useState([]);
@@ -71,23 +76,34 @@ const Members = () => {
 
   const CheckFilteredAll = e => {
     setCheckedFilter([e.target.checked, e.target.checked, e.target.checked]);
-    filterCheckValue.push('0', '1', '3', '6');
-    console.log(filterCheckValue);
+    if (e.target.checked === true) {
+      filterCheckValue.push('1', '3', '6');
+
+      const set = [...new Set(filterCheckValue)];
+      setCheckedFilterValue(set);
+      setMembershipList(set);
+
+    }
+
+    if (e.target.checked === false) {
+      filterCheckValue.splice(0);
+      console.log(filterCheckValue);
+      setMembershipList(filterCheckValue);
+    }
   };
 
   const CheckFilterValue = e => {
     if (e.target.checked === true) {
       filterCheckValue.push(e.target.value);
-      //const filter = membershipList.filter(item => filterCheckValue.includes(item))
-      console.log(filterCheckValue);
       setMembershipList(filterCheckValue);
+      console.log(filterCheckValue)
+
     } else {
       filterCheckValue.splice(filterCheckValue.indexOf(e.target.value), 1);
-      const filter = membershipList.filter(item =>
-        filterCheckValue.includes(item)
-      );
-      // setMembershipList(filter)
-      console.log(filterCheckValue, filter);
+      const set = [...new Set(filterCheckValue)];
+      setCheckedFilterValue(set);
+      setMembershipList(set);
+
     }
   };
 
@@ -110,9 +126,10 @@ const Members = () => {
   };
 
   const Reset = () => {
-    setStartDate(new Date('January 1, 2020'));
+    setStartDate(new Date('January 1, 2021'));
     setCheckedFilter([false, false, false]);
     setMembershipList(['0', '1', '3', '6']);
+    setCheckedFilterValue([])
     setSelected('create_at');
     setKeyword('');
   };
@@ -266,6 +283,7 @@ const Members = () => {
               maxDate={new Date()}
               onChange={date => setStartDate(date)}
               locale={ko}
+              renderDayContents={renderDayContents}
             />
           </Flex>
           <Box margin="15px 0">
