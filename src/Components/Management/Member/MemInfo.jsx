@@ -10,45 +10,19 @@ import * as config from 'config/Config';
 const MemInfo = () => {
   const { id } = useParams();
   let navigate = useNavigate();
-  const [Data, setData] = useState({
-    identifier: ' ',
-    logInDate: '',
-    membership_count: '',
-    user_name: '',
-    payment_date: '',
-    signInDate: '',
-    buyLog_UsingDate:''
-  });
+  const [Data, setData] = useState('');
 
-  const {
-    identifier,
-    logInDate,
-    membership_count,
-    user_name,
-    payment_date,
-    signInDate,
-    buyLog_UsingDate
-  } = Data;
 
   const fetchData = useCallback(async () => {
     const admin = JSON.parse(localStorage.getItem('admin'));
+
     await axios
-      .get(`${config.SERVER_URL}/user/detail/${id}`, {
-        headers: { admincode: admin.IdState },
+      .get(`${config.SERVER_URL}/user/plan/log?user_uid=${id}`, {
+        headers: { Authorization: `Bearer ${admin.adminState.token}` },
       })
-      .then(res => {
-        console.log(res);
-        const result = res.data;
-        setData({
-          ...Data,
-          identifier: result.identifier,
-          logInDate: result.logInDate,
-          membership_count: result.membership_count,
-          user_name: result.name,
-          payment_date: result.payment_date,
-          signInDate: result.signInDate,
-        
-        });
+      .then(response => {
+        console.log(response);
+      
       })
       .catch(err => {
         console.log(err);
@@ -57,7 +31,7 @@ const MemInfo = () => {
 
   useEffect(() => {
     fetchData();
-  }, [fetchData]);
+  }, []);
 
   return (
     <Layout>
@@ -68,20 +42,20 @@ const MemInfo = () => {
         </Heading>
           <div className="InfoBox">
             <h4>이름</h4>
-            <p>{user_name}</p>
+            <p></p>
           </div>
           <div className="InfoBox">
             <h4>이메일 주소</h4>
-            <p>{identifier}</p>
+            <p></p>
           </div>
           <div className="InfoBox">
             <h4>가입일자</h4>
-            <p>{signInDate.slice(0, 11)}</p>
+            <p></p>
             {/* <p>{`${moment(billStart).format('YYYY-MM-DD')} ~ ${exp}`}</p> */}
           </div>
           <div className="InfoBox" style={{backgroundColor: '#f9f9f9'}}>
             <h4>결제내역</h4>
-            {payment_date !== '' ? (
+            {/* {payment_date !== '' ? (
               <Link
                 to={`/members/${id}/payment`}
                 style={{ textDecoration: 'underline' }}
@@ -90,38 +64,38 @@ const MemInfo = () => {
               </Link>
             ) : (
               '멤버십을 구독하지 않은 회원입니다.'
-            )}
+            )} */}
           </div>
           <div className="InfoBox">
             <h4>구독상품</h4>
             <p>
-              {payment_date !== ''
+              {/* {payment_date !== ''
                 ? membership_count
-                : '멤버십을 구독하지 않은 회원입니다.'}
+                : '멤버십을 구독하지 않은 회원입니다.'} */}
             </p>
           </div>
           <div className="InfoBox">
             <h4>이용기간</h4>
             <p>
-              {payment_date !== ''
+              {/* {payment_date !== ''
                 ? 'YYYY-MM-DD'
-                : '멤버십을 구독하지 않은 회원입니다.'}
+                : '멤버십을 구독하지 않은 회원입니다.'} */}
             </p>
           </div>
           <div className="InfoBox">
             <h4>결제 예정일</h4>
             <p>
-              {payment_date !== ''
+              {/* {payment_date !== ''
                 ? 'YYYY-MM-DD'
-                : '멤버십을 구독하지 않은 회원입니다.'}
+                : '멤버십을 구독하지 않은 회원입니다.'} */}
             </p>
           </div>
           <div className="InfoBox">
             <h4>결제 수단</h4>
             <p>
-              {payment_date !== ''
+              {/* {payment_date !== ''
                 ? '신용카드/체크카드'
-                : '멤버십을 구독하지 않은 회원입니다.'}
+                : '멤버십을 구독하지 않은 회원입니다.'} */}
             </p>
           </div>
         </Box>

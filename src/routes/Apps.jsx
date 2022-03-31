@@ -11,6 +11,7 @@ import QuestionDetail from 'Components/Management/QuestionDetail.jsx';
 import Prompts from 'Components/Management/Prompts'
 import PromptDetail from 'Components/Management/PromptDetail.jsx';
 import CreatePropmt from 'Components/Management/CreatePrompt';
+import PaymentLog from 'Components/Management/PaymentLog';
 
 
 function Apps() {
@@ -30,8 +31,8 @@ function Apps() {
           <Route path="/members/:id/payment" element={<MemPay />}>
           </Route>
           <Route path="/loginlog" element={<LoginLog />}></Route>
-          <Route path="/paymentlog" element={<LoginLog />}></Route>
-   
+          <Route path="/paymentlog" element={<PaymentLog />}></Route>
+  
           <Route path="/questions/*" element={<Questions />}></Route>
           <Route path="/questions/detail" element={<QuestionDetail />}></Route>
           <Route path="/prompts" element={<Prompts />}></Route>
