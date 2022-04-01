@@ -112,7 +112,7 @@ const MemInfo = () => {
           </div>
           <div className="InfoBox" style={{ backgroundColor: '#f9f9f9' }}>
             <h4>결제내역</h4>
-            {membership.bill_service !== '' ? (
+            {membership.bill_service !== 'none' ? (
               <Link
                 to={`/members/${id}/payment`}
                 style={{ textDecoration: 'underline' }}
@@ -126,7 +126,7 @@ const MemInfo = () => {
           <div className="InfoBox">
             <h4>구독상품</h4>
             <p>
-              {membership.bill_service === 'none' && '없음'}
+              {membership.bill_service === 'none' && '멤버십을 구독하지 않은 회원입니다.'}
               {membership.bill_service !== 'none' &&
                 membership.current > 0 &&
                 `${membership.current}개월`}
@@ -149,7 +149,7 @@ const MemInfo = () => {
                 membership.current === 0 &&
                 formatToday <
                   moment(membership.next_date).format('YYYY-MM-DD') &&
-                `없음`}
+                `멤버십을 구독하지 않은 회원입니다.`}
 
               {/* 구독 중 & 아직 기간 안 지남 */}
               {membership.bill_service !== null &&
@@ -164,14 +164,14 @@ const MemInfo = () => {
                 membership.current === 0 &&
                 formatToday >
                   moment(membership.next_date).format('YYYY-MM-DD') &&
-                '없음'}
+                '멤버십을 구독하지 않은 회원입니다.'}
 
               {/* 기존 회원용 stopPay true 시 && 이용 기간 < 현재 날짜 */}
               {membership.bill_service !== null &&
                 membership.current > 0 &&
                 formatToday >
                   moment(membership.next_date).format('YYYY-MM-DD') &&
-                '없음'}
+                '멤버십을 구독하지 않은 회원입니다.'}
             </p>
           </div>
           <div className="InfoBox">
@@ -187,7 +187,7 @@ const MemInfo = () => {
                 membership.current === 0 &&
                 formatToday <
                   moment(membership.next_date).format('YYYY-MM-DD') &&
-                `없음`}
+                `멤버십을 구독하지 않은 회원입니다.`}
 
               {/* 구독 중 & 아직 기간 안 지남 */}
               {membership.bill_service !== 'none' &&
@@ -202,20 +202,20 @@ const MemInfo = () => {
                 membership.current === 0 &&
                 formatToday >
                   moment(membership.next_date).format('YYYY-MM-DD') &&
-                '없음'}
+                '멤버십을 구독하지 않은 회원입니다.'}
 
               {/* 기존 회원용 stopPay true 시 && 이용 기간 < 현재 날짜 */}
               {membership.bill_service !== 'none' &&
                 membership.current > 0 &&
                 formatToday >
                   moment(membership.next_date).format('YYYY-MM-DD') &&
-                '없음'}
+                '멤버십을 구독하지 않은 회원입니다.'}
             </p>
           </div>
           <div className="InfoBox">
             <h4>결제 수단</h4>
             <p>
-              {membership.bill_service === 'none' && '없음'}
+              {membership.bill_service === 'none' && '멤버십을 구독하지 않은 회원입니다.'}
               {membership.bill_service !== 'none' &&
                 membership.bill_service === 'iamport' &&
                 '카카오페이'}

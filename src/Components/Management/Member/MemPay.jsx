@@ -11,30 +11,19 @@ import * as config from 'config/Config';
 const MemPay = () => {
   const { id } = useParams();
   let navigate = useNavigate();
-  const [Data, setData] = useState({
-    buyLog_tid:'',
-    buyLog_plan: '',
-    buyLog_UsingDate: '',
-    buyLog_price: '',
-    buyLog_signInDate: '',
-  });
-
-  const {buyLog_tid,
-  buyLog_plan,
-  buyLog_UsingDate,
-  buyLog_price,
-  buyLog_signInDate, } = Data;
+  const [Data, setData] = useState('');
 
   const fetchData = useCallback(async () => {
     const admin = JSON.parse(localStorage.getItem('admin'));
 
     await axios
-      .get(`${config.SERVER_URL}/user/plan/log?user_uid=${id}`, {
+      .get(`${config.SERVER_URL}/user/plan/log?user_uid=fWkg8RFPVKVQbzPH4t7UXVcOoud2`, {
         headers: { Authorization: `Bearer ${admin.adminState.token}` },
       })
       .then(response => {
         console.log(response);
-      
+        const data = response.data.data;
+        setData(data);
       })
       .catch(err => {
         console.log(err);
@@ -48,40 +37,47 @@ const MemPay = () => {
   return (
     <Layout>
       <Box className='PaymentContainer'>
+      {Data.length > 0 ? Data.map((item)=>(
         <Box className='InfoContent'>
-        <Heading as='h4' size='lg' margin='15px 0 15px 15px' >
+        <Heading as='h4' size='md' margin='15px 0 15px 15px' >
           💡 Receipt
         </Heading>
           <div className="payBox">
             <h4>주문번호</h4>
-            <p>{buyLog_tid}</p>
+            <p>{item.tid}</p>
           </div>
           <div className="payBox">
             <h4>구독 상품</h4>
-            <p>{buyLog_plan !==null ? `${buyLog_plan}개월 정기결제` : '구독 취소' }</p>
-          </div>
-          <div className="payBox">
-            <h4>이용 기간</h4>
-            <p>{`${moment(buyLog_signInDate).format('YYYY-MM-DD')} ~ ${buyLog_UsingDate}`}</p>
+            <p>
+              {item.plan}개월
+            </p>
           </div>
           <div className="payBox" style={{ backgroundColor: '#f9f9f9' }}>
             <h4>주문 총액</h4>
-            {buyLog_price}원
+            {item.price}원
           </div>
           <div className="payBox">
             <h4>주문일시</h4>
-            <p>{buyLog_signInDate}</p>
+            <p>{moment(item.orderDate).format('YYYY-MM-DD')}</p>
           </div>
           <div className="payBox">
             <h4>주문 상태</h4>
-            <p>{buyLog_plan !== null ? `${buyLog_plan}개월 결제 중` : `구독 취소`}</p>
+            <p>결제완료</p>
           </div>
           <div className="payBox">
             <h4>결제 수단</h4>
-            <p>신용카드/체크카드</p>
+            <p>
+              {item.service === 'iamport' &&
+                '카카오페이'}
+              {item.service === 'innopay' &&
+                '신용/체크'}
+              {item.service === 'nopassbook' &&
+                '무통장'}
+            </p>
           </div>
          
         </Box>
+       )): <Box className='InfoContent'>결과가 없습니다.</Box>}
         <BtnBox>
             <Back onClick={()=>{
               navigate(`/members/${id}`);
@@ -97,7 +93,7 @@ export default MemPay;
 const BtnBox = styled.div`
   width: 100%;
   text-align: center;
-  padding: 30px 0;
+  // padding: 30px 0;
 `;
 
 const Back = styled.button`
