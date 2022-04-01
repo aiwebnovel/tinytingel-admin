@@ -414,9 +414,9 @@ const Members = () => {
                         : '기록 없음'}
                     </td>
                     <td className="textCenter">
-                      {item.membership.bill_service !== 'none'
-                        ? `${item.membership.current}개월`
-                        : 'X'}
+                    {item.membership.bill_service === 'none' && '없음'}
+                      {item.membership.bill_service !== 'none' && item.membership.current > 0 && `${item.membership.current}개월`}
+                      {item.membership.bill_service !== 'none' && item.membership.current === 0 && item.membership.before > 0 && `${item.membership.before}개월`}
                     </td>
                     <td className="textCenter">
                       {item.membership.start_date !== null
@@ -426,11 +426,9 @@ const Members = () => {
                         : 'X'}
                     </td>
                     <td className="textCenter">
-                      {item.membership.start_date !== null
-                        ? moment(item.membership.start_date).format(
-                            'YYYY-MM-DD'
-                          )
-                        : 'X'}
+                    {item.user.membership_recent_date !== null && moment(item.user.membership_recent_date).format('YYYY-MM-DD')}
+                      {item.user.membership_recent_date === null && item.membership.start_date === null && '없음'}
+                      {item.user.membership_recent_date === null && item.membership.start_date !== null && moment(item.membership.start_date).format('YYYY-MM-DD')}
                     </td>
                     <td className="textCenter">
                       <Link to={`/members/${item.user.user_uid}`}>

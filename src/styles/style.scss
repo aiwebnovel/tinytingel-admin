@@ -142,11 +142,11 @@ $gray-1 : #E2E8F0;
 //members
 
 .MemberContainer {
-    padding: 48px;
+    padding: 36px;
 
     @media screen and (max-width: 768px) {
-        padding-right: 36px;
-        padding-left: 36px;
+        padding-right: 24px;
+        padding-left: 24px;
     }
 }
 
@@ -218,7 +218,7 @@ $gray-1 : #E2E8F0;
 
 
 .TableContainer {
-    padding: 48px;
+    padding: 36px;
 }
 
 .TableStyle {
@@ -428,15 +428,15 @@ $gray-1 : #E2E8F0;
 }
 
 .paymentCustom-th2 {
-    min-width: 200px;
+    min-width: 180px;
 }
 
 .paymentCustom-th3 {
-    min-width: 200px;
+    min-width: 180px;
 }
 
 .paymentCustom-th4 {
-    min-width: 100px;
+    min-width: 80px;
 }
 .paymentCustom-th5 {
     min-width: 100px;
@@ -478,10 +478,10 @@ $gray-1 : #E2E8F0;
 .InfoBox {
     display: flex;
     padding: 15px;
-    gap: 50px;
- 
+
 
     >h4 {
+        min-width: 100px;
         font-weight: 600;
     }
 

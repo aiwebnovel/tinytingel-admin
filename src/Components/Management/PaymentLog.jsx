@@ -19,7 +19,6 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   ArrowRightIcon,
-  InfoIcon,
   SearchIcon,
 } from '@chakra-ui/icons';
 import Layout from 'Common/Layout.jsx';
@@ -35,17 +34,15 @@ const PaymentLog = () => {
   const admin = JSON.parse(localStorage.getItem('admin'));
 
   const headers = [
-    { label: '회원명', key: 'user.name' },
-    { label: '이메일 주소', key: 'user.email' },
-    { label: '가입일자', key: 'user.create_at' },
-    { label: '최근 로그인', key: 'user.login_at' },
-    { label: '구독상품', key: 'membership.current' },
-    { label: '구독일시', key: 'membership.start_date' },
     { label: '결제일자', key: 'membership.start_date' },
+    { label: '회원명', key: 'user.name' },
+    { label: '이메일', key: 'user.email' },
+    { label: '구독상품', key: 'membership.current'|| 'membership.before' },
+    { label: '결제수단', key: 'membership.bill_service' },
   ];
 
   const [currentPage, setCurrent] = useState(1); //현재 페이지;
-  const [postPerPage, setPostPerPage] = useState(30); //페이지당 포스트 개수
+  const [postPerPage, setPostPerPage] = useState(50); //페이지당 포스트 개수
   const [maxPage, setMaxPage] = useState('');
 
   const [startDate, setStartDate] = useState(new Date('January 1, 2021'));
@@ -60,6 +57,9 @@ const PaymentLog = () => {
   const [idList, setIdList] = useState([]);
   //membershipList 기본
   const [membershipList, setMembershipList] = useState(['0', '1', '3', '6']);
+
+  //pay method 기본
+  const [payMethod, setPayMethod] = useState(["iamport","innopay","nopassbook","none"])
 
   //필터용 체크1
   const [filterChecked, setCheckedFilter] = useState([
@@ -84,9 +84,44 @@ const PaymentLog = () => {
   const payAllChecked = payFilter.every(Boolean);
   const isIndeterminate = checkedItems.some(Boolean);
 
-  const CheckPayFilteredAll = e => {};
+  const CheckPayFilteredAll = e => {
+    setPayFilter([
+        e.target.checked,
+        e.target.checked,
+        e.target.checked,
+        e.target.checked,
+      ]);
+      if (e.target.checked === true) {
+        payFilterValue.push("iamport","innopay","nopassbook","none");
+  
+        const set = [...new Set(payFilterValue)];
+        setPayFilterValue(set);
+        setPayMethod(set)
+        console.log(set)
+      }
+  
+      if (e.target.checked === false) {
+        payFilterValue.splice(0);
+        console.log(payFilterValue);
+        setPayMethod(payFilterValue);
+      }
 
-  const CheckPayFilterValue = e => {};
+  };
+
+  const CheckPayFilterValue = e => {
+    if (e.target.checked === true) {
+        payFilterValue.push(e.target.value);
+        setPayMethod(payFilterValue);
+        console.log(payFilterValue)
+      } else {
+        payFilterValue.splice(payFilterValue.indexOf(e.target.value), 1);
+        const set = [...new Set(payFilterValue)];
+        setPayFilterValue(set);
+        setPayMethod(set);
+        console.log(set)
+      }
+
+  };
 
   const CheckFilteredAll = e => {
     setCheckedFilter([
@@ -147,6 +182,7 @@ const PaymentLog = () => {
     setStartDate(new Date('January 1, 2021'));
     setCheckedFilter([false, false, false, false]);
     setMembershipList(['0', '1', '3', '6']);
+    setPayMethod(["iamport","innopay","nopassbook","none"])
     setCheckedFilterValue([]);
     setSelected('create_at');
     setKeyword('');
@@ -164,7 +200,7 @@ const PaymentLog = () => {
         page: currentPage,
         count: postPerPage,
         membershipList: membershipList,
-        serviceList: ['iamport', 'innopay', 'nopassbook', 'none'],
+        serviceList: payMethod,
         keyword: keyword,
         periodOption: {
           option: selected,
@@ -178,7 +214,7 @@ const PaymentLog = () => {
       .then(response => {
         const data = response.data.data;
         const config = response.data.config;
-        console.log(data);
+        console.log(data, config);
         setMaxPage(config.maxPage);
         setSearchList(data);
 
@@ -201,7 +237,7 @@ const PaymentLog = () => {
         //   isClosable: true,
         // }), 5000);
       });
-  }, [membershipList, selected, startDate, keyword, currentPage, maxPage]);
+  }, [membershipList, payMethod, selected, startDate, keyword, currentPage, maxPage]);
 
   useEffect(() => {
     fetchData();
@@ -212,10 +248,10 @@ const PaymentLog = () => {
       <Box className="MemberContainer">
         <Box bg="#fff" padding="36px">
           <Flex
-          direction={{ base: 'column', xl: 'row' }}
-          justify='space-between'
-          align='flex-start'
-          mb='10px'
+            direction={{ base: 'column', xl: 'row' }}
+            justify="space-between"
+            align="flex-start"
+            mb="10px"
           >
             <Flex
               direction={{ base: 'column', md: 'row' }}
@@ -301,7 +337,7 @@ const PaymentLog = () => {
             </Flex>
 
             <Flex
-                direction={{ base: 'column', md: 'row' }}
+              direction={{ base: 'column', md: 'row' }}
               className="MemberCheck"
             >
               <Checkbox
@@ -396,11 +432,11 @@ const PaymentLog = () => {
               onChange={HandleSelect}
               maxW="300px"
             >
-              <option value="default" disabled>
+              <option value="create_at" disabled>
                 날짜 기준을 먼저 선택해주세요
               </option>
-              <option value="create_at">가입 일자</option>
-              <option value="login_at">로그인 일자</option>
+              <option value="membership_start_date">결제시작일자</option>
+              <option value="membership_recent_date">최근결제일자</option>
             </Select>
             <DatePicker
               className="DatePickerStyle"
@@ -441,7 +477,7 @@ const PaymentLog = () => {
             <CSVLink
               headers={headers}
               data={searchList}
-              filename={'회원_현황'}
+              filename={'결제_현황'}
               onClick={() => {
                 if (window.confirm('다운로드 하시겠습니까?') === true) {
                   console.log('저장');
@@ -493,7 +529,6 @@ const PaymentLog = () => {
                 <th className="paymentCustom-th4 textCenter">구독상품</th>
                 <th className="paymentCustom-th5 textCenter">결제금액</th>
                 <th className="paymentCustom-th6 textCenter">결제수단</th>
-     
               </tr>
             </thead>
             <tbody>
@@ -510,30 +545,51 @@ const PaymentLog = () => {
                       />
                     </td>
                     <td className="textCenter">
-                      {item.membership.start_date !== null
-                        ? moment(item.membership.start_date).format(
-                            'YYYY-MM-DD'
-                          )
-                        : '없음'}
+                      {item.user.membership_recent_date !== null && moment(item.user.membership_recent_date).format('YYYY-MM-DD')}
+                      {item.user.membership_recent_date === null && item.membership.start_date === null && '없음'}
+                      {item.user.membership_recent_date === null && item.membership.start_date !== null && moment(item.membership.start_date).format('YYYY-MM-DD')}
+
                     </td>
                     <td>{item.user.name}</td>
                     <td>{item.user.email}</td>
                     <td className="textCenter">
-                      {item.membership.bill_service !== 'none'
-                        ? `${item.membership.current}개월`
-                        : '없음'}
+                      {item.membership.bill_service === 'none' && '없음'}
+                      {item.membership.bill_service !== 'none' && item.membership.current > 0 && `${item.membership.current}개월`}
+                      {item.membership.bill_service !== 'none' && item.membership.current === 0 && item.membership.before > 0 && `${item.membership.before}개월`}
                     </td>
                     <td className="textCenter">
                       {item.membership.bill_service === 'none' && '없음'}
-                      {item.membership.bill_service !== 'none' && item.membership.current === 1 && '25,000'}
-                      {item.membership.bill_service !== 'none' && item.membership.current === 3 && '60,000'}
-                      {item.membership.bill_service !== 'none' && item.membership.current === 6 && '90,000'}
+                      {item.membership.bill_service !== 'none' &&
+                        item.membership.current === 1 &&
+                        '25,000'}
+                      {item.membership.bill_service !== 'none' &&
+                        item.membership.current === 3 &&
+                        '60,000'}
+                      {item.membership.bill_service !== 'none' &&
+                        item.membership.current === 6 &&
+                        '90,000'}
+                      
+                      {item.membership.bill_service !== 'none' &&
+                        item.membership.current === 0 && item.membership.before === 1 &&
+                        '25,000'}
+                      {item.membership.bill_service !== 'none' &&
+                        item.membership.current === 0 &&item.membership.before === 3 &&
+                        '60,000'}
+                      {item.membership.bill_service !== 'none' &&
+                        item.membership.current === 0 && item.membership.before === 6 &&
+                        '90,000'}
                     </td>
                     <td className="textCenter">
                       {item.membership.bill_service === 'none' && '없음'}
-                      {item.membership.bill_service !== 'none' && item.membership.bill_service === 'iamport' && '카카오페이'} 
-                      {item.membership.bill_service !== 'none' && item.membership.bill_service === 'innopay' && '신용/체크'} 
-                      {item.membership.bill_service !== 'none' && item.membership.bill_service === 'nopassbook' && '무통장'} 
+                      {item.membership.bill_service !== 'none' &&
+                        item.membership.bill_service === 'iamport' &&
+                        '카카오페이'}
+                      {item.membership.bill_service !== 'none' &&
+                        item.membership.bill_service === 'innopay' &&
+                        '신용/체크'}
+                      {item.membership.bill_service !== 'none' &&
+                        item.membership.bill_service === 'nopassbook' &&
+                        '무통장'}
                     </td>
                   </tr>
                 ))
