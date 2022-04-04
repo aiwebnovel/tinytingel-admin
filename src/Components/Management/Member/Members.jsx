@@ -13,6 +13,15 @@ import {
   IconButton,
   Select,
   useToast,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  HStack
 } from '@chakra-ui/react';
 import {
   ArrowLeftIcon,
@@ -21,6 +30,7 @@ import {
   ArrowRightIcon,
   InfoIcon,
   SearchIcon,
+  DeleteIcon,
 } from '@chakra-ui/icons';
 import Layout from 'Common/Layout.jsx';
 import DatePicker from 'react-datepicker';
@@ -28,6 +38,37 @@ import 'react-datepicker/dist/react-datepicker.css';
 import ko from 'date-fns/locale/ko';
 import styled from 'styled-components';
 import moment from 'moment';
+
+
+const DeleteBtn = styled.button`
+  background-color: #ff5a52;
+  //border: 1px solid #FF5A52;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 25px;
+  transition: all 300ms ease;
+
+  &:hover {
+    background-color: #d83536;
+    //border: 1px solid #D83536;
+    color: #fff;
+  }
+`
+
+const CancelBtn = styled.button`
+  background-color: #f9f9f9;
+  border: 1px solid #444;
+  border-radius: 5px;
+  color: #444;
+  padding: 2px 25px;
+  transition: all 300ms ease;
+
+  &:hover {
+    background-color: #444;
+    //border: 1px solid #444;
+    color: #fff;
+  }
+`
 
 const Members = () => {
   const toast = useToast();
@@ -73,6 +114,82 @@ const Members = () => {
 
   const allChecked = filterChecked.every(Boolean);
   const isIndeterminate = checkedItems.some(Boolean);
+
+  const { isOpen, onOpen, onClose } = useDisclosure();
+
+  const DeleteUsers = () => {
+    console.log('delete user');
+    const checkedArray = idList.filter(item => checkedItems.includes(item))
+    const adminState = admin.adminState;
+      
+
+ if(checkedArray.length === 0) {
+    toast({
+      title: '선택한 유저가 없어요!',
+      description: '삭제할 유저를 선택해주세요.',
+      position: 'top-right',
+      status: 'info',
+      duration: 5000,
+      isClosable: true,
+    })
+   } 
+
+  /* if(checkedArray.length === 1) {
+    axios
+    .delete(
+      `${server.SERVER_URL}/prompt/${checkedArray[0]}`,
+      {
+        headers: { Authorization: `Bearer ${adminState.token}` },
+      }
+    )
+    .then(response => {
+      console.log(response);
+      navigate(0);
+
+    })
+    .catch(error => {
+      console.log(error.response);
+      toast({
+        title: 'error!',
+        description: `${error.message}`,
+        position: 'top-right',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    });
+   }
+   
+   
+   if(checkedArray.length > 1) {
+      Promise.all(
+        checkedArray.map(async param => {
+          return await axios
+          .delete(
+            `${server.SERVER_URL}/prompt/${param}`,
+            {
+              headers: { Authorization: `Bearer ${adminState.token}` },
+            }
+          )
+        } )
+      )
+      .then(response => {
+        console.log(response);
+        navigate(0);
+      })
+      .catch(error => {
+        console.log(error.response);
+        toast({
+          title: 'error!',
+          description: `${error.message}`,
+          position: 'top-right',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      });
+    }*/
+  }
 
   const CheckFilteredAll = e => {
     setCheckedFilter([e.target.checked, e.target.checked, e.target.checked, e.target.checked]);
@@ -349,6 +466,14 @@ const Members = () => {
         </Box>
       </Box>
       <Box className="TableContainer">
+      <Flex justify="flex-end" mb={25} spacing="15px">
+          <DeleteIcon
+            onClick={onOpen}
+            w={5}
+            h={5}
+            style={{ cursor: 'pointer' }}
+          />
+        </Flex>
         <Box
           overflowX="auto"
           css={{
@@ -533,6 +658,22 @@ const Members = () => {
           </Flex>
         </Flex>
       </Box>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>
+            <ModalCloseButton />
+          </ModalHeader>
+
+          <ModalBody textAlign={'center'} fontSize='1.2rem' fontWeight={600} padding='20px 24px 10px'>삭제하시겠습니까?</ModalBody>
+          <ModalFooter justifyContent={'center'}>
+            <HStack>
+            <DeleteBtn onClick={DeleteUsers}>삭제</DeleteBtn>
+            <CancelBtn onClick={onClose}>취소</CancelBtn>
+            </HStack>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Layout>
   );
 };

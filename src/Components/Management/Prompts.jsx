@@ -211,8 +211,9 @@ const Prompts = () => {
       .catch(error => {
         console.log(error.response);
         if(error.response.status === 412) {
-          localStorage.clear();
+          
           navigate('/', {replace:true});
+          localStorage.clear();
           setTimeout( 
             toast({
             title: '토큰이 만료됐습니다.',
