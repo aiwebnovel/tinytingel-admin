@@ -160,7 +160,6 @@ const PromptDetail = () => {
           isClosable: true,
         });
       });
- 
    }
  
   const ModifyPrompt = () => {

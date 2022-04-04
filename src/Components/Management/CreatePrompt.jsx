@@ -1,4 +1,5 @@
 import React, { useState, useRef } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { Box, Flex, Button, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import Layout from 'Common/Layout';
@@ -66,10 +67,9 @@ const CreatePropmt = () => {
 
   const toast = useToast();
   const admin = JSON.parse(localStorage.getItem('admin'));
-  const adminState = admin.adminState;
+  
   const cursor = useRef();
-
-  const [isLoading, setLoading] = useState(false);
+  const navigate = useNavigate();
   const [prompts, setPrompt] = useState({
     name: '',
     prompt: '',
@@ -115,8 +115,7 @@ const CreatePropmt = () => {
         isClosable: true,
       });
     }else {
-      setLoading(true);
-
+      const adminState = admin.adminState;
       const config = {
         method: "post",
         url: `${server.SERVER_URL}/prompt`,
@@ -135,6 +134,8 @@ const CreatePropmt = () => {
       axios(config)
       .then((response) => {
         console.log(response);
+        navigate('/prompts');
+        setTimeout( 
         toast({
           title: '성공!',
           description: '프롬프트가 생성되었습니다.',
@@ -142,15 +143,11 @@ const CreatePropmt = () => {
           status: 'success',
           duration: 5000,
           isClosable: true,
-        });
+        }),5000);
       })
       .catch((error)=>{
         console.log(error);
       })
-      .finally(()=>{
-        setLoading(false);
-      })
-
     }
   };
 

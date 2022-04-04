@@ -71,6 +71,7 @@ const CancelBtn = styled.button`
 `
 
 const Prompts = () => {
+  const admin = JSON.parse(localStorage.getItem('admin'));
   const toast = useToast();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -84,7 +85,7 @@ const Prompts = () => {
   //현재 페이지
   const [currentPage, setCurrent] = useState(1);
   //페이지당 포스트 개수
-  const [postPerPage, setPostPerPage] = useState(20);
+  const [postPerPage, setPostPerPage] = useState(30);
   //최대 페이지
   const [maxPage, setMaxPage] = useState('');
 
@@ -106,14 +107,86 @@ const Prompts = () => {
     }
   };
 
-  const DeletePrompt = () => {
-   const checkBox = idList.filter(item => checkedItems.includes(item))
-   console.log(checkBox);
+  const DeletePrompt = async() => {
+   const checkedArray = idList.filter(item => checkedItems.includes(item))
+   const adminState = admin.adminState;
 
-  }
+   console.log(checkedArray)
+
+  
+
+ if(checkedArray.length === 0) {
+    toast({
+      title: '선택한 프롬프트가 없어요!',
+      description: '삭제할 프롬프트를 선택해주세요.',
+      position: 'top-right',
+      status: 'info',
+      duration: 5000,
+      isClosable: true,
+    })
+   } 
+
+   if(checkedArray.length === 1) {
+    axios
+    .delete(
+      `${config.SERVER_URL}/prompt/${checkedArray[0]}`,
+      {
+        headers: { Authorization: `Bearer ${adminState.token}` },
+      }
+    )
+    .then(response => {
+      console.log(response);
+      navigate(0);
+
+    })
+    .catch(error => {
+      console.log(error.response);
+      toast({
+        title: 'error!',
+        description: `${error.message}`,
+        position: 'top-right',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    });
+   }
+   
+   
+   if(checkedArray.length > 1) {
+      Promise.all(
+        checkedArray.map(async param => {
+          return await axios
+          .delete(
+            `${config.SERVER_URL}/prompt/${param}`,
+            {
+              headers: { Authorization: `Bearer ${adminState.token}` },
+            }
+          )
+        } )
+      )
+      .then(response => {
+        console.log(response);
+        navigate(0);
+      })
+      .catch(error => {
+        console.log(error.response);
+        toast({
+          title: 'error!',
+          description: `${error.message}`,
+          position: 'top-right',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      });
+    }
+}
+
+
 
   const fetchData = async () => {
-    const admin = JSON.parse(localStorage.getItem('admin'));
+    
     const adminState = admin.adminState;
 
     await axios
