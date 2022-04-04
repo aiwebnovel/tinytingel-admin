@@ -83,7 +83,7 @@ const Sider = () => {
             </Link>
           </ul>
         </Flex>
-        <Flex w="100%" direction="column" align="baseline" className="nav">
+        {/* <Flex w="100%" direction="column" align="baseline" className="nav">
           <Headings id="toggle2"onClick={()=>{setToggle2(!toggle2)}}>
             <FcAssistant />
             문의사항 관리
@@ -94,7 +94,7 @@ const Sider = () => {
               <li>문의사항 조회</li>
             </Link>
           </ul>
-        </Flex>
+        </Flex> */}
         <Flex w="100%" direction="column" align="baseline" className="nav">
           <Headings id="toggle3" onClick={()=>{setToggle3(!toggle3)}}>
             <FcCommandLine />

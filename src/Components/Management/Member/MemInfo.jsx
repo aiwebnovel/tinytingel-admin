@@ -39,15 +39,16 @@ const MemInfo = () => {
     user: '',
   });
 
-  const [startDate, setStartDate] = useState();
-  const [endDate, setEndDate] = useState();
+  const { membership, user } = Data;
+
+  const [selected, setSelected] = useState('');
+  const [startDate, setStartDate] = useState(new Date('January 1, 2021'));
+  const [endDate, setEndDate] = useState(new Date('March 1, 2021'));
 
   const renderDayContents = (date) => {
     return <span title={date}>{date}</span>;
   };
 
-
-  const { membership, user } = Data;
 
   const fetchData = async () => {
     const config = {
@@ -73,12 +74,15 @@ const MemInfo = () => {
         const data = response.data.data;
 
         const user = data.filter(item => item.user.user_uid === id);
+        const userDate = user[0]
         console.log(user);
         setData({
           ...Data,
-          membership: user[0].membership,
-          user: user[0].user,
+          membership: userDate.membership,
+          user: userDate.user,
         });
+        setSelected(userDate.membership.current)
+
       })
       .catch(error => {
         console.log(error);
@@ -169,7 +173,7 @@ const MemInfo = () => {
                 membership.current > 0 &&
                 formatToday <
                   moment(membership.next_date).format('YYYY-MM-DD') &&
-                `${moment(membership.next_date).format('YYYY-MM-DD')}`}
+                `${moment(membership.start_date).format('YYYY-MM-DD')} ~ ${moment(membership.next_date).format('YYYY-MM-DD')}`}
 
               {/* 구독 했으나 취소 후 이용 기간 지남 */}
 
@@ -275,8 +279,9 @@ const MemInfo = () => {
           </div>
           <div className="ModalInfoBox">
             <h4>구독상품</h4>
-            <select className='ModalSelectStyle'>
+            <select className='ModalSelectStyle' onChange={(e)=> setSelected(e.target.value)} defaultValue={selected}>
               <option value='default'>선택</option>
+              <option value='0'>없음</option>
               <option value='1'>1개월</option>
               <option value='3'>3개월</option>
               <option value='6'>6개월</option>
@@ -289,26 +294,31 @@ const MemInfo = () => {
               className="ModalDatePickerStyle"
               dateFormat="yyyy년 MM월 dd일"
               selected={startDate}
-              maxDate={new Date()}
+              selectsStart
+              startDate={startDate}
+              endDate={endDate}
               onChange={date => setStartDate(date)}
               locale={ko}
-              renderDayContents={renderDayContents}
+              // renderDayContents={renderDayContents}
             />
             ~ 
             <DatePicker
               className="ModalDatePickerStyle"
               dateFormat="yyyy년 MM월 dd일"
               selected={endDate}
-              maxDate={new Date()}
+              selectsEnd
+              startDate={startDate}
+              endDate={endDate}
               onChange={date => setEndDate(date)}
               locale={ko}
-              renderDayContents={renderDayContents}
+              minDate={startDate}
+              // renderDayContents={renderDayContents}
             />
             </Flex>
           </div>
           <div className="ModalInfoBox">
             <h4>무통장 입금</h4>
-           <input type='checkbox'></input>
+           <input type='checkbox' value='nopassbook' disabled={membership.bill_service !== 'none' ? true : false }></input>
           </div>
               </Box>
           </ModalBody>

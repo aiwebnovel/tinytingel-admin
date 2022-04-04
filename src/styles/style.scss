@@ -67,26 +67,10 @@ $gray-1 : #E2E8F0;
 }
 
 .MobileNavTop {
-    > a, button {
-        font-weight: 600;
-    }
 
-    > a {
-        background-color: #b8c6db;
-        border-radius: 5px;
-        color: #444;
-        padding: 5px 13px;
-        transition: all 300ms ease;
-      
-        &:hover {
-          background-color: #0098fa;
-          color: #fff;
-        }
-    }
-
-    > button {
+    > button:nth-child(2) {
         background-color : #FF5A52;
-       
+        font-weight: 600;
         border-radius: 5px;
         color : #fff;
         padding: 5px 13px;
@@ -102,6 +86,9 @@ $gray-1 : #E2E8F0;
 .MobileNav {
     
     > h4 {
+        display: flex;
+        align-items: center;
+        gap:5px;
         padding-left: 15px;
     }
 
@@ -522,6 +509,11 @@ $gray-1 : #E2E8F0;
     >h4 {
         min-width: 100px;
         font-weight: 600;
+    }
+
+    > input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
     }
 
 
