@@ -18,6 +18,8 @@ const SpinLoading = styled(Flex)`
 `;
 
 const Loading = () => {
+
+  return(
   <SpinLoading justify="center" align="center">
     <Flex align={'center'} direction="column" gap="15px">
       <Spinner
@@ -29,7 +31,8 @@ const Loading = () => {
       />
       <Text fontWeight="600">Loading...</Text>
     </Flex>
-  </SpinLoading>;
+  </SpinLoading>
+  )
 };
 
 export default Loading;

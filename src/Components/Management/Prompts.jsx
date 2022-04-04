@@ -97,7 +97,7 @@ const Prompts = () => {
   };
 
   const CheckEach = (e,id) => {
-    console.log(e.target);
+    //console.log(e.target);
     if(e.target.checked) {
       setCheckedItems([...checkedItems, id])
     }
@@ -107,7 +107,9 @@ const Prompts = () => {
   };
 
   const DeletePrompt = () => {
-    console.log('delete')
+   const checkBox = idList.filter(item => checkedItems.includes(item))
+   console.log(checkBox);
+
   }
 
   const fetchData = async () => {
@@ -124,11 +126,13 @@ const Prompts = () => {
       .then(response => {
         console.log(response);
         const list = response.data.data;
+        const config = response.data.config;
         const orderList = list.sort((a,b)=> new Date(b.update_at)- new Date(a.update_at));
         let idList = [];
         const ids = list.map((item, i) => (idList[i] = item.uid));
         setList(orderList);
         setIdList(ids);
+        setMaxPage(config.maxPage);
         //console.log(list.length, idList.length);
       })
       .catch(error => {
@@ -151,7 +155,7 @@ const Prompts = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [currentPage]);
 
   return (
     <Layout>
@@ -261,7 +265,6 @@ const Prompts = () => {
                 size="sm"
                 onClick={() => {
                   setCurrent(currentPage - 1);
-                  fetchData();
                 }}
                 isDisabled={currentPage === 1 && true}
                 icon={<ChevronLeftIcon h={6} w={6} />}
@@ -288,7 +291,6 @@ const Prompts = () => {
                 size="sm"
                 onClick={() => {
                   setCurrent(currentPage + 1);
-                  fetchData();
                 }}
                 isDisabled={currentPage === maxPage && true}
                 icon={<ChevronRightIcon h={6} w={6} />}

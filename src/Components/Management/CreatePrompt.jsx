@@ -3,7 +3,6 @@ import { Box, Flex, Button, useToast } from '@chakra-ui/react';
 import axios from 'axios';
 import Layout from 'Common/Layout';
 import styled from 'styled-components';
-import Loading from 'Common/Loading';
 
 import * as server from 'config/Config';
 
@@ -70,7 +69,7 @@ const CreatePropmt = () => {
   const adminState = admin.adminState;
   const cursor = useRef();
 
-  const [loading, setLoading] = useState(false);
+  const [isLoading, setLoading] = useState(false);
   const [prompts, setPrompt] = useState({
     name: '',
     prompt: '',
@@ -148,6 +147,9 @@ const CreatePropmt = () => {
       .catch((error)=>{
         console.log(error);
       })
+      .finally(()=>{
+        setLoading(false);
+      })
 
     }
   };
@@ -181,6 +183,7 @@ const CreatePropmt = () => {
   }
 
   return (
+
     <Layout>
       <Box padding="48px">
         <Container>
