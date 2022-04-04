@@ -173,6 +173,18 @@ $gray-1 : #E2E8F0;
 
 }
 
+.ModalDatePickerStyle {
+    border: 1px solid $dark-1;
+    border-radius: 5px;
+    background-color: $white-1;
+    padding: 3px 10px;
+
+    @media screen and (max-width: 480px) {
+        width: 100%;
+    }
+
+}
+
 .selectOption {
 
     > option:first-child {
@@ -214,6 +226,12 @@ $gray-1 : #E2E8F0;
         margin-top: 10px;
        }
 }
+}
+
+.ModalSelectStyle {
+    border: 1px solid $dark-1;
+    border-radius: 5px;
+    padding: 2px 5px;
 }
 
 
@@ -480,6 +498,26 @@ $gray-1 : #E2E8F0;
     display: flex;
     padding: 15px;
 
+
+    >h4 {
+        min-width: 100px;
+        font-weight: 600;
+    }
+
+
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+        width: 100%;
+        gap: 20px;
+
+    }
+}
+
+.ModalInfoBox {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom : 1px solid $dark-1;
 
     >h4 {
         min-width: 100px;

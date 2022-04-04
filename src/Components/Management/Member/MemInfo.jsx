@@ -13,9 +13,14 @@ import {
   ModalBody,
   ModalCloseButton,
   useDisclosure,
+  HStack,
+  Flex
 } from '@chakra-ui/react';
 import Layout from 'Common/Layout.jsx';
 import styled from 'styled-components';
+import DatePicker from 'react-datepicker';
+import 'react-datepicker/dist/react-datepicker.css';
+import ko from 'date-fns/locale/ko';
 import moment from 'moment';
 import * as server from 'config/Config';
 
@@ -33,6 +38,14 @@ const MemInfo = () => {
     membership: '',
     user: '',
   });
+
+  const [startDate, setStartDate] = useState();
+  const [endDate, setEndDate] = useState();
+
+  const renderDayContents = (date) => {
+    return <span title={date}>{date}</span>;
+  };
+
 
   const { membership, user } = Data;
 
@@ -246,19 +259,65 @@ const MemInfo = () => {
             <ModalCloseButton />
           </ModalHeader>
 
-          <ModalBody
-            textAlign={'center'}
-            fontSize="1.2rem"
-            fontWeight={600}
-            padding="20px 24px 10px"
-          >
-            삭제하시겠습니까?
+          <ModalBody>
+              <Box>
+              <div className="ModalInfoBox">
+            <h4>이름</h4>
+            <p>{user.name}</p>
+          </div>
+          <div className="ModalInfoBox">
+            <h4>이메일</h4>
+            <p>{user.email}</p>
+          </div>
+          <div className="ModalInfoBox">
+            <h4>가입일자</h4>
+            <p>{`${moment(user.create_at).format('YYYY-MM-DD')}`}</p>
+          </div>
+          <div className="ModalInfoBox">
+            <h4>구독상품</h4>
+            <select className='ModalSelectStyle'>
+              <option value='default'>선택</option>
+              <option value='1'>1개월</option>
+              <option value='3'>3개월</option>
+              <option value='6'>6개월</option>
+            </select>
+          </div>
+          <div className="ModalInfoBox">
+            <h4>이용기간</h4>
+            <Flex direction={'column'}>
+            <DatePicker
+              className="ModalDatePickerStyle"
+              dateFormat="yyyy년 MM월 dd일"
+              selected={startDate}
+              maxDate={new Date()}
+              onChange={date => setStartDate(date)}
+              locale={ko}
+              renderDayContents={renderDayContents}
+            />
+            ~ 
+            <DatePicker
+              className="ModalDatePickerStyle"
+              dateFormat="yyyy년 MM월 dd일"
+              selected={endDate}
+              maxDate={new Date()}
+              onChange={date => setEndDate(date)}
+              locale={ko}
+              renderDayContents={renderDayContents}
+            />
+            </Flex>
+          </div>
+          <div className="ModalInfoBox">
+            <h4>무통장 입금</h4>
+           <input type='checkbox'></input>
+          </div>
+              </Box>
           </ModalBody>
           <ModalFooter justifyContent={'center'}>
-            <BtnBox>
+            <HStack>
               <Back>해지</Back>
               <Modify >수정</Modify>
-            </BtnBox>
+              <Delete>삭제</Delete>
+            </HStack>
           </ModalFooter>
         </ModalContent>
       </Modal>
@@ -280,6 +339,13 @@ const Back = styled.button`
   border: 1px solid #b8c6db;
   border-radius: 5px;
   margin-right: 10px;
+  width: 80px;
+  transition: all 300ms ease;
+
+  &:hover {
+    background-color: #E2E8F0;
+    border: 1px solid #E2E8F0;
+  }
 `;
 
 const Modify = styled.button`
@@ -288,4 +354,27 @@ const Modify = styled.button`
   border: 1px solid #444;
   border-radius: 5px;
   color: #fff;
+  width: 80px;
+  transition: all 300ms ease;
+
+  &:hover {
+    background-color: #E6F4F1;
+    border: 1px solid #E6F4F1;
+    color : #444;
+  }
+`;
+
+const Delete = styled.button`
+  background-color: #FF5A52;
+  padding: 2px 8px;
+  border: 1px solid #FF5A52;
+  border-radius: 5px;
+  color: #fff;
+  width: 80px;
+  transition: all 300ms ease;
+
+  &:hover {
+    background-color: #D83536;
+    border: 1px solid #D83536;
+  }
 `;
