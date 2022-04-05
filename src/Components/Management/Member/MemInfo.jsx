@@ -45,9 +45,42 @@ const MemInfo = () => {
   const [startDate, setStartDate] = useState(new Date('January 1, 2021'));
   const [endDate, setEndDate] = useState(new Date('March 1, 2021'));
 
-  const renderDayContents = (date) => {
-    return <span title={date}>{date}</span>;
-  };
+  const [passbook, setPassbook] = useState(false);
+
+  // const renderDayContents = (date) => {
+  //   return <span title={date}>{date}</span>;
+  // };
+
+  const ModifyUserData = () => {
+    console.log(passbook)
+  }
+
+  const UnSubscribe = () => {
+    if(window.confirm('해지하시겠습니까?')) {
+      axios
+      .delete(
+        `${server.SERVER_URL}/user/plan?user_uid=${id}`,
+        {
+          headers: { Authorization: `Bearer ${admin.adminState.token}` },
+        }
+      )
+      .then(response => {
+        console.log(response);
+        navigate(0);
+      })
+      .catch(error => {
+        console.log(error.response);
+        toast({
+          title: 'error!',
+          description: `${error.message}`,
+          position: 'top-right',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      });
+    }
+  }
 
 
   const fetchData = async () => {
@@ -147,48 +180,48 @@ const MemInfo = () => {
               {membership.bill_service !== 'none' &&
                 membership.current > 0 &&
                 `${membership.current}개월`}
+
               {membership.bill_service !== 'none' &&
                 membership.current === 0 &&
                 membership.before > 0 &&
                 `${membership.before}개월`}
+
+              {/* 구독 중 & 멤버십 취소 안했을 때*/}
+                  {/* {membership.bill_service !== "none" &&
+                    (
+                      <>
+                        <button 
+                        onClick={user.membership_cancel ? (()=>{console.log('already canceled')}): (()=>{console.log('delete')})} disabled={user.membership_cancel}
+                        className={user.membership_cancel ? 'Disabled' : 'CancelBtn'}>
+                          구독 취소
+                        </button>
+                      </>
+                    )} */}
             </p>
           </div>
           <div className="InfoBox">
             <h4>이용기간</h4>
             <p>
-              {/* 구독 x  */}
-              {membership.bill_service === null &&
-                '멤버십을 구독하지 않은 회원입니다.'}
+              {/* 구독 X */}
+            {membership.bill_service === "none" && "멤버십을 구독하지 않은 회원입니다."}
 
-              {/* 구독 했으나 해지 & 기간 안 지남*/}
+              {/* 구독한 적 있음 / 최근 결제일 없음 */}
+            {membership.bill_service !== "none" &&
+              user.membership_recent_date === null &&
+              `${moment(membership.start_date).format(
+                "YYYY-MM-DD"
+              )} ~ ${moment(membership.next_date).format(
+                "YYYY-MM-DD"
+              )}`}
 
-              {membership.bill_service !== null &&
-                membership.current === 0 &&
-                formatToday <
-                  moment(membership.next_date).format('YYYY-MM-DD') &&
-                `멤버십을 구독하지 않은 회원입니다.`}
-
-              {/* 구독 중 & 아직 기간 안 지남 */}
-              {membership.bill_service !== null &&
-                membership.current > 0 &&
-                formatToday <
-                  moment(membership.next_date).format('YYYY-MM-DD') &&
-                `${moment(membership.start_date).format('YYYY-MM-DD')} ~ ${moment(membership.next_date).format('YYYY-MM-DD')}`}
-
-              {/* 구독 했으나 취소 후 이용 기간 지남 */}
-
-              {membership.bill_service !== null &&
-                membership.current === 0 &&
-                formatToday >
-                  moment(membership.next_date).format('YYYY-MM-DD') &&
-                '멤버십을 구독하지 않은 회원입니다.'}
-
-              {/* 기존 회원용 stopPay true 시 && 이용 기간 < 현재 날짜 */}
-              {membership.bill_service !== null &&
-                membership.current > 0 &&
-                formatToday >
-                  moment(membership.next_date).format('YYYY-MM-DD') &&
-                '멤버십을 구독하지 않은 회원입니다.'}
+              {/* 구독한 적 있음 / 최근 결제일 있음  */}
+              {membership.bill_service !== "none" &&
+              user.membership_recent_date !== null &&
+              `${moment(user.membership_recent_date).format(
+                "YYYY-MM-DD"
+              )} ~ ${moment(membership.next_date).format(
+                "YYYY-MM-DD"
+              )}`}
             </p>
           </div>
           <div className="InfoBox">
@@ -198,49 +231,29 @@ const MemInfo = () => {
               {membership.bill_service === 'none' &&
                 '멤버십을 구독하지 않은 회원입니다.'}
 
-              {/* 구독 했으나 해지 & 기간 안 지남*/}
+              {/* 구독 했으나 해지 & 취소 안함*/}
 
               {membership.bill_service !== 'none' &&
-                membership.current === 0 &&
-                formatToday <
-                  moment(membership.next_date).format('YYYY-MM-DD') &&
-                `멤버십을 구독하지 않은 회원입니다.`}
+               !user.membership_cancel &&
+                  moment(membership.next_date).format('YYYY-MM-DD')}
 
-              {/* 구독 중 & 아직 기간 안 지남 */}
+              {/* 구독 중 & 취소함 */}
               {membership.bill_service !== 'none' &&
-                membership.current > 0 &&
-                formatToday <
-                  moment(membership.next_date).format('YYYY-MM-DD') &&
-                `${moment(membership.next_date).format('YYYY-MM-DD')}`}
+                user.membership_cancel
+                && '구독 취소'}
 
-              {/* 구독 했으나 취소 후 이용 기간 지남 */}
 
-              {membership.bill_service !== 'none' &&
-                membership.current === 0 &&
-                formatToday >
-                  moment(membership.next_date).format('YYYY-MM-DD') &&
-                '멤버십을 구독하지 않은 회원입니다.'}
-
-              {/* 기존 회원용 stopPay true 시 && 이용 기간 < 현재 날짜 */}
-              {membership.bill_service !== 'none' &&
-                membership.current > 0 &&
-                formatToday >
-                  moment(membership.next_date).format('YYYY-MM-DD') &&
-                '멤버십을 구독하지 않은 회원입니다.'}
             </p>
           </div>
           <div className="InfoBox">
             <h4>결제 수단</h4>
             <p>
               {membership.bill_service === 'none' && '멤버십을 구독하지 않은 회원입니다.'}
-              {membership.bill_service !== 'none' &&
-                membership.bill_service === 'iamport' &&
+              {membership.bill_service === 'iamport' &&
                 '카카오페이'}
-              {membership.bill_service !== 'none' &&
-                membership.bill_service === 'innopay' &&
+              {membership.bill_service === 'innopay' &&
                 '신용/체크'}
-              {membership.bill_service !== 'none' &&
-                membership.bill_service === 'nopassbook' &&
+              {membership.bill_service === 'nopassbook' &&
                 '무통장'}
             </p>
           </div>
@@ -318,14 +331,14 @@ const MemInfo = () => {
           </div>
           <div className="ModalInfoBox">
             <h4>무통장 입금</h4>
-           <input type='checkbox' value='nopassbook' disabled={membership.bill_service !== 'none' ? true : false }></input>
+           <input type='checkbox' name='nopassbook' onChange={(e)=> setPassbook(e.target.checked)} disabled={membership.bill_service !== 'none' ? true : false }/>
           </div>
               </Box>
           </ModalBody>
           <ModalFooter justifyContent={'center'}>
             <HStack>
-              <Back>해지</Back>
-              <Modify >수정</Modify>
+              <Back onClick={UnSubscribe}>해지</Back>
+              <Modify onClick={ModifyUserData} >수정</Modify>
               <Delete>삭제</Delete>
             </HStack>
           </ModalFooter>
@@ -386,5 +399,25 @@ const Delete = styled.button`
   &:hover {
     background-color: #D83536;
     border: 1px solid #D83536;
+  }
+`;
+
+const CancelBtn = styled.button`
+  background-color: transparent;
+  margin-left: 10px;
+  border: 0;
+  color: #000;
+  outline: 0;
+  font-size: 15px;
+  cursor: pointer;
+  //transition: all 300ms ease-in-out;
+
+  &:hover {
+    border-bottom : 1px solid #000;
+  }
+
+  @media screen and (max-width: 768px) {
+    margin: 0;
+    font-size: 13px;
   }
 `;

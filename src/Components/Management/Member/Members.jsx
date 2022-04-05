@@ -118,10 +118,10 @@ const Members = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const DeleteUsers = () => {
-    console.log('delete user');
+
     const checkedArray = idList.filter(item => checkedItems.includes(item))
     const adminState = admin.adminState;
-      
+    console.log(checkedArray);  
 
  if(checkedArray.length === 0) {
     toast({
@@ -133,11 +133,11 @@ const Members = () => {
       isClosable: true,
     })
    } 
-
-  /* if(checkedArray.length === 1) {
+ 
+   if(checkedArray.length === 1) {
     axios
     .delete(
-      `${server.SERVER_URL}/prompt/${checkedArray[0]}`,
+      `${server.SERVER_URL}/user?user_uid=${checkedArray[0]}`,
       {
         headers: { Authorization: `Bearer ${adminState.token}` },
       }
@@ -160,13 +160,13 @@ const Members = () => {
     });
    }
    
-   
+  
    if(checkedArray.length > 1) {
       Promise.all(
         checkedArray.map(async param => {
           return await axios
           .delete(
-            `${server.SERVER_URL}/prompt/${param}`,
+            `${server.SERVER_URL}/user?user_uid=${param}`,
             {
               headers: { Authorization: `Bearer ${adminState.token}` },
             }
@@ -188,7 +188,7 @@ const Members = () => {
           isClosable: true,
         });
       });
-    }*/
+    }
   }
 
   const CheckFilteredAll = e => {
