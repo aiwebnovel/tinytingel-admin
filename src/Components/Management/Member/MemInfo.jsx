@@ -82,6 +82,42 @@ const MemInfo = () => {
     }
   }
 
+  const DeleteUser = () => {
+    if(window.confirm('삭제 하시겠습니까?')) {
+      axios
+      .delete(
+        `${server.SERVER_URL}/user/?user_uid=${id}`,
+        {
+          headers: { Authorization: `Bearer ${admin.adminState.token}` },
+        }
+      )
+      .then(response => {
+        console.log(response);
+        navigate('/members');
+        setTimeout( 
+              toast({
+              title: '성공',
+              description: '삭제 되었습니다!',
+              position: 'top-right',
+              status: 'success',
+              duration: 5000,
+              isClosable: true,
+            }), 5000);
+      })
+      .catch(error => {
+        console.log(error.response);
+        toast({
+          title: 'error!',
+          description: `${error.message}`,
+          position: 'top-right',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      });
+    }
+  }
+
 
   const fetchData = async () => {
     const config = {
@@ -339,7 +375,7 @@ const MemInfo = () => {
             <HStack>
               <Back onClick={UnSubscribe}>해지</Back>
               <Modify onClick={ModifyUserData} >수정</Modify>
-              <Delete>삭제</Delete>
+              <Delete onClick={DeleteUser}>삭제</Delete>
             </HStack>
           </ModalFooter>
         </ModalContent>
