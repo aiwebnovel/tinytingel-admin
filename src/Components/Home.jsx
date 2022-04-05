@@ -27,12 +27,12 @@ const Home = () => {
   const fetchData = async () => {
     
     const admin = JSON.parse(localStorage.getItem('admin'));
-    const adminState = admin.adminState;
+    
 
     const config ={
       method: "get",
       url: `${server.SERVER_URL}/user`,
-      headers: { Authorization: `Bearer ${adminState.token}` },
+      headers: { Authorization: `Bearer ${admin.adminState.token}` },
     }
 
     await axios(config)

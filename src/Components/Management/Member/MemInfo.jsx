@@ -1,4 +1,4 @@
-import React, { useEffect, useCallback, useState } from 'react';
+import React, { useEffect, useState, forwardRef } from 'react';
 import axios from 'axios';
 import { Link, useParams, useNavigate } from 'react-router-dom';
 import {
@@ -16,6 +16,7 @@ import {
   HStack,
   Flex
 } from '@chakra-ui/react';
+import {FcCalendar} from 'react-icons/fc';
 import Layout from 'Common/Layout.jsx';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
@@ -41,18 +42,23 @@ const MemInfo = () => {
 
   const { membership, user } = Data;
 
-  const [selected, setSelected] = useState('');
-  const [startDate, setStartDate] = useState(new Date('January 1, 2021'));
-  const [endDate, setEndDate] = useState(new Date('March 1, 2021'));
+  const [selectedMembership, setSelected] = useState('');
+  const [startDate, setStartDate] = useState('');
+  const [endDate, setEndDate] = useState('');
 
   const [passbook, setPassbook] = useState(false);
 
   // const renderDayContents = (date) => {
   //   return <span title={date}>{date}</span>;
   // };
+  const CustomInput = forwardRef(({ value, onClick }, ref) => (
+    <button style={{background:'transparent', border:'0', outline:'0'}} onClick={onClick} ref={ref}>
+      <FcCalendar>{value}</FcCalendar>
+    </button>
+  ));
 
   const ModifyUserData = () => {
-    console.log(passbook)
+    console.log(parseInt(selectedMembership), passbook, endDate);
   }
 
   const UnSubscribe = () => {
@@ -150,26 +156,27 @@ const MemInfo = () => {
           membership: userDate.membership,
           user: userDate.user,
         });
-        setSelected(userDate.membership.current)
-
+        setSelected(userDate.membership.current);
+        setStartDate(userDate.membership.start_date);
+        setEndDate(userDate.membership.nex_date);
       })
       .catch(error => {
         console.log(error);
-        if (error.response.status === 412) {
-          localStorage.clear();
-          navigate('/', { replace: true });
-          setTimeout(
-            toast({
-              title: '토큰이 만료됐습니다.',
-              description: '새로 로그인 해주세요!',
-              position: 'top-right',
-              status: 'error',
-              duration: 5000,
-              isClosable: true,
-            }),
-            5000
-          );
-        }
+        // if (error.response.status === 412) {
+        //   localStorage.clear();
+        //   navigate('/', { replace: true });
+        //   setTimeout(
+        //     toast({
+        //       title: '토큰이 만료됐습니다.',
+        //       description: '새로 로그인 해주세요!',
+        //       position: 'top-right',
+        //       status: 'error',
+        //       duration: 5000,
+        //       isClosable: true,
+        //     }),
+        //     5000
+        //   );
+        // }
       });
   };
 
@@ -328,7 +335,7 @@ const MemInfo = () => {
           </div>
           <div className="ModalInfoBox">
             <h4>구독상품</h4>
-            <select className='ModalSelectStyle' onChange={(e)=> setSelected(e.target.value)} defaultValue={selected}>
+            <select className='ModalSelectStyle' onChange={(e)=> setSelected(e.target.value)} defaultValue={selectedMembership}>
               <option value='default'>선택</option>
               <option value='0'>없음</option>
               <option value='1'>1개월</option>
@@ -339,19 +346,23 @@ const MemInfo = () => {
           <div className="ModalInfoBox">
             <h4>이용기간</h4>
             <Flex direction={'column'}>
-            <DatePicker
+            <input
               className="ModalDatePickerStyle"
-              dateFormat="yyyy년 MM월 dd일"
-              selected={startDate}
-              selectsStart
-              startDate={startDate}
-              endDate={endDate}
-              onChange={date => setStartDate(date)}
-              locale={ko}
-              // renderDayContents={renderDayContents}
+              value={moment(startDate).format("yyyy년 MM월 DD일")}
+              //onChange={}
             />
             ~ 
+            <input
+              className="ModalDatePickerStyle"
+              value={moment(endDate).format("yyyy년 MM월 DD일")}
+              //onChange={}
+            />
             <DatePicker
+            selected={endDate}
+            onChange={(date) => setEndDate(date)}
+            customInput={<CustomInput/>}
+            />
+            {/* <DatePicker
               className="ModalDatePickerStyle"
               dateFormat="yyyy년 MM월 dd일"
               selected={endDate}
@@ -362,7 +373,7 @@ const MemInfo = () => {
               locale={ko}
               minDate={startDate}
               // renderDayContents={renderDayContents}
-            />
+            /> */}
             </Flex>
           </div>
           <div className="ModalInfoBox">
