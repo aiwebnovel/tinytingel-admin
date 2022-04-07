@@ -203,9 +203,10 @@ const Members = () => {
     }
 
     if (e.target.checked === false) {
-      filterCheckValue.splice(0);
-     // console.log(filterCheckValue);
-      setMembershipList(filterCheckValue);
+        setMembershipList(['0', '1', '3', '6'])
+        // filterCheckValue.splice(0);
+        // setMembershipList(filterCheckValue);
+  
     }
   };
 
@@ -216,12 +217,18 @@ const Members = () => {
      // console.log(filterCheckValue)
 
     } else {
+     
       filterCheckValue.splice(filterCheckValue.indexOf(e.target.value), 1);
       const set = [...new Set(filterCheckValue)];
-      setCheckedFilterValue(set);
-      setMembershipList(set);
-      //console.log(set)
+      const setEvery = set.every(item => item === '')
+      
+      if(setEvery) {
+        setMembershipList(['0', '1', '3', '6'])
+      }else {
 
+        setCheckedFilterValue(set);
+        setMembershipList(set);
+      }
     }
   };
 
@@ -556,7 +563,9 @@ const Members = () => {
                       {item.user.membership_recent_date === null && item.membership.start_date !== null && moment(item.membership.start_date).format('YYYY-MM-DD')}
                     </td>
                     <td className="textCenter">
-                      <Link to={`/members/${item.user.user_uid}`}>
+                      <Link 
+                      to={`/members/${item.user.user_uid}`}
+                      >
                         <InfoIcon w={5} h={5} />
                       </Link>
                     </td>

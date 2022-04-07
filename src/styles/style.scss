@@ -165,11 +165,20 @@ $gray-1 : #E2E8F0;
     border-radius: 5px;
     background-color: $white-1;
     padding: 3px 10px;
+    width: 200px;
 
     @media screen and (max-width: 480px) {
         width: 100%;
     }
+}
 
+.IconDatePicker {
+    width: 30px;
+    height: 30px;
+}
+
+.no-outline {
+    outline: 0;
 }
 
 .selectOption {
@@ -188,6 +197,7 @@ $gray-1 : #E2E8F0;
 
 
     max-width: 600px;
+
 
     > input {
         width:100%;
@@ -212,7 +222,8 @@ $gray-1 : #E2E8F0;
         margin-left: 0;
         margin-top: 10px;
        }
-}
+
+    }
 }
 
 .ModalSelectStyle {
