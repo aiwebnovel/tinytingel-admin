@@ -67,26 +67,10 @@ $gray-1 : #E2E8F0;
 }
 
 .MobileNavTop {
-    > a, button {
-        font-weight: 600;
-    }
 
-    > a {
-        background-color: #b8c6db;
-        border-radius: 5px;
-        color: #444;
-        padding: 5px 13px;
-        transition: all 300ms ease;
-      
-        &:hover {
-          background-color: #0098fa;
-          color: #fff;
-        }
-    }
-
-    > button {
+    > button:nth-child(2) {
         background-color : #FF5A52;
-       
+        font-weight: 600;
         border-radius: 5px;
         color : #fff;
         padding: 5px 13px;
@@ -102,6 +86,9 @@ $gray-1 : #E2E8F0;
 .MobileNav {
     
     > h4 {
+        display: flex;
+        align-items: center;
+        gap:5px;
         padding-left: 15px;
     }
 
@@ -142,11 +129,11 @@ $gray-1 : #E2E8F0;
 //members
 
 .MemberContainer {
-    padding: 48px;
+    padding: 36px;
 
     @media screen and (max-width: 768px) {
-        padding-right: 36px;
-        padding-left: 36px;
+        padding-right: 24px;
+        padding-left: 24px;
     }
 }
 
@@ -173,7 +160,29 @@ $gray-1 : #E2E8F0;
 
 }
 
+.ModalDatePickerStyle {
+    border: 1px solid $dark-1;
+    border-radius: 5px;
+    background-color: $white-1;
+    padding: 3px 10px;
+    width: 200px;
+
+    @media screen and (max-width: 480px) {
+        width: 100%;
+    }
+}
+
+.IconDatePicker {
+    width: 30px;
+    height: 30px;
+}
+
+.no-outline {
+    outline: 0;
+}
+
 .selectOption {
+
     > option:first-child {
         color :$white-2;
     }
@@ -185,38 +194,47 @@ $gray-1 : #E2E8F0;
 
 
 .SearchFlex {
-    > form {
-        width: 100%;
-    >input {
-        width: 60%;
+
+
+    max-width: 600px;
+
+
+    > input {
+        width:100%;
+        outline: 0;
+        background-color : $white-1;
+        border: 1px solid $gray-1;
+        border-radius: 5px;
+        padding : 8px;
     }
 
-    >button {
-        background-color: $main;
-        color: $dark-1;
-        padding: 8px 15px;
+    > button {
         margin-left: 10px;
-        border-radius: 5px;
     }
 
     @media screen and (max-width: 480px) {
        > input { 
            width: 100%;
        }
-
+    
        > button {
         width: 100%;
         margin-left: 0;
         margin-top: 10px;
        }
-    }
 
+    }
 }
+
+.ModalSelectStyle {
+    border: 1px solid $dark-1;
+    border-radius: 5px;
+    padding: 2px 5px;
 }
 
 
 .TableContainer {
-    padding: 48px;
+    padding: 36px;
 }
 
 .TableStyle {
@@ -349,6 +367,108 @@ $gray-1 : #E2E8F0;
     }
 }
 
+//Custom Table - Members
+
+
+.MemberCustomTableStyle {
+    min-width: 1200px;
+    width: 100%;
+    background-color: #fff;
+}
+
+.MemberCheckBox{
+    //padding: 0 10px;
+    min-width: 40px; 
+    max-width: 80px;
+
+    > label {
+        margin-top: 5px;
+    }
+}
+
+.textLeft {
+    text-align: left;
+}
+
+.textCenter {
+    text-align : center;
+}
+
+
+.MemberCustom-tr {
+    height: 48px;
+    border: 1px solid #ededed;
+    border-left: 0;
+    border-right: 0;
+}
+
+.MemberCustom-thead-tr {
+    background-color: #f9f9f9;
+}
+ 
+.MemberCustom-th1 {
+    min-width: 200px;
+}
+
+.MemberCustom-th2 {
+    min-width: 200px;
+}
+
+.MemberCustom-th3 {
+    min-width: 130px;
+}
+
+.MemberCustom-th4 {
+    min-width: 130px;
+}
+.MemberCustom-th5 {
+    min-width: 100px;
+}
+
+.MemberCustom-th6 {
+    min-width: 130px;
+}
+.MemberCustom-th7 {
+    min-width: 130px;
+}
+
+.MemberCustom-th8 {
+    min-width: 100px;
+}
+
+//Custom table - paymentlog
+
+
+.paymentCustom-th1 {
+    min-width: 100px;
+}
+
+.paymentCustom-th2 {
+    min-width: 160px;
+}
+
+.paymentCustom-th3 {
+    min-width: 160px;
+}
+
+.paymentCustom-th4 {
+    min-width: 80px;
+}
+.paymentCustom-th5 {
+    min-width: 100px;
+}
+
+.paymentCustom-th6 {
+    min-width: 100px;
+}
+
+
+//custom input, textarea
+
+.custom-label {
+    width: 100px;
+}
+
 
 
 //MemInfo
@@ -369,16 +489,42 @@ $gray-1 : #E2E8F0;
 .InfoContent {
     border: 1px solid $dark-1;
     background-color: $white-1;
+    margin-bottom: 30px;
 }
 
 .InfoBox {
     display: flex;
     padding: 15px;
-    gap: 50px;
- 
+
 
     >h4 {
+        min-width: 100px;
         font-weight: 600;
+    }
+
+
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+        width: 100%;
+        gap: 20px;
+
+    }
+}
+
+.ModalInfoBox {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom : 1px solid $dark-1;
+
+    >h4 {
+        min-width: 100px;
+        font-weight: 600;
+    }
+
+    > input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
     }
 
 
@@ -464,3 +610,4 @@ $gray-1 : #E2E8F0;
 
     }
 }
+

@@ -71,6 +71,7 @@ const CancelBtn = styled.button`
 `
 
 const Prompts = () => {
+  const admin = JSON.parse(localStorage.getItem('admin'));
   const toast = useToast();
   const navigate = useNavigate();
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -97,7 +98,7 @@ const Prompts = () => {
   };
 
   const CheckEach = (e,id) => {
-    console.log(e.target);
+    //console.log(e.target);
     if(e.target.checked) {
       setCheckedItems([...checkedItems, id])
     }
@@ -106,35 +107,86 @@ const Prompts = () => {
     }
   };
 
-  const DeletePrompt = () => {
-    console.log('delete')
-  }
+  const DeletePrompt = async() => {
+   const checkedArray = idList.filter(item => checkedItems.includes(item))
+   const adminState = admin.adminState;
 
-  //   const fetchData = useCallback(async () => {
-  //     const admin = JSON.parse(localStorage.getItem('admin'));
+   console.log(checkedArray)
 
-  //     await axios
-  //       .get(
-  //         `${config.SERVER_URL}/user/list/login?page=${currentPage}&count=${postPerPage}`,
-  //         {
-  //           headers: { admincode: admin.IdState },
-  //         }
-  //       )
-  //       .then(res => {
-  //         let result = res.data;
-  //         let configData = result.config;
-  //         let list = result.data.list;
-  //         //console.log(list);
-  //         setMaxPage(configData.maxPage);
-  //         setList(list);
-  //       })
-  //       .catch(err => {
-  //         console.log(err);
-  //       });
-  //   }, [currentPage]);
+  
+
+ if(checkedArray.length === 0) {
+    toast({
+      title: '선택한 프롬프트가 없어요!',
+      description: '삭제할 프롬프트를 선택해주세요.',
+      position: 'top-right',
+      status: 'info',
+      duration: 5000,
+      isClosable: true,
+    })
+   } 
+
+   if(checkedArray.length === 1) {
+    axios
+    .delete(
+      `${config.SERVER_URL}/prompt/${checkedArray[0]}`,
+      {
+        headers: { Authorization: `Bearer ${adminState.token}` },
+      }
+    )
+    .then(response => {
+      console.log(response);
+      navigate(0);
+
+    })
+    .catch(error => {
+      console.log(error.response);
+      toast({
+        title: 'error!',
+        description: `${error.message}`,
+        position: 'top-right',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    });
+   }
+   
+   
+   if(checkedArray.length > 1) {
+      Promise.all(
+        checkedArray.map(async param => {
+          return await axios
+          .delete(
+            `${config.SERVER_URL}/prompt/${param}`,
+            {
+              headers: { Authorization: `Bearer ${adminState.token}` },
+            }
+          )
+        } )
+      )
+      .then(response => {
+        console.log(response);
+        navigate(0);
+      })
+      .catch(error => {
+        console.log(error.response);
+        toast({
+          title: 'error!',
+          description: `${error.message}`,
+          position: 'top-right',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      });
+    }
+}
+
+
 
   const fetchData = async () => {
-    const admin = JSON.parse(localStorage.getItem('admin'));
+    
     const adminState = admin.adminState;
 
     await axios
@@ -147,18 +199,21 @@ const Prompts = () => {
       .then(response => {
         console.log(response);
         const list = response.data.data;
+        const config = response.data.config;
         const orderList = list.sort((a,b)=> new Date(b.update_at)- new Date(a.update_at));
         let idList = [];
         const ids = list.map((item, i) => (idList[i] = item.uid));
         setList(orderList);
         setIdList(ids);
+        setMaxPage(config.maxPage);
         //console.log(list.length, idList.length);
       })
       .catch(error => {
         console.log(error.response);
         if(error.response.status === 412) {
-          localStorage.clear();
+          
           navigate('/', {replace:true});
+          localStorage.clear();
           setTimeout( 
             toast({
             title: '토큰이 만료됐습니다.',
@@ -174,7 +229,7 @@ const Prompts = () => {
 
   useEffect(() => {
     fetchData();
-  }, []);
+  }, [currentPage]);
 
   return (
     <Layout>
@@ -215,7 +270,7 @@ const Prompts = () => {
                   <Checkbox
                     name="all"
                     value="all"
-                    colorScheme="green"
+                    colorScheme="blue"
                     isChecked={checkedItems.length === idList.length}
                     isIndeterminate={isIndeterminate}
                     onChange={CheckAll}
@@ -236,7 +291,7 @@ const Prompts = () => {
                       <Checkbox
                         name="list"
                         value={item.uid}
-                        colorScheme="green"
+                        colorScheme="blue"
                         isChecked={checkedItems.includes(item.uid)}
                         onChange={(e) => CheckEach(e, item.uid)}
                       />
@@ -284,7 +339,6 @@ const Prompts = () => {
                 size="sm"
                 onClick={() => {
                   setCurrent(currentPage - 1);
-                  fetchData();
                 }}
                 isDisabled={currentPage === 1 && true}
                 icon={<ChevronLeftIcon h={6} w={6} />}
@@ -311,7 +365,6 @@ const Prompts = () => {
                 size="sm"
                 onClick={() => {
                   setCurrent(currentPage + 1);
-                  fetchData();
                 }}
                 isDisabled={currentPage === maxPage && true}
                 icon={<ChevronRightIcon h={6} w={6} />}

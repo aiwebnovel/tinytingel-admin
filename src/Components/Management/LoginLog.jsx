@@ -1,13 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
+import { Link, useNavigate } from 'react-router-dom';
 import {
   Box,
-  Table,
-  Thead,
-  Tbody,
-  Tr,
-  Th,
-  Td,
   Text,
   Flex,
   Tooltip,
@@ -22,46 +17,80 @@ import {
 } from '@chakra-ui/icons';
 import Layout from 'Common/Layout.jsx';
 import styled from 'styled-components';
+import moment from 'moment';
 import { CSVLink } from 'react-csv';
 
-import * as config from 'config/Config';
+import * as server from 'config/Config';
 
 const LoginLog = () => {
   const toast = useToast();
+  const navigate = useNavigate();
+  const admin = JSON.parse(localStorage.getItem('admin'));
 
   const headers = [
-    { label: '회원명', key: 'user_name' },
-    { label: '이메일', key: 'user_identifier' },
-    { label: '로그인 일자', key: 'user_logInDate' },
-    { label: '가입일자', key: 'user_signInDate' },
-    { label: '구독 상품', key: 'user_membership_count' },
+    { label: '로그인 일자', key: 'user.login_at' },
+    { label: '회원명', key: 'user.name' },
+    { label: '이메일 주소', key: 'user.email' },
+    { label: '가입일자', key: 'user.create_at' },
+    { label: '구독상품', key: 'membership.current' },
+    { label: '구독일시', key: 'membership.start_date' },
+    { label: '결제일자', key: 'membership.start_date' },
   ];
 
   const [currentPage, setCurrent] = useState(1); //현재 페이지;
-  const [postPerPage, setPostPerPage] = useState(30); //페이지당 포스트 개수
+  const [postPerPage, setPostPerPage] = useState(1000); //페이지당 포스트 개수
   const [List, setList] = useState([]);
   const [maxPage, setMaxPage] = useState('');
 
   const fetchData = useCallback(async () => {
-    const admin = JSON.parse(localStorage.getItem('admin'));
+    const today = new Date();
+    const formatToday = moment(today).format('YYYY-MM-DD');
 
-    await axios
-      .get(
-        `${config.SERVER_URL}/user/list/login?page=${currentPage}&count=${postPerPage}`,
-        {
-          headers: { admincode: admin.IdState },
-        }
-      )
-      .then(res => {
-        let result = res.data;
-        let configData = result.config;
-        let list = result.data.list;
-        //console.log(list);
-        setMaxPage(configData.maxPage);
-        setList(list);
+    const config = {
+      method: 'post',
+      url: `${server.SERVER_URL}/user/list/search`,
+      headers: { Authorization: `Bearer ${admin.adminState.token}` },
+      data: {
+        page: currentPage,
+        count: postPerPage,
+        membershipList: [0, 1, 3, 6],
+        serviceList: ['iamport', 'innopay', 'nopassbook', 'none'],
+        keyword: '',
+        periodOption: {
+          option: 'login_at',
+          startDate: '2020-09-30',
+          endDate: formatToday,
+        },
+      },
+    };
+
+    await axios(config)
+      .then(response => {
+        const data = response.data.data;
+        const config = response.data.config;
+      
+        const orderList = data.sort(
+          (a, b) => new Date(b.user.login_at) - new Date(a.user.login_at)
+        );
+        setMaxPage(config.maxPage);
+        setList(orderList);
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        console.log(error);
+        // if(error.response.status === 412) {
+        localStorage.clear();
+        navigate('/', { replace: true });
+        setTimeout(
+          toast({
+            title: '토큰이 만료됐습니다.',
+            description: '새로 로그인 해주세요!',
+            position: 'top-right',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          }),
+          5000
+        );
       });
   }, [currentPage]);
 
@@ -106,39 +135,80 @@ const LoginLog = () => {
             },
           }}
         >
-          <Table variant="simple" bg="#fff" className="TableStyle">
-            <Thead>
-              <Tr>
-                <Th>회원명</Th>
-                <Th>이메일</Th>
-                <Th style={{padding: '12px'}}>로그인일자</Th>
-                <Th style={{padding: '12px'}}>가입일자</Th>
-                <Th style={{padding: '12px'}}>멤버십</Th>
-              </Tr>
-            </Thead>
-            <Tbody>
-              {List &&
+          <table className="MemberCustomTableStyle">
+            <thead>
+              <tr className="MemberCustom-tr MemberCustom-thead-tr">
+                <th className="MemberCustom-th4 textCenter">로그인 일자</th>
+                <th className="MemberCustom-th1 textLeft">회원명</th>
+                <th className="MemberCustom-th2 textLeft">이메일 주소</th>
+                <th className="MemberCustom-th3 textCenter">가입일자</th>
+                <th className="MemberCustom-th5 textCenter">구독상품</th>
+                <th className="MemberCustom-th6 textCenter">구독일시</th>
+                <th className="MemberCustom-th7 textCenter">결제일자</th>
+              </tr>
+            </thead>
+            <tbody>
+              {List.length !== 0 ? (
                 List.map(item => (
-                  <Tr key={item.user_uid}>
-                    <Td>{item.user_name}</Td>
-                    <Td>{item.user_identifier}</Td>
-                    <Td>
-                      {item.user_logInDate !== null
-                        ? item.user_logInDate
-                        : 'none'}
-                    </Td>
-                    <Td>{item.user_signInDate.slice(0, 11)}</Td>
-                    <Td>{item.user_membership_count}</Td>
-                  </Tr>
-                ))}
-            </Tbody>
-          </Table>
+                  <tr key={item.user.user_uid} className="MemberCustom-tr">
+                    <td className="textCenter">
+                      {item.user.login_at !== null ? (
+                        <p style={{padding: '3px'}}>
+                          <span style={{fontWeight: 600}}>{moment(item.user.login_at).format(
+                            'YYYY-MM-DD'
+                          )} </span>
+                          <br />
+                          {moment(item.user.login_at).format('hh:mm:ss')}
+                        </p>
+                      ) : (
+                        '기록 없음'
+                      )}
+                    </td>
+                    <td>{item.user.name}</td>
+                    <td>{item.user.email}</td>
+                    <td className="textCenter">
+                      {moment(item.user.create_at).format('YYYY-MM-DD')}
+                    </td>
+
+                    <td className="textCenter">
+                      {item.membership.bill_service !== 'none'
+                        ? `${item.membership.current}개월`
+                        : 'X'}
+                    </td>
+                    <td className="textCenter">
+                      {item.membership.start_date !== null
+                        ? moment(item.membership.start_date).format(
+                            'YYYY-MM-DD'
+                          )
+                        : 'X'}
+                    </td>
+                    <td className="textCenter">
+                      {item.membership.start_date !== null
+                        ? moment(item.membership.start_date).format(
+                            'YYYY-MM-DD'
+                          )
+                        : 'X'}
+                    </td>
+                  </tr>
+                ))
+              ) : (
+                <tr>
+                  <td></td>
+                  <td></td>
+                  <td></td>
+                  <td>결과가 없습니다</td>
+                  <td></td>
+                  <td></td>
+                </tr>
+              )}
+            </tbody>
+          </table>
         </Box>
         <Flex m={4} alignItems="center" justifyContent="center">
-          <Flex justifyContent="space-between" >
+          <Flex justifyContent="space-between">
             <Tooltip label="First Page">
               <IconButton
-              size='sm'
+                size="sm"
                 onClick={() => {
                   setCurrent(1);
                   if (currentPage === 1) {
@@ -158,7 +228,7 @@ const LoginLog = () => {
             </Tooltip>
             <Tooltip label="Previous Page">
               <IconButton
-              size='sm'
+                size="sm"
                 onClick={() => {
                   setCurrent(currentPage - 1);
                   fetchData();
@@ -174,8 +244,8 @@ const LoginLog = () => {
               <Text fontWeight="bold" as="span">
                 {/* {pageIndex + 1} */}
                 {currentPage}
-              </Text>{' '}
-              of{' '}
+              </Text>{" "}
+              of{" "}
               <Text fontWeight="bold" as="span">
                 {maxPage}
               </Text>
@@ -185,7 +255,7 @@ const LoginLog = () => {
           <Flex>
             <Tooltip label="Next Page">
               <IconButton
-              size='sm'
+                size="sm"
                 onClick={() => {
                   setCurrent(currentPage + 1);
                   fetchData();
@@ -196,7 +266,7 @@ const LoginLog = () => {
             </Tooltip>
             <Tooltip label="Last Page">
               <IconButton
-              size='sm'
+                size="sm"
                 onClick={() => {
                   setCurrent(maxPage);
 
@@ -204,7 +274,7 @@ const LoginLog = () => {
                     toast({
                       title: '마지막 페이지',
                       description: '마지막 페이지에요!',
-                       position: 'top-right',
+                      position: 'top-right',
                       status: 'info',
                       duration: 5000,
                       isClosable: true,

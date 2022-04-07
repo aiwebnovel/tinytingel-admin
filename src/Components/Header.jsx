@@ -6,7 +6,7 @@ import "../styles/style.scss";
 const Header = ({ onOpen }) => {
 
   const admin = JSON.parse(localStorage.getItem('admin'));
-  const adminState = admin.adminState;
+ 
   const [isShow, SetShow] = useState(false);
 
   const HandleShow = () => {
@@ -48,7 +48,7 @@ const Header = ({ onOpen }) => {
           right="0px"
           className="UserProfile"
         >
-          <h4>{adminState.name}</h4>
+          <h4>{admin && admin.adminState.name}</h4>
           <p>라이팅젤 관리자</p>
           <button onClick={AdminLogOut}>로그아웃</button>
         </Box>
