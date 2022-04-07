@@ -41,6 +41,8 @@ const PaymentLog = () => {
     { label: '결제수단', key: 'membership.bill_service' },
   ];
 
+  const [membershipPrice, setPrice] = useState('')
+
   const [currentPage, setCurrent] = useState(1); //현재 페이지;
   const [postPerPage, setPostPerPage] = useState(50); //페이지당 포스트 개수
   const [maxPage, setMaxPage] = useState('');
@@ -234,6 +236,7 @@ const PaymentLog = () => {
         let idList = [];
         const ids = data.map((item, i) => (idList[i] = item.user.user_uid));
         setIdList(ids);
+
       })
       .catch(error => {
         console.log(error);

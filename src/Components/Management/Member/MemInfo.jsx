@@ -58,6 +58,12 @@ const MemInfo = () => {
     </button>
   ));
 
+  const ChangeSelectedAndEndDate = e => {
+    setSelected(e.target.value);
+    const addMonth = moment(startDate).add(e.target.value, 'months').calendar();
+    setEndDate(addMonth);
+  };
+
   const ModifyUserData = () => {
     console.log(parseInt(selectedMembership), passbook, endDate);
     const plan = parseInt(selectedMembership);
@@ -160,8 +166,7 @@ const MemInfo = () => {
     }
   };
 
-  const fetchData = async (e) => {
-  
+  const fetchData = async e => {
     const config = {
       method: 'post',
       url: `${server.SERVER_URL}/user/list/search`,
@@ -187,14 +192,25 @@ const MemInfo = () => {
 
         const user = data.filter(item => item.user.user_uid === id);
         const userData = user[0];
-
+        //결제 자체를 x
         if (
-          userData.membership.start_date === null &&
-          userData.membership.next_date === null
+          userData.membership.start_date === null
         ) {
-          setStartDate(formatToday);
-          setEndDate(formatToday);
-        } else {
+          setStartDate(today);
+          setEndDate(today);
+        }
+
+        //최근에 결제 기록 o
+        if (userData.user.membership_recent_date !== null) {
+          setStartDate(userData.user.membership_recent_date);
+          setEndDate(userData.membership.next_date);
+        }
+
+        //결제 했으나 최근 결제 x
+        if (
+          userData.user.membership_recent_date === null &&
+          userData.membership.start_date !== null
+        ) {
           setStartDate(userData.membership.start_date);
           setEndDate(userData.membership.next_date);
         }
@@ -254,9 +270,9 @@ const MemInfo = () => {
           <div className="InfoBox" style={{ backgroundColor: '#f9f9f9' }}>
             <h4>결제내역</h4>
             {membership.bill_service !== 'none' ? (
-              <p 
-              style={{ textDecoration: 'underline', cursor:'pointer' }} 
-              onClick={()=>{
+              <p
+                style={{ textDecoration: 'underline', cursor: 'pointer' }}
+                onClick={() => {
                   toast({
                     title: '준비 중',
                     description: '결제 로그 이전 준비 중!',
@@ -264,15 +280,18 @@ const MemInfo = () => {
                     status: 'info',
                     duration: 5000,
                     isClosable: true,
-                  })
-              }}>보러가기</p>
+                  });
+                }}
+              >
+                보러가기
+              </p>
+            ) : (
               // <Link
               //   to={`/members/${id}/payment`}
               //   style={{ textDecoration: 'underline' }}
               // >
               //   보러가기
               // </Link>
-            ) : (
               '멤버십을 구독하지 않은 회원입니다.'
             )}
           </div>
@@ -384,7 +403,7 @@ const MemInfo = () => {
                 <h4>구독상품</h4>
                 <select
                   className="ModalSelectStyle"
-                  onChange={e => setSelected(e.target.value)}
+                  onChange={ChangeSelectedAndEndDate}
                   value={selectedMembership}
                 >
                   <option value="0" disabled>
@@ -400,11 +419,7 @@ const MemInfo = () => {
                 <Flex direction={'column'}>
                   <input
                     className="ModalDatePickerStyle"
-                    value={
-                      membership.start_date !== null
-                        ? moment(startDate).format('yyyy년 MM월 DD일')
-                        : moment(today).format('yyyy년 MM월 DD일')
-                    }
+                    value={moment(startDate).format('yyyy년 MM월 DD일')}
                     readOnly
                   />
                   ~
