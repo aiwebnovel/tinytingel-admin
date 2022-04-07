@@ -97,13 +97,13 @@ const PaymentLog = () => {
         const set = [...new Set(payFilterValue)];
         setPayFilterValue(set);
         setPayMethod(set)
-        console.log(set)
+       // console.log(set)
       }
   
       if (e.target.checked === false) {
-        payFilterValue.splice(0);
-        console.log(payFilterValue);
-        setPayMethod(payFilterValue);
+        setPayMethod(["iamport","innopay","nopassbook","none"])
+        // payFilterValue.splice(0);
+        // setPayMethod(payFilterValue);
       }
 
   };
@@ -112,13 +112,20 @@ const PaymentLog = () => {
     if (e.target.checked === true) {
         payFilterValue.push(e.target.value);
         setPayMethod(payFilterValue);
-        console.log(payFilterValue)
+        //console.log(payFilterValue)
       } else {
         payFilterValue.splice(payFilterValue.indexOf(e.target.value), 1);
         const set = [...new Set(payFilterValue)];
-        setPayFilterValue(set);
-        setPayMethod(set);
-        console.log(set)
+        const setEvery = set.every(item => item === '')
+
+        if(setEvery) {
+          setPayMethod(["iamport","innopay","nopassbook","none"])
+        }else {
+          setPayFilterValue(set);
+          setPayMethod(set);
+          //console.log(set)
+        }
+
       }
 
   };
@@ -140,9 +147,9 @@ const PaymentLog = () => {
     }
 
     if (e.target.checked === false) {
-      filterCheckValue.splice(0);
-      // console.log(filterCheckValue);
-      setMembershipList(filterCheckValue);
+      setMembershipList(['0', '1', '3', '6'])
+      // filterCheckValue.splice(0);
+      // setMembershipList(filterCheckValue);
     }
   };
 
@@ -154,9 +161,15 @@ const PaymentLog = () => {
     } else {
       filterCheckValue.splice(filterCheckValue.indexOf(e.target.value), 1);
       const set = [...new Set(filterCheckValue)];
-      setCheckedFilterValue(set);
-      setMembershipList(set);
-      //console.log(set)
+      const setEvery = set.every(item => item === '')
+      
+      if(setEvery) {
+        setMembershipList(['0', '1', '3', '6'])
+      }else {
+
+        setCheckedFilterValue(set);
+        setMembershipList(set);
+      }
     }
   };
 
