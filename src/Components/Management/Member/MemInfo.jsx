@@ -215,6 +215,10 @@ const MemInfo = () => {
           setEndDate(userData.membership.next_date);
         }
 
+        if(userData.membership.bill_service === 'nopassbook') {
+          setPassbook(true);
+        }
+
         console.log(user);
         setData({
           ...Data,
@@ -419,14 +423,14 @@ const MemInfo = () => {
                 <Flex direction={'column'}>
                   <input
                     className="ModalDatePickerStyle"
-                    value={moment(startDate).format('yyyy년 MM월 DD일')}
+                    value={moment(startDate).format('yyyy/MM/DD')}
                     readOnly
                   />
                   ~
                   <Flex justify="space-between" align="flex-start" w="100%">
                     <input
                       className="ModalDatePickerStyle no-outline"
-                      value={moment(endDate).format('yyyy년 MM월 DD일')}
+                      value={moment(endDate).format('yyyy/MM/DD')}
                       readOnly
                     />
 
@@ -444,6 +448,7 @@ const MemInfo = () => {
                 <input
                   type="checkbox"
                   name="nopassbook"
+                  value={passbook}
                   onChange={e => setPassbook(e.target.checked)}
                   disabled={membership.bill_service !== 'none' ? true : false}
                 />
