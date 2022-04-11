@@ -77,7 +77,7 @@ const LoginLog = () => {
       })
       .catch(error => {
         console.log(error);
-        // if(error.response.status === 412) {
+        if(error.response.status === 412) {
         localStorage.clear();
         navigate('/', { replace: true });
         setTimeout(
@@ -91,7 +91,9 @@ const LoginLog = () => {
           }),
           5000
         );
+        }
       });
+    
   }, [currentPage]);
 
   useEffect(() => {
@@ -173,21 +175,21 @@ const LoginLog = () => {
                     <td className="textCenter">
                       {item.membership.bill_service !== 'none'
                         ? `${item.membership.current}개월`
-                        : 'X'}
+                        : "없음"}
                     </td>
                     <td className="textCenter">
                       {item.membership.start_date !== null
                         ? moment(item.membership.start_date).format(
                             'YYYY-MM-DD'
                           )
-                        : 'X'}
+                        : "없음"}
                     </td>
                     <td className="textCenter">
                       {item.membership.start_date !== null
                         ? moment(item.membership.start_date).format(
                             'YYYY-MM-DD'
                           )
-                        : 'X'}
+                        : "없음"}
                     </td>
                   </tr>
                 ))

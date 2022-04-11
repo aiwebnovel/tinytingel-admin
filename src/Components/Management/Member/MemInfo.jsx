@@ -54,7 +54,7 @@ const MemInfo = () => {
       onClick={onClick}
       ref={ref}
     >
-      <FcCalendar style={{ width: '30px', height: '30px' }}>{value}</FcCalendar>
+      <FcCalendar style={{ width: '30px', height: '30px' }}>{moment(value).format('yyyy/MM/DD')}</FcCalendar>
     </button>
   ));
 
@@ -69,6 +69,16 @@ const MemInfo = () => {
     const plan = parseInt(selectedMembership);
     const fomatEndDate = moment(endDate).format('YYYY-MM-DD');
 
+    if(membership.bill_service === 'none' && !passbook) {
+      toast({
+        title: '체크하셨나요?',
+        description: '멤버십이 없는 유저는 수정시 무통장 입금 체크가 필수입니다.',
+        position: 'top-right',
+        status: 'info',
+        duration: 5000,
+        isClosable: true,
+      });
+    } else {
     const config = {
       method: 'put',
       url: `${server.SERVER_URL}/user/plan?user_uid=${id}`,
@@ -105,6 +115,7 @@ const MemInfo = () => {
           isClosable: true,
         });
       });
+      }
   };
 
   const UnSubscribe = () => {
@@ -193,28 +204,29 @@ const MemInfo = () => {
         const user = data.filter(item => item.user.user_uid === id);
         const userData = user[0];
         //결제 자체를 x
-        if (
-          userData.membership.start_date === null
-        ) {
+        if (userData.membership.bill_service === 'none') {
           setStartDate(today);
           setEndDate(today);
         }
 
-        //최근에 결제 기록 o
-        if (userData.user.membership_recent_date !== null) {
-          setStartDate(userData.user.membership_recent_date);
-          setEndDate(userData.membership.next_date);
+        //결제 O / 최근 결제 O (start recent 다 있으면) 
+        if(userData.membership.bill_service !== 'none' &&
+        userData.membership.start_date !== null &&
+          userData.user.membership_recent_date !== null) {
+            setStartDate(new Date(userData.user.membership_recent_date));
+            setEndDate(new Date(userData.membership.next_date));
         }
 
         //결제 했으나 최근 결제 x
-        if (
-          userData.user.membership_recent_date === null &&
-          userData.membership.start_date !== null
+        if (userData.membership.bill_service !== 'none' &&
+        userData.membership.start_date !== null &&
+          userData.user.membership_recent_date === null
         ) {
-          setStartDate(userData.membership.start_date);
-          setEndDate(userData.membership.next_date);
+          setStartDate(new Date(userData.membership.start_date));
+          setEndDate(new Date(userData.membership.next_date));
         }
 
+      
         if(userData.membership.bill_service === 'nopassbook') {
           setPassbook(true);
         }
@@ -230,21 +242,21 @@ const MemInfo = () => {
       })
       .catch(error => {
         console.log(error);
-        // if (error.response.status === 412) {
-        //   localStorage.clear();
-        //   navigate('/', { replace: true });
-        //   setTimeout(
-        //     toast({
-        //       title: '토큰이 만료됐습니다.',
-        //       description: '새로 로그인 해주세요!',
-        //       position: 'top-right',
-        //       status: 'error',
-        //       duration: 5000,
-        //       isClosable: true,
-        //     }),
-        //     5000
-        //   );
-        // }
+        if (error.response.status === 412) {
+          localStorage.clear();
+          navigate('/', { replace: true });
+          setTimeout(
+            toast({
+              title: '토큰이 만료됐습니다.',
+              description: '새로 로그인 해주세요!',
+              position: 'top-right',
+              status: 'error',
+              duration: 5000,
+              isClosable: true,
+            }),
+            5000
+          );
+        }
       });
   };
 
@@ -421,11 +433,14 @@ const MemInfo = () => {
               <div className="ModalInfoBox">
                 <h4>이용기간</h4>
                 <Flex direction={'column'}>
+                  <Flex align='center' gridGap={'5px'}>
                   <input
                     className="ModalDatePickerStyle"
                     value={moment(startDate).format('yyyy/MM/DD')}
                     readOnly
-                  />
+                  /> 
+                  <SpanBtn onClick={()=> setStartDate(today)}>오늘 날짜</SpanBtn>
+                  </Flex>
                   ~
                   <Flex justify="space-between" align="flex-start" w="100%">
                     <input
@@ -535,3 +550,13 @@ const Canceled = styled.span`
     font-size: 13px;
   }
 `;
+
+const SpanBtn = styled.span`
+  font-size : 15px;
+  text-decoration : underline;
+  cursor : pointer;
+
+  &:hover {
+    font-weight: 600;
+  }
+`

@@ -81,7 +81,7 @@ const Members = () => {
     { label: '가입일자', key: 'user.create_at' },
     { label: '최근 로그인', key: 'user.login_at' },
     { label: '구독상품', key: 'membership.current' },
-    { label: '구독일시', key: 'membership.start_date' },
+    { label: '최초 구독일시', key: 'membership.start_date' },
     { label: '결제일자', key: 'membership.start_date' },
   ];
 
@@ -124,6 +124,7 @@ const Members = () => {
     console.log(checkedArray);  
 
  if(checkedArray.length === 0) {
+    onClose();
     toast({
       title: '선택한 유저가 없어요!',
       description: '삭제할 유저를 선택해주세요.',
@@ -424,7 +425,7 @@ const Members = () => {
             </Select>
             <DatePicker
               className="DatePickerStyle"
-              dateFormat="yyyy년 MM월 dd일"
+              dateFormat="yyyy/MM/dd"
               selected={startDate}
               maxDate={new Date()}
               onChange={date => setStartDate(date)}
@@ -437,6 +438,7 @@ const Members = () => {
               className="SearchFlex"
               alignItems="center"
               justify="space-between"
+              direction={{base:'column', sm:'row'}}
             >
               <input
                 type={'text'}
@@ -517,7 +519,7 @@ const Members = () => {
                 <th className="MemberCustom-th3 textCenter">가입일자</th>
                 <th className="MemberCustom-th4 textCenter">최근 로그인</th>
                 <th className="MemberCustom-th5 textCenter">구독상품</th>
-                <th className="MemberCustom-th6 textCenter">구독일시</th>
+                <th className="MemberCustom-th6 textCenter">최초 구독일시</th>
                 <th className="MemberCustom-th7 textCenter">결제일자</th>
                 <th className="MemberCustom-th8 textCenter">수정</th>
               </tr>
@@ -551,11 +553,9 @@ const Members = () => {
                       {item.membership.bill_service !== 'none' && item.membership.current === 0 && item.membership.before > 0 && `${item.membership.before}개월`}
                     </td>
                     <td className="textCenter">
-                      {item.membership.start_date !== null
-                        ? moment(item.membership.start_date).format(
-                            'YYYY-MM-DD'
-                          )
-                        : 'X'}
+                                          
+                    {item.membership.start_date !== null ? moment(item.membership.start_date).format('YYYY-MM-DD') : '없음'}
+
                     </td>
                     <td className="textCenter">
                     {item.user.membership_recent_date !== null && moment(item.user.membership_recent_date).format('YYYY-MM-DD')}

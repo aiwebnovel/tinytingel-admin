@@ -27,10 +27,8 @@ const Home = () => {
     accumulateThree, currentThree , accumulateSix, currentSix,} = userData;
 
   const fetchData = async () => {
-    
     const admin = JSON.parse(localStorage.getItem('admin'));
-    if(admin !== null) {
-
+    
     const config ={
       method: "get",
       url: `${server.SERVER_URL}/user`,
@@ -67,10 +65,23 @@ const Home = () => {
       })
       .catch(error => {
         console.log(error);
+        if (error.response.status === 412) {
+          localStorage.clear();
+          navigate('/', { replace: true });
+          setTimeout(
+            toast({
+              title: '토큰이 만료됐습니다.',
+              description: '새로 로그인 해주세요!',
+              position: 'top-right',
+              status: 'error',
+              duration: 5000,
+              isClosable: true,
+            }),
+            5000
+          );
+        }
       });
-    }else {
-      navigate('/', {replace:true});
-    }
+   
   };
 
   useEffect(() => {

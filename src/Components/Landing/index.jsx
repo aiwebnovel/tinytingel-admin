@@ -63,7 +63,7 @@ const Landing = () => {
               update_at: data.update_at,
               delete_at: data.delete_at,
             });
-           window.location.replace('/');
+           window.location.replace('/home');
           })
           .catch(error => {
             console.log(error);

@@ -12,7 +12,7 @@ import Prompts from 'Components/Management/Prompts'
 import PromptDetail from 'Components/Management/PromptDetail.jsx';
 import CreatePropmt from 'Components/Management/CreatePrompt';
 import PaymentLog from 'Components/Management/PaymentLog';
-
+import NotFound from 'Common/NotFound';
 
 function Apps() {
 
@@ -25,7 +25,7 @@ function Apps() {
       <Routes>
         {admin ? (
           <>
-          <Route path="/" element={<Home />}></Route>
+          <Route path="/home" element={<Home />}></Route>
           <Route path="/members" element={<Members />}></Route>
           <Route path="/members/:id" element={<MemInfo />}></Route>
           <Route path="/members/:id/payment" element={<MemPay />}>
@@ -42,7 +42,8 @@ function Apps() {
         ) : (
           <Route path="/" element={<Landing />} />
         )}
-       
+       {/* 404 */}
+       <Route path='*' element={<NotFound/>}/>
       </Routes>
     </BrowserRouter>
   );
