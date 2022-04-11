@@ -67,7 +67,7 @@ const Layout = ({ children }) => {
             <VStack spacing="35px" align="stretch" padding="30px 0">
               <Flex direction="column" align="baseline" className="MobileNav">
               <Heading as="h4" size="md" margin="20px 0" >
-              <HomeLink to='/'>  <FcHome /> Home</HomeLink>
+              <HomeLink to='/home'>  <FcHome /> Home</HomeLink>
               </Heading>
                 <Heading as="h4" size="md" marginBottom="10px">
                 <FcConferenceCall />

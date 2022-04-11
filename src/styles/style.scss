@@ -194,36 +194,34 @@ $gray-1 : #E2E8F0;
 
 
 .SearchFlex {
-
-
     max-width: 600px;
+    // >form {
+        > input {
+            width:100%;
+            outline: 0;
+            background-color : $white-1;
+            border: 1px solid $gray-1;
+            border-radius: 5px;
+            padding : 8px;
+        }
 
+        > button {
+            margin-left: 10px;
+        }
 
-    > input {
-        width:100%;
-        outline: 0;
-        background-color : $white-1;
-        border: 1px solid $gray-1;
-        border-radius: 5px;
-        padding : 8px;
-    }
-
-    > button {
-        margin-left: 10px;
-    }
-
-    @media screen and (max-width: 480px) {
-       > input { 
-           width: 100%;
-       }
+        @media screen and (max-width: 480px) {
+            > input { 
+                width: 100%;
+            }
+        
+            > button {
+            width: 100%;
+            margin-left: 0;
+            margin-top: 10px;
+            }
     
-       > button {
-        width: 100%;
-        margin-left: 0;
-        margin-top: 10px;
-       }
-
-    }
+        } 
+    //}
 }
 
 .ModalSelectStyle {

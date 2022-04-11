@@ -34,12 +34,14 @@ const PaymentLog = () => {
   const admin = JSON.parse(localStorage.getItem('admin'));
 
   const headers = [
-    { label: '결제일자', key: 'membership.start_date' },
+    { label: '최초 결제일자', key: 'membership.start_date' },
     { label: '회원명', key: 'user.name' },
     { label: '이메일', key: 'user.email' },
     { label: '구독상품', key: 'membership.current'|| 'membership.before' },
     { label: '결제수단', key: 'membership.bill_service' },
   ];
+
+  const [membershipPrice, setPrice] = useState('')
 
   const [currentPage, setCurrent] = useState(1); //현재 페이지;
   const [postPerPage, setPostPerPage] = useState(50); //페이지당 포스트 개수
@@ -227,30 +229,38 @@ const PaymentLog = () => {
       .then(response => {
         const data = response.data.data;
         const config = response.data.config;
-        console.log(data, config);
+        console.log(data);
         setMaxPage(config.maxPage);
         setSearchList(data);
 
         let idList = [];
         const ids = data.map((item, i) => (idList[i] = item.user.user_uid));
         setIdList(ids);
+
       })
       .catch(error => {
         console.log(error);
-        // if(error.response.status === 412) {
-        // localStorage.clear();
-        // navigate('/', {replace:true});
-        // setTimeout(
-        //   toast({
-        //   title: '토큰이 만료됐습니다.',
-        //   description: '새로 로그인 해주세요!',
-        //   position: 'top-right',
-        //   status: 'error',
-        //   duration: 5000,
-        //   isClosable: true,
-        // }), 5000);
+        if (error.response.status === 412) {
+          localStorage.clear();
+            toast({
+              title: '토큰이 만료됐습니다.',
+              description: '새로 로그인 해주세요!',
+              position: 'top-right',
+              status: 'error',
+              duration: 5000,
+              isClosable: true,
+            });
+        }
       });
   }, [membershipList, payMethod, selected, startDate, keyword, currentPage, maxPage]);
+
+
+  useEffect(()=> {
+    if(admin === null) {
+      window.location.replace('/')
+    }
+  })
+
 
   useEffect(() => {
     fetchData();
@@ -259,7 +269,7 @@ const PaymentLog = () => {
   return (
     <Layout>
       <Box className="MemberContainer">
-        <Box bg="#fff" padding="36px">
+        <Box bg="#fff" padding="36px" boxShadow='rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px'>
           <Flex
             direction={{ base: 'column', xl: 'row' }}
             justify="space-between"
@@ -453,7 +463,7 @@ const PaymentLog = () => {
             </Select>
             <DatePicker
               className="DatePickerStyle"
-              dateFormat="yyyy년 MM월 dd일"
+              dateFormat="yyyy/MM/dd"
               selected={startDate}
               maxDate={new Date()}
               onChange={date => setStartDate(date)}
@@ -536,7 +546,7 @@ const PaymentLog = () => {
                     onChange={CheckAll}
                   />
                 </th>
-                <th className="paymentCustom-th1 textCenter">결제일자</th>
+                <th className="paymentCustom-th1 textCenter">최초 결제일자</th>
                 <th className="paymentCustom-th2 textLeft">회원명</th>
                 <th className="paymentCustom-th3 textLeft">이메일</th>
                 <th className="paymentCustom-th4 textCenter">구독상품</th>

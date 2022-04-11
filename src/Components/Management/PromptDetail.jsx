@@ -242,6 +242,7 @@ const PromptDetail = () => {
         const list = response.data.data;
         const prompt = list.find(item => item.uid === id);
         console.log(prompt);
+        console.log(prompt.stop_sequence)
         setprompt({
           ...prompt,
           admin_uid: prompt.admin_uid,
@@ -251,18 +252,16 @@ const PromptDetail = () => {
           model: prompt.model,
           name: prompt.name,
           presence_penalty: prompt.presence_penalty,
-          stop_sequence: prompt.stop_sequence,
           temperature: prompt.temperature,
           text: prompt.text,
           update_at: prompt.update_at,
         });
+        setStop(prompt.stop_sequence);
       })
       .catch(error => {
         console.log(error);
         if (error.response.status === 412) {
-          navigate('/', { replace: true });
           localStorage.clear();
-          setTimeout(
             toast({
               title: '토큰이 만료됐습니다.',
               description: '새로 로그인 해주세요!',
@@ -270,13 +269,18 @@ const PromptDetail = () => {
               status: 'error',
               duration: 5000,
               isClosable: true,
-            }),
-            5000
-          );
+            });
         }
       });
   };
 
+  useEffect(()=> {
+    if(admin === null) {
+      window.location.replace('/')
+    }
+  })
+
+  
   useEffect(() => {
     fetchData();
   }, []);

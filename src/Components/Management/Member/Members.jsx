@@ -21,7 +21,7 @@ import {
   ModalFooter,
   ModalBody,
   ModalCloseButton,
-  HStack
+  HStack,
 } from '@chakra-ui/react';
 import {
   ArrowLeftIcon,
@@ -39,7 +39,6 @@ import ko from 'date-fns/locale/ko';
 import styled from 'styled-components';
 import moment from 'moment';
 
-
 const DeleteBtn = styled.button`
   background-color: #ff5a52;
   //border: 1px solid #FF5A52;
@@ -53,7 +52,7 @@ const DeleteBtn = styled.button`
     //border: 1px solid #D83536;
     color: #fff;
   }
-`
+`;
 
 const CancelBtn = styled.button`
   background-color: #f9f9f9;
@@ -68,7 +67,7 @@ const CancelBtn = styled.button`
     //border: 1px solid #444;
     color: #fff;
   }
-`
+`;
 
 const Members = () => {
   const toast = useToast();
@@ -81,7 +80,7 @@ const Members = () => {
     { label: '가입일자', key: 'user.create_at' },
     { label: '최근 로그인', key: 'user.login_at' },
     { label: '구독상품', key: 'membership.current' },
-    { label: '구독일시', key: 'membership.start_date' },
+    { label: '최초 구독일시', key: 'membership.start_date' },
     { label: '결제일자', key: 'membership.start_date' },
   ];
 
@@ -91,8 +90,7 @@ const Members = () => {
 
   const [startDate, setStartDate] = useState(new Date('January 1, 2021'));
 
-  const renderDayContents = (date) => {
-
+  const renderDayContents = date => {
     return <span title={date}>{date}</span>;
   };
 
@@ -104,7 +102,12 @@ const Members = () => {
   const [membershipList, setMembershipList] = useState(['0', '1', '3', '6']);
 
   //필터용 체크
-  const [filterChecked, setCheckedFilter] = useState([false, false, false, false]);
+  const [filterChecked, setCheckedFilter] = useState([
+    false,
+    false,
+    false,
+    false,
+  ]);
   //필터용 체크 value
   const [filterCheckValue, setCheckedFilterValue] = useState([]);
 
@@ -118,95 +121,93 @@ const Members = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const DeleteUsers = () => {
-
-    const checkedArray = idList.filter(item => checkedItems.includes(item))
+    const checkedArray = idList.filter(item => checkedItems.includes(item));
     const adminState = admin.adminState;
-    console.log(checkedArray);  
+    console.log(checkedArray);
 
- if(checkedArray.length === 0) {
-    toast({
-      title: '선택한 유저가 없어요!',
-      description: '삭제할 유저를 선택해주세요.',
-      position: 'top-right',
-      status: 'info',
-      duration: 5000,
-      isClosable: true,
-    })
-   } 
- 
-   if(checkedArray.length === 1) {
-    axios
-    .delete(
-      `${server.SERVER_URL}/user?user_uid=${checkedArray[0]}`,
-      {
-        headers: { Authorization: `Bearer ${adminState.token}` },
-      }
-    )
-    .then(response => {
-      console.log(response);
-      navigate(0);
-
-    })
-    .catch(error => {
-      console.log(error.response);
+    if (checkedArray.length === 0) {
+      onClose();
       toast({
-        title: 'error!',
-        description: `${error.message}`,
+        title: '선택한 유저가 없어요!',
+        description: '삭제할 유저를 선택해주세요.',
         position: 'top-right',
-        status: 'error',
+        status: 'info',
         duration: 5000,
         isClosable: true,
       });
-    });
-   }
-   
-  
-   if(checkedArray.length > 1) {
+    }
+
+    if (checkedArray.length === 1) {
+      axios
+        .delete(`${server.SERVER_URL}/user?user_uid=${checkedArray[0]}`, {
+          headers: { Authorization: `Bearer ${adminState.token}` },
+        })
+        .then(response => {
+          console.log(response);
+          navigate(0);
+        })
+        .catch(error => {
+          console.log(error.response);
+          toast({
+            title: 'error!',
+            description: `${error.message}`,
+            position: 'top-right',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          });
+        });
+    }
+
+    if (checkedArray.length > 1) {
       Promise.all(
         checkedArray.map(async param => {
-          return await axios
-          .delete(
+          return await axios.delete(
             `${server.SERVER_URL}/user?user_uid=${param}`,
             {
               headers: { Authorization: `Bearer ${adminState.token}` },
             }
-          )
-        } )
+          );
+        })
       )
-      .then(response => {
-        console.log(response);
-        navigate(0);
-      })
-      .catch(error => {
-        console.log(error.response);
-        toast({
-          title: 'error!',
-          description: `${error.message}`,
-          position: 'top-right',
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
+        .then(response => {
+          console.log(response);
+          navigate(0);
+        })
+        .catch(error => {
+          console.log(error.response);
+          toast({
+            title: 'error!',
+            description: `${error.message}`,
+            position: 'top-right',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          });
         });
-      });
     }
-  }
+  };
 
   const CheckFilteredAll = e => {
-    setCheckedFilter([e.target.checked, e.target.checked, e.target.checked, e.target.checked]);
+    setCheckedFilter([
+      e.target.checked,
+      e.target.checked,
+      e.target.checked,
+      e.target.checked,
+    ]);
     if (e.target.checked === true) {
-      filterCheckValue.push('0','1', '3', '6');
+      filterCheckValue.push('0', '1', '3', '6');
 
       const set = [...new Set(filterCheckValue)];
       setCheckedFilterValue(set);
       setMembershipList(set);
-     // console.log(set)
+      // console.log(set)
     }
 
     if (e.target.checked === false) {
-        setMembershipList(['0', '1', '3', '6'])
-        // filterCheckValue.splice(0);
-        // setMembershipList(filterCheckValue);
-  
+      setMembershipList(['0', '1', '3', '6']);
+      // filterCheckValue.splice(0);
+      // setMembershipList(filterCheckValue);
     }
   };
 
@@ -214,18 +215,15 @@ const Members = () => {
     if (e.target.checked === true) {
       filterCheckValue.push(e.target.value);
       setMembershipList(filterCheckValue);
-     // console.log(filterCheckValue)
-
+      // console.log(filterCheckValue)
     } else {
-     
       filterCheckValue.splice(filterCheckValue.indexOf(e.target.value), 1);
       const set = [...new Set(filterCheckValue)];
-      const setEvery = set.every(item => item === '')
-      
-      if(setEvery) {
-        setMembershipList(['0', '1', '3', '6'])
-      }else {
+      const setEvery = set.every(item => item === '');
 
+      if (setEvery) {
+        setMembershipList(['0', '1', '3', '6']);
+      } else {
         setCheckedFilterValue(set);
         setMembershipList(set);
       }
@@ -233,7 +231,7 @@ const Members = () => {
   };
 
   const CheckAll = e => {
-   // console.log(e.target.checked);
+    // console.log(e.target.checked);
     setCheckedItems(e.target.checked ? idList : []);
   };
 
@@ -254,7 +252,7 @@ const Members = () => {
     setStartDate(new Date('January 1, 2021'));
     setCheckedFilter([false, false, false, false]);
     setMembershipList(['0', '1', '3', '6']);
-    setCheckedFilterValue([])
+    setCheckedFilterValue([]);
     setSelected('create_at');
     setKeyword('');
   };
@@ -295,21 +293,28 @@ const Members = () => {
       })
       .catch(error => {
         console.log(error);
-        if(error.response.status === 412) {
-        localStorage.clear();
-        navigate('/', {replace:true});
-        setTimeout(
-          toast({
-          title: '토큰이 만료됐습니다.',
-          description: '새로 로그인 해주세요!',
-          position: 'top-right',
-          status: 'error',
-          duration: 5000,
-          isClosable: true,
-        }), 5000);
-      }
+        if (error.response.status === 412) {
+          localStorage.clear();
+            toast({
+              title: '토큰이 만료됐습니다.',
+              description: '새로 로그인 해주세요!',
+              position: 'top-right',
+              status: 'error',
+              duration: 5000,
+              isClosable: true,
+            });
+        }
+        
       });
+  
   }, [membershipList, selected, startDate, keyword, currentPage, maxPage]);
+
+  useEffect(()=> {
+    if(admin === null) {
+      window.location.replace('/')
+    }
+  })
+
 
   useEffect(() => {
     fetchData();
@@ -318,7 +323,11 @@ const Members = () => {
   return (
     <Layout>
       <Box className="MemberContainer">
-        <Box bg="#fff" padding="36px">
+        <Box
+          bg="#fff"
+          padding="36px"
+          boxShadow="rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px"
+        >
           <Flex
             direction={{ base: 'column', sm: 'row' }}
             className="MemberCheck"
@@ -348,7 +357,7 @@ const Members = () => {
                 CheckFilterValue(e);
               }}
             >
-             구독 안함
+              구독 안함
             </Checkbox>
             <Checkbox
               name="month1"
@@ -424,7 +433,7 @@ const Members = () => {
             </Select>
             <DatePicker
               className="DatePickerStyle"
-              dateFormat="yyyy년 MM월 dd일"
+              dateFormat="yyyy/MM/dd"
               selected={startDate}
               maxDate={new Date()}
               onChange={date => setStartDate(date)}
@@ -433,25 +442,33 @@ const Members = () => {
             />
           </Flex>
           <Box margin="15px 0">
-            <Flex
-              className="SearchFlex"
-              alignItems="center"
-              justify="space-between"
-            >
-              <input
-                type={'text'}
-                placeholder="검색할 키워드를 입력해주세요"
-                value={keyword || ''}
-                onChange={e => {
-                  setKeyword(e.target.value);
-                }}
-              />
-              <Button onClick={()=> {
-                setCurrent(1)
-                fetchData()}}>
-                <SearchIcon />
-              </Button>
-            </Flex>
+            <form>
+              <Flex
+                className="SearchFlex"
+                alignItems="center"
+                justify="space-between"
+                direction={{ base: 'column', sm: 'row' }}
+              >
+                <input
+                  type={'text'}
+                  placeholder="검색할 키워드를 입력해주세요"
+                  value={keyword || ''}
+                  onChange={e => {
+                    setKeyword(e.target.value);
+                  }}
+                />
+                <Button
+                  type="submit"
+                  onClick={e => {
+                    e.preventDefault();
+                    setCurrent(1);
+                    fetchData();
+                  }}
+                >
+                  <SearchIcon />
+                </Button>
+              </Flex>
+            </form>
           </Box>
           <Flex mt={25} justifyContent="flex-end">
             <ResetBtn onClick={Reset}>필터 초기화</ResetBtn>
@@ -473,7 +490,7 @@ const Members = () => {
         </Box>
       </Box>
       <Box className="TableContainer">
-      <Flex justify="flex-end" mb={25} spacing="15px">
+        <Flex justify="flex-end" mb={25} spacing="15px">
           <DeleteIcon
             onClick={onOpen}
             w={5}
@@ -517,7 +534,7 @@ const Members = () => {
                 <th className="MemberCustom-th3 textCenter">가입일자</th>
                 <th className="MemberCustom-th4 textCenter">최근 로그인</th>
                 <th className="MemberCustom-th5 textCenter">구독상품</th>
-                <th className="MemberCustom-th6 textCenter">구독일시</th>
+                <th className="MemberCustom-th6 textCenter">최초 구독일시</th>
                 <th className="MemberCustom-th7 textCenter">결제일자</th>
                 <th className="MemberCustom-th8 textCenter">수정</th>
               </tr>
@@ -546,26 +563,65 @@ const Members = () => {
                         : '기록 없음'}
                     </td>
                     <td className="textCenter">
-                    {item.membership.bill_service === 'none' && '없음'}
-                      {item.membership.bill_service !== 'none' && item.membership.current > 0 && `${item.membership.current}개월`}
-                      {item.membership.bill_service !== 'none' && item.membership.current === 0 && item.membership.before > 0 && `${item.membership.before}개월`}
+                      {item.membership.bill_service === 'none' && '없음'}
+                      {item.membership.bill_service !== 'none' &&
+                        item.membership.current > 0 &&
+                        `${item.membership.current}개월`}
+                      {item.membership.bill_service !== 'none' &&
+                        item.membership.current === 0 &&
+                        item.membership.before > 0 &&
+                        `${item.membership.before}개월`}
                     </td>
                     <td className="textCenter">
-                      {item.membership.start_date !== null
-                        ? moment(item.membership.start_date).format(
+                      {/* 최초 구독, 최근 결제 없음 */}
+                    {item.user.membership_recent_date === null &&
+                        item.membership.start_date === null &&
+                        '없음'}
+
+                      {/* 최초 구독 있음, 최근결제 없음  */}
+                      {item.membership.start_date !== null 
+                      && item.user.membership_recent_date === null
+                      && moment(item.membership.start_date).format(
                             'YYYY-MM-DD'
-                          )
-                        : 'X'}
+                      )}
+                   {/* 최초 구독 없음 , 최근 결제 있음 (start_date null인 경우_무통장) */}
+                         {item.membership.start_date === null 
+                      && item.user.membership_recent_date !== null
+                      && moment(item.user.membership_recent_date).format(
+                            'YYYY-MM-DD'
+                      )}
+                    {/* 최초 구독, 최근 결제 있음 */}
+                      {item.user.membership_recent_date !== null &&
+                      item.membership.start_date !== null &&
+                        moment(item.membership.start_date).format(
+                          'YYYY-MM-DD'
+                        )}
                     </td>
                     <td className="textCenter">
-                    {item.user.membership_recent_date !== null && moment(item.user.membership_recent_date).format('YYYY-MM-DD')}
-                      {item.user.membership_recent_date === null && item.membership.start_date === null && '없음'}
-                      {item.user.membership_recent_date === null && item.membership.start_date !== null && moment(item.membership.start_date).format('YYYY-MM-DD')}
+                      {/* 최초 구독, 최근 결제 없음 */}
+                    {item.user.membership_recent_date === null &&
+                        item.membership.start_date === null &&
+                        '없음'}
+                      {/* 최초 구독 있음, 최근결제 없음  */}
+                      {item.user.membership_recent_date !== null &&
+                      item.membership.start_date === null &&
+                        moment(item.user.membership_recent_date).format(
+                          'YYYY-MM-DD'
+                        )}
+                   {/* 최초 구독 없음 , 최근 결제 있음 (start_date null인 경우_무통장) */}
+                      {item.user.membership_recent_date === null &&
+                      item.membership.start_date !== null &&
+                        moment(item.membership.start_date).format('YYYY-MM-DD')}
+                         {/* 최초 구독, 최근 결제 있음 */}
+                      {item.user.membership_recent_date !== null &&
+                      item.membership.start_date !== null &&
+                        moment(item.user.membership_recent_date).format(
+                          'YYYY-MM-DD'
+                        )}
+
                     </td>
                     <td className="textCenter">
-                      <Link 
-                      to={`/members/${item.user.user_uid}`}
-                      >
+                      <Link to={`/members/${item.user.user_uid}`}>
                         <InfoIcon w={5} h={5} />
                       </Link>
                     </td>
@@ -613,7 +669,6 @@ const Members = () => {
               size="sm"
               onClick={() => {
                 setCurrent(currentPage => currentPage - 1);
-          
               }}
               isDisabled={currentPage === 1 && true}
               icon={<ChevronLeftIcon h={6} w={6} />}
@@ -637,7 +692,6 @@ const Members = () => {
               size="sm"
               onClick={() => {
                 setCurrent(currentPage => currentPage + 1);
-               
               }}
               isDisabled={currentPage === maxPage && true}
               icon={<ChevronRightIcon h={6} w={6} />}
@@ -648,7 +702,7 @@ const Members = () => {
                 size="sm"
                 onClick={() => {
                   setCurrent(maxPage);
-      
+
                   if (currentPage === maxPage) {
                     toast({
                       title: '마지막 페이지',
@@ -674,11 +728,18 @@ const Members = () => {
             <ModalCloseButton />
           </ModalHeader>
 
-          <ModalBody textAlign={'center'} fontSize='1.2rem' fontWeight={600} padding='20px 24px 10px'>삭제하시겠습니까?</ModalBody>
+          <ModalBody
+            textAlign={'center'}
+            fontSize="1.2rem"
+            fontWeight={600}
+            padding="20px 24px 10px"
+          >
+            삭제하시겠습니까?
+          </ModalBody>
           <ModalFooter justifyContent={'center'}>
             <HStack>
-            <DeleteBtn onClick={DeleteUsers}>삭제</DeleteBtn>
-            <CancelBtn onClick={onClose}>취소</CancelBtn>
+              <DeleteBtn onClick={DeleteUsers}>삭제</DeleteBtn>
+              <CancelBtn onClick={onClose}>취소</CancelBtn>
             </HStack>
           </ModalFooter>
         </ModalContent>

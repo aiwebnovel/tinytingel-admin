@@ -77,22 +77,27 @@ const LoginLog = () => {
       })
       .catch(error => {
         console.log(error);
-        // if(error.response.status === 412) {
-        localStorage.clear();
-        navigate('/', { replace: true });
-        setTimeout(
-          toast({
-            title: '토큰이 만료됐습니다.',
-            description: '새로 로그인 해주세요!',
-            position: 'top-right',
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
-          }),
-          5000
-        );
+        if (error.response.status === 412) {
+          localStorage.clear();
+            toast({
+              title: '토큰이 만료됐습니다.',
+              description: '새로 로그인 해주세요!',
+              position: 'top-right',
+              status: 'error',
+              duration: 5000,
+              isClosable: true,
+            });
+        }
       });
+    
   }, [currentPage]);
+
+  useEffect(()=> {
+    if(admin === null) {
+      window.location.replace('/')
+    }
+  })
+
 
   useEffect(() => {
     fetchData();
@@ -173,21 +178,21 @@ const LoginLog = () => {
                     <td className="textCenter">
                       {item.membership.bill_service !== 'none'
                         ? `${item.membership.current}개월`
-                        : 'X'}
+                        : "없음"}
                     </td>
                     <td className="textCenter">
                       {item.membership.start_date !== null
                         ? moment(item.membership.start_date).format(
                             'YYYY-MM-DD'
                           )
-                        : 'X'}
+                        : "없음"}
                     </td>
                     <td className="textCenter">
                       {item.membership.start_date !== null
                         ? moment(item.membership.start_date).format(
                             'YYYY-MM-DD'
                           )
-                        : 'X'}
+                        : "없음"}
                     </td>
                   </tr>
                 ))

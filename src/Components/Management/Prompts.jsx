@@ -210,22 +210,26 @@ const Prompts = () => {
       })
       .catch(error => {
         console.log(error.response);
-        if(error.response.status === 412) {
-          
-          navigate('/', {replace:true});
+        if (error.response.status === 412) {
           localStorage.clear();
-          setTimeout( 
             toast({
-            title: '토큰이 만료됐습니다.',
-            description: '새로 로그인 해주세요!',
-            position: 'top-right',
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
-          }), 5000);
+              title: '토큰이 만료됐습니다.',
+              description: '새로 로그인 해주세요!',
+              position: 'top-right',
+              status: 'error',
+              duration: 5000,
+              isClosable: true,
+            });
         }
       });
   };
+
+  useEffect(()=> {
+    if(admin === null) {
+      window.location.replace('/')
+    }
+  })
+
 
   useEffect(() => {
     fetchData();

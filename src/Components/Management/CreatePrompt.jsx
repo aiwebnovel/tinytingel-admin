@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Box, Flex, Button, useToast } from '@chakra-ui/react';
 import axios from 'axios';
@@ -133,7 +133,6 @@ const CreatePropmt = () => {
       }
       axios(config)
       .then((response) => {
-        console.log(response);
         navigate('/prompts');
         setTimeout( 
         toast({
@@ -147,6 +146,17 @@ const CreatePropmt = () => {
       })
       .catch((error)=>{
         console.log(error);
+        if (error.response.status === 412) {
+          localStorage.clear();
+            toast({
+              title: '토큰이 만료됐습니다.',
+              description: '새로 로그인 해주세요!',
+              position: 'top-right',
+              status: 'error',
+              duration: 5000,
+              isClosable: true,
+            });
+        }
       })
     }
   };
@@ -178,6 +188,13 @@ const CreatePropmt = () => {
   cursor.current.value = startValue + `{}` + endValue;
 
   }
+
+  useEffect(()=> {
+    if(admin === null) {
+      window.location.replace('/')
+    }
+  })
+
 
   return (
 
