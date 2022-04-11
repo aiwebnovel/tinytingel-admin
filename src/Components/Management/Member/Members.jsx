@@ -295,8 +295,6 @@ const Members = () => {
         console.log(error);
         if (error.response.status === 412) {
           localStorage.clear();
-          navigate('/', { replace: true });
-          setTimeout(
             toast({
               title: '토큰이 만료됐습니다.',
               description: '새로 로그인 해주세요!',
@@ -304,12 +302,19 @@ const Members = () => {
               status: 'error',
               duration: 5000,
               isClosable: true,
-            }),
-            5000
-          );
+            });
         }
+        
       });
+  
   }, [membershipList, selected, startDate, keyword, currentPage, maxPage]);
+
+  useEffect(()=> {
+    if(admin === null) {
+      window.location.replace('/')
+    }
+  })
+
 
   useEffect(() => {
     fetchData();
@@ -568,27 +573,46 @@ const Members = () => {
                         `${item.membership.before}개월`}
                     </td>
                     <td className="textCenter">
-                      {item.membership.start_date !== null
-                        ? moment(item.membership.start_date).format(
-                            'YYYY-MM-DD'
-                          )
-                        : '없음'}
-                    </td>
-                    <td className="textCenter">
+                      {/* 최초 구독, 최근 결제 없음 */}
                     {item.user.membership_recent_date === null &&
                         item.membership.start_date === null &&
                         '없음'}
 
+                      {/* 최초 구독 있음, 최근결제 없음  */}
+                      {item.membership.start_date !== null 
+                      && item.user.membership_recent_date === null
+                      && moment(item.membership.start_date).format(
+                            'YYYY-MM-DD'
+                      )}
+                   {/* 최초 구독 없음 , 최근 결제 있음 (start_date null인 경우_무통장) */}
+                         {item.membership.start_date === null 
+                      && item.user.membership_recent_date !== null
+                      && moment(item.user.membership_recent_date).format(
+                            'YYYY-MM-DD'
+                      )}
+                    {/* 최초 구독, 최근 결제 있음 */}
+                      {item.user.membership_recent_date !== null &&
+                      item.membership.start_date !== null &&
+                        moment(item.membership.start_date).format(
+                          'YYYY-MM-DD'
+                        )}
+                    </td>
+                    <td className="textCenter">
+                      {/* 최초 구독, 최근 결제 없음 */}
+                    {item.user.membership_recent_date === null &&
+                        item.membership.start_date === null &&
+                        '없음'}
+                      {/* 최초 구독 있음, 최근결제 없음  */}
                       {item.user.membership_recent_date !== null &&
                       item.membership.start_date === null &&
                         moment(item.user.membership_recent_date).format(
                           'YYYY-MM-DD'
                         )}
-                
+                   {/* 최초 구독 없음 , 최근 결제 있음 (start_date null인 경우_무통장) */}
                       {item.user.membership_recent_date === null &&
                       item.membership.start_date !== null &&
                         moment(item.membership.start_date).format('YYYY-MM-DD')}
-                      
+                         {/* 최초 구독, 최근 결제 있음 */}
                       {item.user.membership_recent_date !== null &&
                       item.membership.start_date !== null &&
                         moment(item.user.membership_recent_date).format(

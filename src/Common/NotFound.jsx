@@ -67,7 +67,7 @@ const NotFound = () => {
             <Heading as='h2' size='lg' color={'#444'}>
              404 NOT FOUND
             </Heading>
-            <Link to='/'>
+            <Link to='/home'>
               <HomeBtn>HOME</HomeBtn>
             </Link>
           </Box>

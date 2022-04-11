@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from 'Components/Home.jsx';
 import Members from 'Components/Management/Member/Members.jsx';
 import LoginLog from 'Components/Management/LoginLog.jsx';
@@ -14,6 +14,7 @@ import CreatePropmt from 'Components/Management/CreatePrompt';
 import PaymentLog from 'Components/Management/PaymentLog';
 import NotFound from 'Common/NotFound';
 
+
 function Apps() {
 
   const admin = JSON.parse(localStorage.getItem('admin'));
@@ -25,7 +26,7 @@ function Apps() {
       <Routes>
         {admin ? (
           <>
-          <Route path="/" element={<Home />}></Route>
+          <Route path="/home" element={<Home />}></Route>
           <Route path="/members" element={<Members />}></Route>
           <Route path="/members/:id" element={<MemInfo />}></Route>
           <Route path="/members/:id/payment" element={<MemPay />}>
@@ -40,10 +41,15 @@ function Apps() {
           <Route path='/prompts/:id' element={<PromptDetail/>}/>
           </>
         ) : (
-          <Route path="/" element={<Landing />} />
-        )}
+          <>
+          <Route path="/" element={<Landing  /> } />
+           {/* 리디렉트 */}
+          <Route path="*" element={<Navigate to='/' replace />} />
+          </> )}
        {/* 404 */}
        <Route path='*' element={<NotFound/>}/>
+      
+
       </Routes>
     </BrowserRouter>
   );

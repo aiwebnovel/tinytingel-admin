@@ -8,6 +8,7 @@ import {
   FormHelperText,
   useToast,
 } from '@chakra-ui/react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import styled from 'styled-components';
 import { adminState } from 'config/Recoil';
@@ -16,6 +17,7 @@ import * as server from 'config/Config';
 
 const Landing = () => {
   const toast = useToast();
+  const navigate = useNavigate();
   const setAdminState = useSetRecoilState(adminState);
   const [Inputs, SetInputs] = useState({
     userId: '',
@@ -63,7 +65,7 @@ const Landing = () => {
               update_at: data.update_at,
               delete_at: data.delete_at,
             });
-           window.location.replace('/');
+           window.location.replace('/home');
           })
           .catch(error => {
             console.log(error);

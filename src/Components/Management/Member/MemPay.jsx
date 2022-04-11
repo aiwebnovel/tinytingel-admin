@@ -15,6 +15,10 @@ const MemPay = () => {
 
   const fetchData = useCallback(async () => {
     const admin = JSON.parse(localStorage.getItem('admin'));
+    if(admin === null) {
+      window.location.replace('/'); 
+   } else {
+ 
 
     await axios
       .get(`${config.SERVER_URL}/user/plan/log?user_uid=fWkg8RFPVKVQbzPH4t7UXVcOoud2`, {
@@ -28,6 +32,7 @@ const MemPay = () => {
       .catch(err => {
         console.log(err);
       });
+    }
   }, []);
   useEffect(() => {
     fetchData();

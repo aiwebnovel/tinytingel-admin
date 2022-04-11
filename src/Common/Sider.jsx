@@ -59,7 +59,7 @@ const Sider = () => {
           ADMIN
         </Heading>
         <Flex w="100%" direction="column" align="baseline" className="nav">
-          <Link to="/">
+          <Link to="/home">
             <Headings mb="10px">
               <FcHome />
               HOME

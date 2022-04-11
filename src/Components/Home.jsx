@@ -4,12 +4,11 @@ import { Box, SimpleGrid, Text, useToast } from '@chakra-ui/react';
 import Layout from 'Common/Layout.jsx';
 import styled from 'styled-components';
 import * as server from 'config/Config';
-import { useNavigate } from 'react-router-dom';
+
 
 const Home = () => {
-
+  const admin = JSON.parse(localStorage.getItem('admin'));
   const toast = useToast();
-  const navigate = useNavigate();
 
   const [userData, setData] = useState({
     signup : '',
@@ -27,17 +26,13 @@ const Home = () => {
     accumulateThree, currentThree , accumulateSix, currentSix,} = userData;
 
   const fetchData = async () => {
-    const admin = JSON.parse(localStorage.getItem('admin'));
-    
+
     const config ={
       method: "get",
       url: `${server.SERVER_URL}/user`,
       headers: { Authorization: `Bearer ${admin.adminState.token}` },
     }
-    if(admin === null) {
-      localStorage.clear();
-      navigate('/', { replace: true });
-    } else {
+ 
     await axios(config)
       .then(response => {
         console.log(response);
@@ -69,9 +64,7 @@ const Home = () => {
       .catch(error => {
         console.log(error);
         if (error.response.status === 412) {
-          // localStorage.clear();
-          // navigate('/', { replace: true });
-          setTimeout(
+          localStorage.clear();
             toast({
               title: '토큰이 만료됐습니다.',
               description: '새로 로그인 해주세요!',
@@ -79,13 +72,17 @@ const Home = () => {
               status: 'error',
               duration: 5000,
               isClosable: true,
-            }),
-            5000
-          );
+            });
         }
       });
-    }
+    
   };
+
+  useEffect(()=> {
+    if(admin === null) {
+      window.location.replace('/')
+    }
+  })
 
   useEffect(() => {
     fetchData();

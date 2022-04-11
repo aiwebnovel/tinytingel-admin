@@ -261,10 +261,7 @@ const PromptDetail = () => {
       .catch(error => {
         console.log(error);
         if (error.response.status === 412) {
-       
           localStorage.clear();
-          navigate('/', { replace: true });
-          setTimeout(
             toast({
               title: '토큰이 만료됐습니다.',
               description: '새로 로그인 해주세요!',
@@ -272,13 +269,18 @@ const PromptDetail = () => {
               status: 'error',
               duration: 5000,
               isClosable: true,
-            }),
-            5000
-          );
+            });
         }
       });
   };
 
+  useEffect(()=> {
+    if(admin === null) {
+      window.location.replace('/')
+    }
+  })
+
+  
   useEffect(() => {
     fetchData();
   }, []);
