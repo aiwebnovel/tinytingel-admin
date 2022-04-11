@@ -332,6 +332,28 @@ const MemInfo = () => {
             </p>
           </div>
           <div className="InfoBox">
+            <h4>최초 구독일</h4>
+            <p>
+              {/* 구독 X */}
+              {membership.bill_service === 'none' &&
+                '멤버십을 구독하지 않은 회원입니다.'}
+
+              {/* 구독한 적 있음 / 구독 시작날짜 있음 */}
+              {membership.bill_service !== 'none' &&
+                membership.start_date !== null &&
+                `${moment(membership.start_date).format(
+                  'YYYY-MM-DD')}`}
+
+
+              {/* 구독한 적 있음 / 구독 시작날짜 없음 */}
+              {membership.bill_service !== 'none' &&
+                membership.start_date === null &&
+                `${moment(user.membership_recent_date).format(
+                  'YYYY-MM-DD')}`}
+
+            </p>
+          </div>
+          <div className="InfoBox">
             <h4>이용기간</h4>
             <p>
               {/* 구독 X */}
@@ -360,7 +382,7 @@ const MemInfo = () => {
               {membership.bill_service === 'none' &&
                 '멤버십을 구독하지 않은 회원입니다.'}
 
-              {/* 구독 했으나 해지 & 취소 안함*/}
+              {/* 구독 중 & 취소 안함*/}
 
               {membership.bill_service !== 'none' &&
                 !user.membership_cancel &&
@@ -412,6 +434,10 @@ const MemInfo = () => {
                 <p>{user.email}</p>
               </div>
               <div className="ModalInfoBox">
+                <h4>가입일자</h4>
+                <p>{`${moment(user.create_at).format('YYYY-MM-DD')}`}</p>
+              </div>
+                <div className="ModalInfoBox">
                 <h4>가입일자</h4>
                 <p>{`${moment(user.create_at).format('YYYY-MM-DD')}`}</p>
               </div>

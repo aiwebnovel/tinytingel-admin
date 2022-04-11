@@ -45,6 +45,7 @@ const Sider = () => {
       bg="#fff"
       display={{ base: 'none', lg: 'flex' }}
       // boxShadow="rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;"
+      boxShadow='rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px'
       padding="30px 0"
     >
       <VStack w="100%" spacing="15px">
@@ -58,7 +59,7 @@ const Sider = () => {
           ADMIN
         </Heading>
         <Flex w="100%" direction="column" align="baseline" className="nav">
-          <Link to="/home">
+          <Link to="/">
             <Headings mb="10px">
               <FcHome />
               HOME

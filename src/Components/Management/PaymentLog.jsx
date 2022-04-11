@@ -229,7 +229,7 @@ const PaymentLog = () => {
       .then(response => {
         const data = response.data.data;
         const config = response.data.config;
-        console.log(data, config);
+        console.log(data);
         setMaxPage(config.maxPage);
         setSearchList(data);
 
@@ -263,7 +263,7 @@ const PaymentLog = () => {
   return (
     <Layout>
       <Box className="MemberContainer">
-        <Box bg="#fff" padding="36px">
+        <Box bg="#fff" padding="36px" boxShadow='rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px'>
           <Flex
             direction={{ base: 'column', xl: 'row' }}
             justify="space-between"

@@ -34,7 +34,10 @@ const Home = () => {
       url: `${server.SERVER_URL}/user`,
       headers: { Authorization: `Bearer ${admin.adminState.token}` },
     }
-
+    if(admin === null) {
+      localStorage.clear();
+      navigate('/', { replace: true });
+    } else {
     await axios(config)
       .then(response => {
         console.log(response);
@@ -66,8 +69,8 @@ const Home = () => {
       .catch(error => {
         console.log(error);
         if (error.response.status === 412) {
-          localStorage.clear();
-          navigate('/', { replace: true });
+          // localStorage.clear();
+          // navigate('/', { replace: true });
           setTimeout(
             toast({
               title: '토큰이 만료됐습니다.',
@@ -81,7 +84,7 @@ const Home = () => {
           );
         }
       });
-   
+    }
   };
 
   useEffect(() => {
