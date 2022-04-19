@@ -142,9 +142,9 @@ const Questions = () => {
           >
             <thead>
               <tr className='QuestionCustom-tr QuestionCustom-thead-tr' >
-              <th className='QuestionCustom-th1'>문의 유형</th>
-                <th className='QuestionCustom-th2 '>문의자명</th>
-                <th className='QuestionCustom-th3 textLeft'>이메일 주소</th>
+                <th className='QuestionCustom-th1 '>문의자명</th>
+                <th className='QuestionCustom-th2 textLeft'>이메일 주소</th>
+                <th className='QuestionCustom-th3'>문의 유형</th>
                 <th className='QuestionCustom-th4'>상태</th>
                 <th className='QuestionCustom-th5 textLeft'>문의 내용</th>
               </tr>
@@ -152,16 +152,19 @@ const Questions = () => {
             <tbody>
               {listAll.length !== 0 ? (
                 listAll.map((item)=>(
-                  <tr className='QuestionCustom-tr textCenter' key={item.inquiry_uid}>
-                   <td>{item.category}</td>
+                  <tr className={`QuestionCustom-tr textCenter ${item.status}Question`} key={item.inquiry_uid}>
                   <td>{item.name}</td>
                   <td className='textLeft'>{item.email}</td>
-                  <td>{item.status}</td>
+                  <td>{item.category}</td>
+                  <td >
+                    {item.status === 'unchecked' && '미확인'}
+                    {item.status === 'checked' && '확인'}
+                    {item.status === 'answered' && '답변 완료'}
+                    </td>
                   <td className='textLeft'>
-                    <Link to="detail">
+                    <Link to={`/questions/${item.inquiry_uid}`}>
                     {item.content.length > 20 && item.content.substring(0,21)}
                     {item.content.length < 20 && item.content}
-
                     </Link>
                   </td>
                 </tr>

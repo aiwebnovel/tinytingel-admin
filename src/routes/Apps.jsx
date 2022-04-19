@@ -34,8 +34,8 @@ function Apps() {
           <Route path="/loginlog" element={<LoginLog />}></Route>
           <Route path="/paymentlog" element={<PaymentLog />}></Route>
   
-          <Route path="/questions/*" element={<Questions />}></Route>
-          <Route path="/questions/detail" element={<QuestionDetail />}></Route>
+          <Route path="/questions/" element={<Questions />}></Route>
+          <Route path="/questions/:id" element={<QuestionDetail />}></Route>
           <Route path="/prompts" element={<Prompts />}></Route>
           <Route path='/prompts/create' element={<CreatePropmt/>}/>
           <Route path='/prompts/:id' element={<PromptDetail/>}/>
