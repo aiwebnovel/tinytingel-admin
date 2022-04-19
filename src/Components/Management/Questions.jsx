@@ -1,5 +1,6 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React, {useEffect, useState} from 'react';
+import { Link , useNavigate} from 'react-router-dom';
+import axios from 'axios';
 import {
   Box,
   Text,
@@ -8,6 +9,7 @@ import {
   IconButton,
   Select,
   Input,
+  useToast
 } from '@chakra-ui/react';
 import {
   ArrowLeftIcon,
@@ -18,6 +20,8 @@ import {
 } from '@chakra-ui/icons';
 import Layout from 'Common/Layout.jsx';
 import styled from 'styled-components';
+
+import * as server from 'config/Config';
 
 const SearchBtn = styled.button`
   background-color: #b8c6db;
@@ -32,13 +36,54 @@ const SearchBtn = styled.button`
   }
 `;
 
-
 const Questions = () => {
+  const toast = useToast();
+  const navigate = useNavigate();
+  const admin = JSON.parse(localStorage.getItem('admin'));
+
+  const [currentPage, setCurrent] = useState(1); //현재 페이지;
+  const [postPerPage, setPostPerPage] = useState(30); //페이지당 포스트 개수
+  const [maxPage, setMaxPage] = useState('');
+
+  const [listAll, setListAll ] = useState('');
 
   const SearchQuestion = (e) => {
     e.preventDefault();
     console.log('search');
   }
+
+  const fetchData = () => {
+
+    
+    const config = {
+      method: 'post',
+      url: `${server.SERVER_URL}/inquiry/list/search`,
+      headers: { Authorization: `Bearer ${admin.adminState.token}` },
+      data: {
+        page: currentPage,
+        count: postPerPage
+      },
+    };
+
+    axios(config)
+    .then((response)=>{
+      console.log(response);
+      const data = response.data.data;
+
+      const orderData = data.sort((a,b)=> b.inquiry_uid - a.inquiry_uid);
+      console.log(orderData);
+      setListAll(orderData);
+
+      
+    })
+    .catch((error)=>{
+      console.log(error);
+    })
+  }
+
+  useEffect(()=>{
+    fetchData();
+  },[])
 
   return (
     <Layout>
@@ -97,41 +142,41 @@ const Questions = () => {
           >
             <thead>
               <tr className='QuestionCustom-tr QuestionCustom-thead-tr' >
-                <th className='QuestionCustom-th1 '>문의자명</th>
-                <th className='QuestionCustom-th2'>이메일 주소</th>
-                <th className='QuestionCustom-th3'>문의 유형</th>
+              <th className='QuestionCustom-th1'>문의 유형</th>
+                <th className='QuestionCustom-th2 '>문의자명</th>
+                <th className='QuestionCustom-th3 textLeft'>이메일 주소</th>
                 <th className='QuestionCustom-th4'>상태</th>
-                <th className='QuestionCustom-th5'>문의 내용</th>
+                <th className='QuestionCustom-th5 textLeft'>문의 내용</th>
               </tr>
             </thead>
             <tbody>
-              <tr className='QuestionCustom-tr textCenter'>
-                <td>이태용</td>
-                <td>taeoxo@gmail.com</td>
-                <td>오류신고</td>
-                <td>확인</td>
+              {listAll.length !== 0 ? (
+                listAll.map((item)=>(
+                  <tr className='QuestionCustom-tr textCenter' key={item.inquiry_uid}>
+                   <td>{item.category}</td>
+                  <td>{item.name}</td>
+                  <td className='textLeft'>{item.email}</td>
+                  <td>{item.status}</td>
+                  <td className='textLeft'>
+                    <Link to="detail">
+                    {item.content.length > 20 && item.content.substring(0,21)}
+                    {item.content.length < 20 && item.content}
+
+                    </Link>
+                  </td>
+                </tr>
+                ))
+              ) :( 
+                <tr className='QuestionCustom-tr textCenter'>
+                <td></td>
+                <td></td>
+                <td>결과가 없습니다.</td>
+                <td></td>
                 <td>
-                  <Link to="detail">문의 내용 첫문장 일부를 20문자까지..</Link>
                 </td>
-              </tr>
-              <tr className='QuestionCustom-tr textCenter'>
-                <td>김동영</td>
-                <td>doc_@gmail.com</td>
-                <td>서비스 제안</td>
-                <td>미확인</td>
-                <td>
-                  <Link to="detail">문의 내용 첫문장 일부를 20문자까지..</Link>
-                </td>
-              </tr>
-              <tr className='QuestionCustom-tr textCenter'>
-                <td>이민형</td>
-                <td>onyourm_ark@gmail.com</td>
-                <td>환불</td>
-                <td>답변 완료</td>
-                <td>
-                  <Link to="detail">문의 내용 첫문장 일부를 20문자까지..</Link>
-                </td>
-              </tr>
+                </tr> 
+                )}
+             
             </tbody>
           </table>
         </Box>
