@@ -609,3 +609,42 @@ $gray-1 : #E2E8F0;
     }
 }
 
+//Custom table - Question
+
+.QuestionCustomTableStyle {
+    min-width: 800px;
+    width: 100%;
+    background-color: #fff;
+}
+
+
+.QuestionCustom-tr {
+    height: 48px;
+    border: 1px solid #ededed;
+    border-left: 0;
+    border-right: 0;
+}
+
+.QuestionCustom-thead-tr {
+    background-color: #f9f9f9;
+}
+ 
+.QuestionCustom-th1 {
+    min-width: 100px;
+}
+
+.QuestionCustom-th2 {
+    min-width: 180px;
+}
+
+.QuestionCustom-th3 {
+    min-width: 130px;
+}
+
+.QuestionCustom-th4 {
+    min-width: 80px;
+}
+
+.QuestionCustom-th5 {
+    min-width: 200px;
+}
