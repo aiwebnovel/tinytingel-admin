@@ -14,15 +14,38 @@ import {
   ChevronLeftIcon,
   ChevronRightIcon,
   ArrowRightIcon,
+  SearchIcon
 } from '@chakra-ui/icons';
 import Layout from 'Common/Layout.jsx';
 import styled from 'styled-components';
 
+const SearchBtn = styled.button`
+  background-color: #b8c6db;
+  border: 1px solid #b8c6db;
+  border-radius: 5px;
+  padding: 8px 15px;
+  margin-left: 10px;
+
+  @media screen and (max-width : 480px) {
+    width: 100%;
+    margin-left: 0;
+  }
+`;
+
+
 const Questions = () => {
+
+  const SearchQuestion = (e) => {
+    e.preventDefault();
+    console.log('search');
+  }
+
   return (
     <Layout>
       <Box className="MemberContainer">
         <Box 
+        maxW='1300px'
+        m='0 auto'
         bg="#fff"
          padding="36px" 
          textAlign="center"
@@ -39,10 +62,12 @@ const Questions = () => {
             </Select>
             <Input placeholder="문의 내용" />
           </Flex>
-          <Flex justifyContent='space-between' alignItems='center'>
-          <Input placeholder="회원명 및 이메일 주소" margin="15px 0" width='90%'/>
-          <SearchBtn>검색</SearchBtn>
+          <form>
+          <Flex direction={{base:'column', sm : 'row'}} justify='space-between' align='center'>
+            <Input placeholder="회원명 및 이메일 주소" margin="15px 0" w='100%'/>
+            <SearchBtn type='submit'><SearchIcon onClick={SearchQuestion} /></SearchBtn>
           </Flex>
+          </form>
         </Box>
       </Box>
       <Box className="TableContainer">
@@ -84,7 +109,25 @@ const Questions = () => {
                 <td>이태용</td>
                 <td>taeoxo@gmail.com</td>
                 <td>오류신고</td>
+                <td>확인</td>
+                <td>
+                  <Link to="detail">문의 내용 첫문장 일부를 20문자까지..</Link>
+                </td>
+              </tr>
+              <tr className='QuestionCustom-tr textCenter'>
+                <td>김동영</td>
+                <td>doc_@gmail.com</td>
+                <td>서비스 제안</td>
+                <td>미확인</td>
+                <td>
+                  <Link to="detail">문의 내용 첫문장 일부를 20문자까지..</Link>
+                </td>
+              </tr>
+              <tr className='QuestionCustom-tr textCenter'>
+                <td>이민형</td>
+                <td>onyourm_ark@gmail.com</td>
                 <td>환불</td>
+                <td>답변 완료</td>
                 <td>
                   <Link to="detail">문의 내용 첫문장 일부를 20문자까지..</Link>
                 </td>
@@ -149,9 +192,3 @@ const Questions = () => {
 
 export default Questions;
 
-const SearchBtn = styled.button`
-  background-color: #b8c6db;
-  border: 1px solid #b8c6db;
-  border-radius: 5px;
-  padding: 8px 15px;
-`;

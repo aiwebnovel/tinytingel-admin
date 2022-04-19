@@ -54,7 +54,7 @@ $gray-1 : #E2E8F0;
 
     &:hover {
         //text-decoration: underline;
-        background-color: $blue-1;
+        background-color: $background;
     }
 }
 
@@ -114,6 +114,11 @@ $gray-1 : #E2E8F0;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    
+    background-color: $white-1;
+    min-width: 200px;
+    height: 130px;
+  
 
     > h4 {
         font-weight: 600;
@@ -233,10 +238,8 @@ $gray-1 : #E2E8F0;
 
 .TableContainer {
     padding: 36px;
-}
-
-.TableStyle {
-    min-width: 800px;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 
@@ -595,7 +598,7 @@ $gray-1 : #E2E8F0;
 
     >div>label {
         margin-right: 5px;
-
+ 
         >span {
             margin: 4px;
         }
@@ -613,6 +616,7 @@ $gray-1 : #E2E8F0;
 
 .QuestionCustomTableStyle {
     min-width: 800px;
+    margin: 0 auto;
     width: 100%;
     background-color: #fff;
 }
@@ -638,7 +642,7 @@ $gray-1 : #E2E8F0;
 }
 
 .QuestionCustom-th3 {
-    min-width: 130px;
+    min-width: 100px;
 }
 
 .QuestionCustom-th4 {

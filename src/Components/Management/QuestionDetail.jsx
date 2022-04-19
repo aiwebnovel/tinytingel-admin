@@ -3,8 +3,12 @@ import React from 'react';
 import { Box, CheckboxGroup, Checkbox, Flex } from '@chakra-ui/react';
 import Layout from 'Common/Layout.jsx';
 import styled from 'styled-components';
+import { useNavigate } from 'react-router-dom';
 
 const QuestionDetail = () => {
+
+  const navigate = useNavigate();
+  
   return (
     <Layout>
       <Box className="QuestionContainer">
@@ -36,7 +40,7 @@ const QuestionDetail = () => {
             <h4>상태</h4>
             <CheckboxGroup colorScheme="#444">
               <Flex direction={{ base: 'column', sm: 'row' }}>
-                <Checkbox value="done">완료</Checkbox>
+                <Checkbox value="done">답변 완료</Checkbox>
                 <Checkbox value="check">확인</Checkbox>
                 <Checkbox value="uncheck">미확인</Checkbox>
               </Flex>
@@ -44,8 +48,8 @@ const QuestionDetail = () => {
           </div>
 
           <BtnBox>
-            <Back>뒤로 가기</Back>
-            <Modify>수정</Modify>
+            <Back onClick={()=> navigate(-1)}>뒤로 가기</Back>
+            <Modify>확인</Modify>
           </BtnBox>
         </Box>
       </Box>
@@ -63,7 +67,7 @@ const BtnBox = styled.div`
 
 const Back = styled.button`
   background-color: #b8c6db;
-  padding: 2px 8px;
+  padding: 2px 10px;
   border: 1px solid #b8c6db;
   border-radius: 5px;
   margin-right: 10px;
@@ -71,7 +75,7 @@ const Back = styled.button`
 
 const Modify = styled.button`
   background-color: #444;
-  padding: 2px 8px;
+  padding: 2px 15px;
   border: 1px solid #444;
   border-radius: 5px;
   color: #fff;
