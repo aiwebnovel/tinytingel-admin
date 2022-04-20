@@ -590,19 +590,13 @@ $gray-1 : #E2E8F0;
 
     >h4 {
         font-weight: 600;
+        min-width: 60px;
     }
 
     >p {
         max-width: 800px;
     }
 
-    >div>label {
-        margin-right: 5px;
- 
-        >span {
-            margin: 4px;
-        }
-    }
 
     @media screen and (max-width: 768px) {
         flex-direction: column;
@@ -672,4 +666,23 @@ $gray-1 : #E2E8F0;
     > td {
     color : gray;
     }
+}
+
+.QuestionLabel {
+
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+
+    > input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+    }
+
+    &:hover {
+        font-weight: 600;
+    }
+
+
 }

@@ -1,5 +1,657 @@
 .UserProfile {
-  box-shadow: rgba(0, 0, 0, 0.16) 0px 1px 4px;
+  width: 230px;
+  padding: 15px;
+  border: 1px solid #444;
+  background-color: #fff;
+  z-index: 5;
 }
 
+.UserProfile > h4 {
+  font-size: 20px;
+  font-weight: 600;
+  text-align: right;
+  border-bottom: 1px solid #444;
+  padding-bottom: 5px;
+}
+
+.UserProfile > p {
+  text-align: right;
+  margin: 10px 0;
+}
+
+.UserProfile > button {
+  width: 100%;
+  background-color: #0098FA;
+  border-radius: 5px;
+  color: #fff;
+}
+
+.nav {
+  cursor: pointer;
+  padding: 0 30px;
+}
+
+.nav ul > a {
+  text-indent: 20px;
+}
+
+.nav ul > a > li {
+  list-style: none;
+  padding: 2px 0;
+}
+
+.nav:hover {
+  background-color: #f5f7fa;
+}
+
+.toogleTrue {
+  display: block;
+}
+
+.toogleFalse {
+  display: none;
+}
+
+.MobileNavTop > button:nth-child(2) {
+  background-color: #FF5A52;
+  font-weight: 600;
+  border-radius: 5px;
+  color: #fff;
+  padding: 5px 13px;
+  -webkit-transition: all 300ms ease;
+  transition: all 300ms ease;
+}
+
+.MobileNavTop > button:nth-child(2):hover {
+  background-color: #D83536;
+  color: #fff;
+}
+
+.MobileNav > h4 {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 5px;
+  padding-left: 15px;
+}
+
+.MobileNav > a {
+  cursor: pointer;
+  padding: 5px 0 5px 25px;
+  width: 100%;
+  -webkit-transition: all 300ms ease;
+  transition: all 300ms ease;
+}
+
+.MobileNav > a:hover {
+  background-color: #E6F4F1;
+  font-weight: 600;
+}
+
+.HomeTd {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  background-color: #fff;
+  min-width: 200px;
+  height: 130px;
+}
+
+.HomeTd > h4 {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+.HomeTd > p {
+  font-size: 18px;
+}
+
+.MemberContainer {
+  padding: 36px;
+}
+
+@media screen and (max-width: 768px) {
+  .MemberContainer {
+    padding-right: 24px;
+    padding-left: 24px;
+  }
+}
+
+.MemberCheck > label {
+  margin-right: 5px;
+}
+
+.MemberCheck > label > span {
+  margin: 4px;
+}
+
+.DatePickerStyle {
+  border: 1px solid #f0faff;
+  border-radius: 15px;
+  background-color: #f0faff;
+  padding: 5px 15px;
+}
+
+@media screen and (max-width: 480px) {
+  .DatePickerStyle {
+    width: 100%;
+  }
+}
+
+.ModalDatePickerStyle {
+  border: 1px solid #444;
+  border-radius: 5px;
+  background-color: #fff;
+  padding: 3px 10px;
+  width: 200px;
+}
+
+@media screen and (max-width: 480px) {
+  .ModalDatePickerStyle {
+    width: 100%;
+  }
+}
+
+.IconDatePicker {
+  width: 30px;
+  height: 30px;
+}
+
+.no-outline {
+  outline: 0;
+}
+
+.selectOption > option:first-child {
+  color: #f9f9f9;
+}
+
+.react-datepicker__triangle {
+  display: none;
+}
+
+.SearchFlex {
+  max-width: 600px;
+}
+
+.SearchFlex > input {
+  width: 100%;
+  outline: 0;
+  background-color: #fff;
+  border: 1px solid #E2E8F0;
+  border-radius: 5px;
+  padding: 8px;
+}
+
+.SearchFlex > button {
+  margin-left: 10px;
+}
+
+@media screen and (max-width: 480px) {
+  .SearchFlex > input {
+    width: 100%;
+  }
+  .SearchFlex > button {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 10px;
+  }
+}
+
+.ModalSelectStyle {
+  border: 1px solid #444;
+  border-radius: 5px;
+  padding: 2px 5px;
+}
+
+.TableContainer {
+  padding: 36px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.CustomTableStyle {
+  min-width: 800px;
+  width: 100%;
+  background-color: #fff;
+}
+
+.CheckBox {
+  min-width: 60px;
+}
+
+.CheckBox > label {
+  margin-top: 5px;
+}
+
+.textLeft {
+  text-align: left;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.Custom-tr {
+  height: 48px;
+  border: 1px solid #ededed;
+  border-left: 0;
+  border-right: 0;
+}
+
+.Custom-thead-tr {
+  background-color: #f9f9f9;
+}
+
+.Custom-th1 {
+  min-width: 190px;
+}
+
+.Custom-th2 {
+  min-width: 100px;
+}
+
+.Custom-th3 {
+  min-width: 150px;
+}
+
+.Custom-th4 {
+  min-width: 100px;
+}
+
+.custom-label {
+  width: 100px;
+}
+
+.makePromtLabelInput {
+  margin-bottom: 23px;
+}
+
+.makePromtLabelInput > label {
+  width: 150px;
+  font-weight: 600;
+  word-break: keep-all;
+  margin-bottom: 5px;
+}
+
+.makePromtLabelInput > input {
+  width: 100%;
+  border: 1px solid #444;
+  padding: 5px 8px;
+}
+
+.makePromtLabelInputTwo {
+  margin-bottom: 23px;
+}
+
+.makePromtLabelInputTwo > label {
+  width: 150px;
+  font-weight: 600;
+  word-break: keep-all;
+  margin-bottom: 5px;
+}
+
+.makePromtLabelInputTwo > input {
+  width: 100%;
+  border: 1px solid #444;
+  padding: 5px 8px;
+}
+
+.makePromtLabelTextarea {
+  margin-bottom: 23px;
+}
+
+.makePromtLabelTextarea > label {
+  width: 150px;
+  font-weight: 600;
+  word-break: keep-all;
+  margin-bottom: 5px;
+}
+
+.makePromtLabelTextarea > textarea {
+  width: 100%;
+  border: 1px solid #444;
+  resize: none;
+  height: 150px;
+  overflow: auto;
+  padding: 5px 8px;
+}
+
+.makePromtLabelTextarea > div > textarea {
+  resize: none;
+  width: 100%;
+  height: 150px;
+  overflow: auto;
+  padding: 5px 8px;
+}
+
+.MemberCustomTableStyle {
+  min-width: 1200px;
+  width: 100%;
+  background-color: #fff;
+}
+
+.MemberCheckBox {
+  min-width: 40px;
+  max-width: 80px;
+}
+
+.MemberCheckBox > label {
+  margin-top: 5px;
+}
+
+.textLeft {
+  text-align: left;
+}
+
+.textCenter {
+  text-align: center;
+}
+
+.MemberCustom-tr {
+  height: 48px;
+  border: 1px solid #ededed;
+  border-left: 0;
+  border-right: 0;
+}
+
+.MemberCustom-thead-tr {
+  background-color: #f9f9f9;
+}
+
+.MemberCustom-th1 {
+  min-width: 200px;
+}
+
+.MemberCustom-th2 {
+  min-width: 200px;
+}
+
+.MemberCustom-th3 {
+  min-width: 130px;
+}
+
+.MemberCustom-th4 {
+  min-width: 130px;
+}
+
+.MemberCustom-th5 {
+  min-width: 100px;
+}
+
+.MemberCustom-th6 {
+  min-width: 130px;
+}
+
+.MemberCustom-th7 {
+  min-width: 130px;
+}
+
+.MemberCustom-th8 {
+  min-width: 100px;
+}
+
+.paymentCustom-th1 {
+  min-width: 100px;
+}
+
+.paymentCustom-th2 {
+  min-width: 160px;
+}
+
+.paymentCustom-th3 {
+  min-width: 160px;
+}
+
+.paymentCustom-th4 {
+  min-width: 80px;
+}
+
+.paymentCustom-th5 {
+  min-width: 100px;
+}
+
+.paymentCustom-th6 {
+  min-width: 100px;
+}
+
+.custom-label {
+  width: 100px;
+}
+
+.InfoContainer {
+  width: 100%;
+  max-width: 1200px;
+  padding: 120px 64px;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 768px) {
+  .InfoContainer {
+    padding-right: 36px;
+    padding-left: 36px;
+  }
+}
+
+.InfoContent {
+  border: 1px solid #444;
+  background-color: #fff;
+  margin-bottom: 30px;
+}
+
+.InfoBox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 15px;
+}
+
+.InfoBox > h4 {
+  min-width: 100px;
+  font-weight: 600;
+}
+
+@media screen and (max-width: 768px) {
+  .InfoBox {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    width: 100%;
+    gap: 20px;
+  }
+}
+
+.ModalInfoBox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 15px;
+  border-bottom: 1px solid #444;
+}
+
+.ModalInfoBox > h4 {
+  min-width: 100px;
+  font-weight: 600;
+}
+
+.ModalInfoBox > input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
+
+@media screen and (max-width: 768px) {
+  .ModalInfoBox {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    width: 100%;
+    gap: 20px;
+  }
+}
+
+.PaymentContainer {
+  width: 100%;
+  max-width: 1200px;
+  padding: 120px 64px;
+  margin: 0 auto;
+}
+
+@media screen and (max-width: 768px) {
+  .PaymentContainer {
+    padding-right: 36px;
+    padding-left: 36px;
+  }
+}
+
+.payBox {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 15px;
+  gap: 50px;
+}
+
+.payBox > h4 {
+  font-weight: 600;
+}
+
+@media screen and (max-width: 768px) {
+  .payBox {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    width: 100%;
+    gap: 20px;
+  }
+}
+
+.QuestionContainer {
+  padding: 120px 64px;
+}
+
+@media screen and (max-width: 768px) {
+  .QuestionContainer {
+    padding-right: 36px;
+    padding-left: 36px;
+  }
+}
+
+.QuestionBox {
+  background-color: #fff;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  padding: 15px;
+  gap: 50px;
+  border-bottom: 1px solid #ededed;
+}
+
+.QuestionBox > h4 {
+  font-weight: 600;
+  min-width: 60px;
+}
+
+.QuestionBox > p {
+  max-width: 800px;
+}
+
+@media screen and (max-width: 768px) {
+  .QuestionBox {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    width: 100%;
+    gap: 20px;
+  }
+}
+
+.QuestionCustomTableStyle {
+  min-width: 800px;
+  margin: 0 auto;
+  width: 100%;
+  background-color: #fff;
+}
+
+.QuestionCustom-tr {
+  height: 48px;
+  border: 1px solid #ededed;
+  border-left: 0;
+  border-right: 0;
+}
+
+.QuestionCustom-thead-tr {
+  background-color: #f9f9f9;
+}
+
+.QuestionCustom-th1 {
+  min-width: 150px;
+}
+
+.QuestionCustom-th2 {
+  min-width: 150px;
+}
+
+.QuestionCustom-th3 {
+  min-width: 100px;
+}
+
+.QuestionCustom-th4 {
+  min-width: 100px;
+}
+
+.QuestionCustom-th5 {
+  min-width: 200px;
+}
+
+.checkedQuestion > td {
+  color: #000;
+}
+
+.uncheckedQuestion > td {
+  font-weight: 600;
+  color: #000;
+}
+
+.answeredQuestion > td {
+  color: gray;
+}
+
+.QuestionLabel {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 5px;
+  cursor: pointer;
+}
+
+.QuestionLabel > input[type="checkbox"] {
+  width: 18px;
+  height: 18px;
+}
+
+.QuestionLabel:hover {
+  font-weight: 600;
+}
 /*# sourceMappingURL=style.css.map */

@@ -53,7 +53,6 @@ const Questions = () => {
   }
 
   const fetchData = () => {
-
     
     const config = {
       method: 'post',

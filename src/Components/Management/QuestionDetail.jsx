@@ -1,55 +1,98 @@
-import React from 'react';
-//import { Link } from 'react-router-dom';
+import React, { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import axios from 'axios';
 import { Box, CheckboxGroup, Checkbox, Flex } from '@chakra-ui/react';
 import Layout from 'Common/Layout.jsx';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 
-const QuestionDetail = () => {
+import * as server from 'config/Config';
 
+const QuestionDetail = () => {
+  const admin = JSON.parse(localStorage.getItem('admin'));
   const navigate = useNavigate();
-  
+  const { id } = useParams();
+
+  const [inquiry, setInquiry] = useState('');
+
+  const ModifyStatus = () => {};
+
+  const fetchData = () => {
+    const config = {
+      method: 'post',
+      url: `${server.SERVER_URL}/inquiry/list/search`,
+      headers: { Authorization: `Bearer ${admin.adminState.token}` },
+      data: {
+        page: 1,
+        count: 1000,
+      },
+    };
+
+    axios(config)
+      .then(response => {
+        // console.log(response);
+        const data = response.data.data;
+
+        const FilterData = data.filter(item => item.inquiry_uid === Number(id));
+        const inquiry = FilterData[0];
+        console.log(inquiry.status);
+        setInquiry(inquiry);
+      })
+      .catch(error => {
+        console.log(error);
+      });
+  };
+
+  useEffect(() => {
+    fetchData();
+  }, []);
+
   return (
     <Layout>
       <Box className="QuestionContainer">
-        <Box>
+        <Box maxW="1200px" m="0 auto">
           <div className="QuestionBox">
             <h4>문의자</h4>
-            <p>이태용</p>
+            <p>{inquiry.name}</p>
           </div>
           <div className="QuestionBox">
             <h4>이메일</h4>
-            <p>Taeoxo@gmail.com</p>
+            <p>{inquiry.email}</p>
           </div>
           <div className="QuestionBox">
             <h4>문의 유형</h4>
-            <p>오류신고</p>
-            {/* <p>{`${moment(billStart).format('YYYY-MM-DD')} ~ ${exp}`}</p> */}
+            <p>{inquiry.category}</p>
           </div>
           <div className="QuestionBox">
-            <h4>문의내용</h4>
-            <p style={{paddingBottom : '15px'}}>
-              What is Lorem Ipsum? Lorem Ipsum is simply dummy text of the
-              printing and typesetting industry. Lorem Ipsum has been the
-              industry's standard dummy text ever since the 1500s, when an
-              unknown printer took a galley of type and scrambled it to make a
-              type specimen book. It has survived not only five centuries, .
-            </p>
+            <h4>문의 제목</h4>
+            <p>{inquiry.title}</p>
+          </div>
+          <div className="QuestionBox">
+            <h4>문의 내용</h4>
+            <p>{inquiry.content}</p>
           </div>
           <div className="QuestionBox">
             <h4>상태</h4>
-            <CheckboxGroup colorScheme="#444">
-              <Flex direction={{ base: 'column', sm: 'row' }}>
-                <Checkbox value="done">답변 완료</Checkbox>
-                <Checkbox value="check">확인</Checkbox>
-                <Checkbox value="uncheck">미확인</Checkbox>
-              </Flex>
-            </CheckboxGroup>
+            <Flex direction={{ base: 'column', sm: 'row' }} gridGap='15px'>
+              <label className='QuestionLabel'>
+                <input type="checkbox" value="answered" />
+                답변 완료
+              </label>
+              <label className='QuestionLabel'>
+                <input type="checkbox" value="checked" />
+                확인
+              </label>
+              <label className='QuestionLabel'>
+                <input type="checkbox" value="unchecked" />
+                미확인
+              </label>
+            </Flex>
+
           </div>
 
           <BtnBox>
-            <Back onClick={()=> navigate(-1)}>뒤로 가기</Back>
-            <Modify>확인</Modify>
+            <Back onClick={() => navigate(-1)}>뒤로 가기</Back>
+            <Modify onClick={ModifyStatus}>확인</Modify>
           </BtnBox>
         </Box>
       </Box>
