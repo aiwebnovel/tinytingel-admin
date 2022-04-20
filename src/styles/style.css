@@ -603,11 +603,11 @@
 }
 
 .QuestionCustom-th1 {
-  min-width: 150px;
+  min-width: 130px;
 }
 
 .QuestionCustom-th2 {
-  min-width: 150px;
+  min-width: 130px;
 }
 
 .QuestionCustom-th3 {
@@ -615,11 +615,11 @@
 }
 
 .QuestionCustom-th4 {
-  min-width: 100px;
+  min-width: 130px;
 }
 
 .QuestionCustom-th5 {
-  min-width: 200px;
+  min-width: 300px;
 }
 
 .checkedQuestion > td {
