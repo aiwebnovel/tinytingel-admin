@@ -651,6 +651,10 @@
   height: 18px;
 }
 
+.QuestionLabel > input[type="checkbox"]:checked {
+  background-color: #b8c6db;
+}
+
 .QuestionLabel:hover {
   font-weight: 600;
 }

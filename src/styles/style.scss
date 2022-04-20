@@ -678,6 +678,10 @@ $gray-1 : #E2E8F0;
     > input[type="checkbox"] {
         width: 18px;
         height: 18px;
+
+        &:checked {
+            background-color : $main;
+        }
     }
 
     &:hover {
