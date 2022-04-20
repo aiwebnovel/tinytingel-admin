@@ -658,4 +658,8 @@
 .QuestionLabel:hover {
   font-weight: 600;
 }
+
+.hoverUnderline > a:hover {
+  text-decoration: underline;
+}
 /*# sourceMappingURL=style.css.map */

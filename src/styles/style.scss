@@ -690,3 +690,9 @@ $gray-1 : #E2E8F0;
 
 
 }
+
+.hoverUnderline {
+    > a:hover {
+        text-decoration: underline;
+    }
+}
