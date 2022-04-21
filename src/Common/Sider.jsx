@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, VStack, Heading, Flex, HStack } from '@chakra-ui/react';
+import { Box, VStack,Flex, Avatar } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
   FcHome,
@@ -21,11 +21,34 @@ const Headings = styled.h3`
   gap: 5px;
 `;
 
+const LogOut = styled.button`
+  background-color: #ff5a52;
+  border-radius: 5px;
+  color: #fff;
+  padding: 5px 10px;
+  transition: all 300ms ease;
+
+  &:hover {
+    background-color: #d83536;
+    color: #fff;
+  }
+`;
+
+
+const AvatarBox = styled(Box)`
+  > h4 {
+    font-weight : 600;
+    font-size: 17px;
+  }
+
+`
+
 const Sider = () => {
   const [toggle1, setToggle1] = useState(false);
   const [toggle2, setToggle2] = useState(false);
   const [toggle3, setToggle3] = useState(false);
   
+  const admin = JSON.parse(localStorage.getItem('admin'));
 
   const AdminLogOut = () => {
     localStorage.clear();
@@ -44,20 +67,29 @@ const Sider = () => {
       h="full"
       bg="#fff"
       display={{ base: 'none', lg: 'flex' }}
-      // boxShadow="rgba(17, 17, 26, 0.05) 0px 1px 0px, rgba(17, 17, 26, 0.1) 0px 0px 8px;"
       boxShadow='rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px'
-      padding="30px 0"
+     
     >
       <VStack w="100%" spacing="15px">
-        <Heading
-          as="h3"
-          size="lg"
-          w="100%"
-          textAlign={'center'}
-          mb='40px'
+        <Flex
+        w='100%'
+        justify={'space-between'}
+        align='center'
+        borderBottom={'1px solid #f3f3f3'}
+        padding="30px 18px 20px"
+        mb='30px'
         >
-          ADMIN
-        </Heading>
+            <Avatar
+            bg='#b8c6db'
+            name="user"
+            size="md"
+            style={{cursor:'pointer'}}
+          />
+          <AvatarBox>
+            <h4>{admin && admin.adminState.name}</h4>
+            <p>라이팅젤 관리자</p>
+          </AvatarBox>
+        </Flex>
         <Flex w="100%" direction="column" align="baseline" className="nav">
           <Link to="/home">
             <Headings mb="10px">
@@ -109,26 +141,12 @@ const Sider = () => {
           </ul>
         </Flex>
       </VStack>
-      <HStack spacing="25px">
+      <Box textAlign={'center'} mb='20px'>
         <LogOut onClick={AdminLogOut}>Logout</LogOut>
-      </HStack>
+      </Box>
     </Box>
   );
 };
 
 export default Sider;
 
-const LogOut = styled.button`
-  background-color: #ff5a52;
-  //border: 1px solid #FF5A52;
-  border-radius: 5px;
-  color: #fff;
-  padding: 5px 10px;
-  transition: all 300ms ease;
-
-  &:hover {
-    background-color: #d83536;
-    //border: 1px solid #D83536;
-    color: #fff;
-  }
-`;

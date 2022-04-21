@@ -1,6 +1,5 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
 import {
   Box,
   Text,
@@ -24,7 +23,6 @@ import * as server from 'config/Config';
 
 const LoginLog = () => {
   const toast = useToast();
-  const navigate = useNavigate();
   const admin = JSON.parse(localStorage.getItem('admin'));
 
   const headers = [

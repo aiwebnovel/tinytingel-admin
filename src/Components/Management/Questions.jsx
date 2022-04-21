@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import axios from 'axios';
 import {
   Box,
@@ -39,6 +39,7 @@ const SearchBtn = styled.button`
 const Reset = styled.button`
   background-color: #e6f4f1;
   border: 1px solid #e6f4f1;
+  border-radius: 5px;
   color: #444;
   padding: 2px 20px;
   font-size: 15px;
@@ -54,7 +55,6 @@ const Reset = styled.button`
 
 const Questions = () => {
   const toast = useToast();
-  const navigate = useNavigate();
   const admin = JSON.parse(localStorage.getItem('admin'));
 
   const [currentPage, setCurrent] = useState(1); //현재 페이지;

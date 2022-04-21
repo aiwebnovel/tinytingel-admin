@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
 import * as server from 'config/Config';
 import { CSVLink } from 'react-csv';
 import {
@@ -30,7 +29,6 @@ import moment from 'moment';
 
 const PaymentLog = () => {
   const toast = useToast();
-  const navigate = useNavigate();
   const admin = JSON.parse(localStorage.getItem('admin'));
 
   const headers = [
@@ -40,8 +38,6 @@ const PaymentLog = () => {
     { label: '구독상품', key: 'membership.current' || 'membership.before' },
     { label: '결제수단', key: 'membership.bill_service' },
   ];
-
-  const [membershipPrice, setPrice] = useState('');
 
   const [currentPage, setCurrent] = useState(1); //현재 페이지;
   const [postPerPage, setPostPerPage] = useState(50); //페이지당 포스트 개수

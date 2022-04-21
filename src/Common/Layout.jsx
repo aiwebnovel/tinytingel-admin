@@ -11,8 +11,14 @@ import {
   DrawerContent,
   DrawerOverlay,
   Flex,
+  Avatar,
 } from '@chakra-ui/react';
-import { FcHome, FcAssistant, FcConferenceCall, FcCommandLine } from 'react-icons/fc';
+import {
+  FcHome,
+  FcAssistant,
+  FcConferenceCall,
+  FcCommandLine,
+} from 'react-icons/fc';
 import Sider from './Sider.jsx';
 import styled from 'styled-components';
 
@@ -21,8 +27,15 @@ const HomeLink = styled.a`
   align-items: center;
   gap: 5px;
 `;
+const AvatarBox = styled(Box)`
+  > h4 {
+    font-weight: 600;
+    font-size: 17px;
+  }
+`;
 
 const Layout = ({ children }) => {
+  const admin = JSON.parse(localStorage.getItem('admin'));
   const { isOpen, onOpen, onClose } = useDisclosure();
 
   const AdminLogOut = () => {
@@ -64,7 +77,27 @@ const Layout = ({ children }) => {
               <CloseButton onClick={onClose} />
               <button onClick={AdminLogOut}>Logout</button>
             </Flex>
-            <VStack spacing="35px" align="stretch" padding="30px 0">
+            <Flex
+              w="100%"
+              //justify={'space-between'}
+              gridGap={'20px'}
+              align="center"
+              borderBottom={'1px solid #f3f3f3'}
+              padding="30px 18px 20px"
+              mb="30px"
+            >
+              <Avatar
+                bg="#b8c6db"
+                name="user"
+                size="md"
+                style={{ cursor: 'pointer' }}
+              />
+              <AvatarBox>
+                <h4>{admin && admin.adminState.name}</h4>
+                <p>라이팅젤 관리자</p>
+              </AvatarBox>
+            </Flex>
+            <VStack spacing="35px" align="stretch">
               <Flex direction="column" align="baseline" className="MobileNav">
                 <Heading as="h4" size="md" margin="20px 0">
                   <HomeLink to="/home">
@@ -82,8 +115,8 @@ const Layout = ({ children }) => {
               </Flex>
               <Flex direction="column" align="baseline" className="MobileNav">
                 <Heading as="h4" size="md" marginBottom="10px">
-                <FcAssistant />
-                문의사항 관리
+                  <FcAssistant />
+                  문의사항 관리
                 </Heading>
                 <Link to="/questions">문의사항 조회</Link>
               </Flex>
