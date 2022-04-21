@@ -189,13 +189,6 @@ const CreatePropmt = () => {
 
   }
 
-  useEffect(()=> {
-    if(admin === null) {
-      window.location.replace('/')
-    }
-  })
-
-
   return (
 
     <Layout>

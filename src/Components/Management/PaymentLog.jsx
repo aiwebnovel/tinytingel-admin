@@ -262,11 +262,6 @@ const PaymentLog = () => {
     maxPage,
   ]);
 
-  useEffect(() => {
-    if (admin === null) {
-      window.location.replace('/');
-    }
-  });
 
   useEffect(() => {
     fetchData();
