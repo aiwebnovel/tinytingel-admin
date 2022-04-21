@@ -26,7 +26,7 @@ function Apps() {
       <Routes>
         {admin ? (
           <>
-          <Route path="/home" element={<Home />}></Route>
+          <Route path="/" element={<Home />}></Route>
           <Route path="/members" element={<Members />}></Route>
           <Route path="/members/:id" element={<MemInfo />}></Route>
           <Route path="/members/:id/payment" element={<MemPay />}>

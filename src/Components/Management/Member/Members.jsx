@@ -309,12 +309,6 @@ const Members = () => {
   
   }, [membershipList, selected, startDate, keyword, currentPage, maxPage]);
 
-  useEffect(()=> {
-    if(admin === null) {
-      window.location.replace('/')
-    }
-  })
-
 
   useEffect(() => {
     fetchData();

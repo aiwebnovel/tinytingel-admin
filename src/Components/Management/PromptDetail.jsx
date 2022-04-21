@@ -274,12 +274,6 @@ const PromptDetail = () => {
       });
   };
 
-  useEffect(()=> {
-    if(admin === null) {
-      window.location.replace('/')
-    }
-  })
-
   
   useEffect(() => {
     fetchData();
