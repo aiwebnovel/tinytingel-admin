@@ -77,7 +77,7 @@ const Sider = () => {
         align='center'
         borderBottom={'1px solid #f3f3f3'}
         padding="30px 18px 20px"
-        mb='30px'
+        mb='25px'
         >
             <Avatar
             bg='#b8c6db'
