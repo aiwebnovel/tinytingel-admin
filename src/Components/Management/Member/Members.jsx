@@ -324,6 +324,8 @@ const Members = () => {
     <Layout>
       <Box className="MemberContainer">
         <Box
+         maxW='1300px'
+         m='0 auto'
           bg="#fff"
           padding="36px"
           boxShadow="rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px"

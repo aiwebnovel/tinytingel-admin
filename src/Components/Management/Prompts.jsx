@@ -237,7 +237,11 @@ const Prompts = () => {
 
   return (
     <Layout>
-      <Box padding="48px">
+      <Box
+       maxW='1600px'
+       m='0 auto'
+       padding={{base:"48px 24px", md:"48px"}}
+      >
         <HStack justify="flex-end" mb={25} spacing="15px">
           <Link to='/prompts/create'>
           <PlusSquareIcon w={5} h={5} style={{ cursor: 'pointer' }} />

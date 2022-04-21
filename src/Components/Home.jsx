@@ -90,53 +90,56 @@ const Home = () => {
 
   return (
     <Layout>
-      <Box>
+      <Box
+      maxW='1400px'
+      m='0 auto'
+      >
         <Text
-          fontSize="2xl"
-          fontWeight="200"
-          padding="20px 30px"
+          fontSize="3xl"
+          fontWeight="600"
+          padding={{base:"30px 20px", sm:"30px 60px"}}
           alignItems="center"
         >
           🗂 Dash Board
         </Text>
         <TableGrid columns={{ sm: 2, md: 3 }} spacing="10px">
-          <Box bg="#fff" height="130px" className="HomeTd">
+          <Box className="HomeTd">
             <h4>누적 가입회원</h4>
             <p>{signup.accumulate} 명</p>
           </Box>
-          <Box bg="#fff" height="130px" className="HomeTd">
+          <Box className="HomeTd">
             <h4>당일 가입회원</h4>
             <p>{signup.daily} 명</p>
           </Box>
-          <Box bg="#fff" height="130px" className="HomeTd">
+          <Box className="HomeTd">
             <h4>누적 구독회원</h4>
             <p>{accumulateSum} 명</p>
           </Box>
-          <Box bg="#fff" height="130px" className="HomeTd">
+          <Box className="HomeTd">
             <h4>누적 1개월 구독회원</h4>
             <p>{accumulateOne} 명</p>
           </Box>
-          <Box bg="#fff" height="130px" className="HomeTd">
+          <Box className="HomeTd">
             <h4>누적 3개월 구독회원</h4>
             <p>{ accumulateThree} 명</p>
           </Box>
-          <Box bg="#fff" height="130px" className="HomeTd">
+          <Box className="HomeTd">
             <h4>누적 6개월 구독 회원</h4>
             <p>{accumulateSix} 명</p>
           </Box>
-          <Box bg="#fff" height="130px" className="HomeTd">
+          <Box className="HomeTd">
             <h4>현재 이용회원</h4>
             <p>{currentSum} 명</p>
           </Box>
-          <Box bg="#fff" height="130px" className="HomeTd">
+          <Box className="HomeTd">
             <h4>1개월 구독회원</h4>
             <p>{currentOne} 명</p>
           </Box>
-          <Box bg="#fff" height="130px" className="HomeTd">
+          <Box className="HomeTd">
             <h4>3개월 구독회원</h4>
             <p>{currentThree} 명</p>
           </Box>
-          <Box bg="#fff" height="130px" className="HomeTd">
+          <Box className="HomeTd">
             <h4>6개월 구독 회원</h4>
             <p>{currentSix} 명</p>
           </Box>
@@ -154,5 +157,9 @@ const TableGrid = styled(SimpleGrid)`
 
   > div {
     border: 1px solid #444;
+  }
+
+  @media screen and (max-width: 480px) {
+    padding: 64px 25px;
   }
 `;

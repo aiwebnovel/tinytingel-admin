@@ -54,7 +54,7 @@ $gray-1 : #E2E8F0;
 
     &:hover {
         //text-decoration: underline;
-        background-color: $blue-1;
+        background-color: $background;
     }
 }
 
@@ -114,6 +114,11 @@ $gray-1 : #E2E8F0;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    
+    background-color: $white-1;
+    min-width: 200px;
+    height: 130px;
+  
 
     > h4 {
         font-weight: 600;
@@ -233,10 +238,8 @@ $gray-1 : #E2E8F0;
 
 .TableContainer {
     padding: 36px;
-}
-
-.TableStyle {
-    min-width: 800px;
+    max-width: 1400px;
+    margin: 0 auto;
 }
 
 
@@ -587,19 +590,13 @@ $gray-1 : #E2E8F0;
 
     >h4 {
         font-weight: 600;
+        min-width: 60px;
     }
 
     >p {
         max-width: 800px;
     }
 
-    >div>label {
-        margin-right: 5px;
-
-        >span {
-            margin: 4px;
-        }
-    }
 
     @media screen and (max-width: 768px) {
         flex-direction: column;
@@ -609,3 +606,93 @@ $gray-1 : #E2E8F0;
     }
 }
 
+//Custom table - Question
+
+.QuestionCustomTableStyle {
+    min-width: 800px;
+    margin: 0 auto;
+    width: 100%;
+    background-color: #fff;
+}
+
+
+.QuestionCustom-tr {
+    height: 48px;
+    border: 1px solid #ededed;
+    border-left: 0;
+    border-right: 0;
+}
+
+.QuestionCustom-thead-tr {
+    background-color: #f9f9f9;
+}
+ 
+
+.QuestionCustom-th1 {
+    min-width: 130px;
+}
+
+.QuestionCustom-th2 {
+    min-width: 130px;
+}
+
+.QuestionCustom-th3 {
+    min-width: 100px;
+}
+
+
+.QuestionCustom-th4 {
+    min-width: 130px;
+}
+
+.QuestionCustom-th5 {
+    min-width: 300px;
+}
+
+.checkedQuestion {
+    > td {
+    color : #000
+    }
+}
+
+.uncheckedQuestion {
+    > td {
+    font-weight: 600;
+    color : #000
+    }
+}
+
+.answeredQuestion {
+    > td {
+    color : gray;
+    }
+}
+
+.QuestionLabel {
+
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    cursor: pointer;
+
+    > input[type="checkbox"] {
+        width: 18px;
+        height: 18px;
+
+        &:checked {
+            background-color : $main;
+        }
+    }
+
+    &:hover {
+        font-weight: 600;
+    }
+
+
+}
+
+.hoverUnderline {
+    > a:hover {
+        text-decoration: underline;
+    }
+}

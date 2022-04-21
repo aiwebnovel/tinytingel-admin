@@ -105,7 +105,11 @@ const LoginLog = () => {
 
   return (
     <Layout>
-      <Box padding="48px">
+      <Box 
+      maxW='1600px'
+      m='0 auto'
+      padding={{base:"48px 24px", md:"48px"}}
+      >
         <Box mb={25} textAlign="right">
           <CSVLink
             headers={headers}
