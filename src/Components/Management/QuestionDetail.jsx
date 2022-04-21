@@ -110,8 +110,8 @@ const QuestionDetail = () => {
   };
   const ModifyStatus = () => {
     const status = inquiry.status;
-
-    if (checkedValue === status) {
+    console.log(checkedValue, status);
+    if (!checkedValue) {
       toast({
         title: '문의상태가 수정되지 않았습니다.',
         description: '체크한 상태를 확인해주세요!',
@@ -122,7 +122,7 @@ const QuestionDetail = () => {
       });
     }
 
-    if (checkedValue !== status) {
+    if (checkedValue && (checkedValue !== status)) {
       const config = {
         method: 'put',
         url: `${server.SERVER_URL}/inquiry/${id}?status=${checkedValue}`,
@@ -234,7 +234,7 @@ const QuestionDetail = () => {
             <h4>문의 제목</h4>
             <p>{inquiry.title}</p>
           </div>
-          <div className="QuestionBox">
+          <div className="QuestionBox" style={{minHeight:'200px'}}> 
             <h4>문의 내용</h4>
             <p>{inquiry.content}</p>
           </div>
