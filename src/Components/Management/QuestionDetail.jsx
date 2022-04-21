@@ -122,7 +122,7 @@ const QuestionDetail = () => {
       });
     }
 
-    if (checkedValue && (checkedValue !== status)) {
+    if (checkedValue && checkedValue !== status) {
       const config = {
         method: 'put',
         url: `${server.SERVER_URL}/inquiry/${id}?status=${checkedValue}`,
@@ -234,7 +234,7 @@ const QuestionDetail = () => {
             <h4>문의 제목</h4>
             <p>{inquiry.title}</p>
           </div>
-          <div className="QuestionBox" style={{minHeight:'200px'}}> 
+          <div className="QuestionBox" style={{ minHeight: '200px' }}>
             <h4>문의 내용</h4>
             <p>{inquiry.content}</p>
           </div>

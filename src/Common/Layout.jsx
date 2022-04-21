@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import Header from 'Components/Header';
 import {
@@ -42,6 +42,12 @@ const Layout = ({ children }) => {
     localStorage.clear();
     window.location.replace('/');
   };
+
+    useEffect(()=> {
+    if(admin === null) {
+      window.location.replace('/')
+    }
+  })
 
   return (
     <Box minH="100vh">
@@ -100,7 +106,7 @@ const Layout = ({ children }) => {
             <VStack spacing="35px" align="stretch">
               <Flex direction="column" align="baseline" className="MobileNav">
                 <Heading as="h4" size="md" margin="20px 0">
-                  <HomeLink to="/home">
+                  <HomeLink to="/">
                     {' '}
                     <FcHome /> Home
                   </HomeLink>

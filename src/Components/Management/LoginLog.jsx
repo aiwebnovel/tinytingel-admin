@@ -90,13 +90,6 @@ const LoginLog = () => {
     
   }, [currentPage]);
 
-  useEffect(()=> {
-    if(admin === null) {
-      window.location.replace('/')
-    }
-  })
-
-
   useEffect(() => {
     fetchData();
   }, [fetchData]);
