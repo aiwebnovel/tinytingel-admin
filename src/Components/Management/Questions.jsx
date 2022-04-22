@@ -33,6 +33,7 @@ const SearchBtn = styled.button`
   @media screen and (max-width: 480px) {
     width: 100%;
     margin-left: 0;
+    margin-top: 10px;
   }
 `;
 
@@ -218,7 +219,7 @@ const Questions = () => {
               <option value="탈퇴">탈퇴</option>
               <option value="기타">기타</option>
             </Select>
-            <Reset onClick={ResetData}>처음으로</Reset>
+            <Reset onClick={ResetData}>전체보기</Reset>
           </Flex>
           <form>
             <Flex direction={{ base: 'column', sm: 'row' }} gridGap={'10px'} mt='10px'>
@@ -306,9 +307,9 @@ const Questions = () => {
                     </td>
                     <td className="textLeft hoverUnderline">
                       <Link to={`/questions/${item.inquiry_uid}`}>
-                        {item.content.length > 30 &&
-                          item.content.substring(0, 31)}
-                        {item.content.length < 30 && item.content}
+                        {item.content.length > 20 &&
+                          item.content.substring(0, 21)}
+                        {item.content.length < 20 && item.content}
                       </Link>
                     </td>
                   </tr>
