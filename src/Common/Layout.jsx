@@ -22,7 +22,7 @@ import {
 import Sider from './Sider.jsx';
 import styled from 'styled-components';
 
-const HomeLink = styled.a`
+const HomeLink = styled(Link)`
   display: flex;
   align-items: center;
   gap: 5px;
@@ -73,6 +73,7 @@ const Layout = ({ children }) => {
             h="full"
             paddingTop={{ base: '0' }}
             backgroundColor="#fff"
+            overflow={'auto'}
           >
             <Flex
               justify="space-between"
@@ -85,12 +86,11 @@ const Layout = ({ children }) => {
             </Flex>
             <Flex
               w="100%"
-              //justify={'space-between'}
               gridGap={'20px'}
               align="center"
               borderBottom={'1px solid #f3f3f3'}
-              padding="30px 18px 20px"
-              mb="30px"
+              padding="20px 18px"
+              mb="10px"
             >
               <Avatar
                 bg="#b8c6db"
@@ -103,7 +103,7 @@ const Layout = ({ children }) => {
                 <p>라이팅젤 관리자</p>
               </AvatarBox>
             </Flex>
-            <VStack spacing="35px" align="stretch">
+            <VStack spacing="20px" align="flex-start">
               <Flex direction="column" align="baseline" className="MobileNav">
                 <Heading as="h4" size="md" margin="20px 0">
                   <HomeLink to="/">
