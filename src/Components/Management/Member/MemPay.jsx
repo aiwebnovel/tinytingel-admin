@@ -76,6 +76,8 @@ const MemPay = () => {
                 '카카오페이'}
               {item.service === 'innopay' &&
                 '신용/체크'}
+              {item.service === "kakao" && "카카오페이"}
+              {item.service === "inicis" && "신용/체크카드 결제"}
               {item.service === 'nopassbook' &&
                 '무통장'}
             </p>

@@ -60,6 +60,8 @@ const PaymentLog = () => {
   const [payMethod, setPayMethod] = useState([
     'iamport',
     'innopay',
+    'inicis',
+    'kakao',
     'nopassbook',
     'none',
   ]);
@@ -95,7 +97,7 @@ const PaymentLog = () => {
       e.target.checked,
     ]);
     if (e.target.checked === true) {
-      payFilterValue.push('iamport', 'innopay', 'nopassbook', 'none');
+      payFilterValue.push('iamport', 'innopay','inicis','kakao' ,'nopassbook', 'none');
 
       const set = [...new Set(payFilterValue)];
       setPayFilterValue(set);
@@ -104,7 +106,7 @@ const PaymentLog = () => {
     }
 
     if (e.target.checked === false) {
-      setPayMethod(['iamport', 'innopay', 'nopassbook', 'none']);
+      setPayMethod(['iamport', 'innopay', 'inicis','kakao' ,'nopassbook', 'none']);
       // payFilterValue.splice(0);
       // setPayMethod(payFilterValue);
     }
@@ -121,7 +123,7 @@ const PaymentLog = () => {
       const setEvery = set.every(item => item === '');
 
       if (setEvery) {
-        setPayMethod(['iamport', 'innopay', 'nopassbook', 'none']);
+        setPayMethod(['iamport', 'innopay', 'inicis','kakao' ,'nopassbook', 'none']);
       } else {
         setPayFilterValue(set);
         setPayMethod(set);
@@ -194,7 +196,7 @@ const PaymentLog = () => {
     setStartDate(new Date('January 1, 2021'));
     setCheckedFilter([false, false, false, false]);
     setMembershipList(['0', '1', '3', '6']);
-    setPayMethod(['iamport', 'innopay', 'nopassbook', 'none']);
+    setPayMethod(['iamport', 'innopay', 'inicis','kakao' ,'nopassbook', 'none']);
     setCheckedFilterValue([]);
     setSelected('create_at');
     setKeyword('');
@@ -624,8 +626,14 @@ const PaymentLog = () => {
                       {item.membership.bill_service !== 'none' &&
                         item.membership.bill_service === 'iamport' &&
                         '카카오페이'}
+                        {item.membership.bill_service !== 'none' &&
+                        item.membership.bill_service === 'kakao' &&
+                        '카카오페이'}
                       {item.membership.bill_service !== 'none' &&
                         item.membership.bill_service === 'innopay' &&
+                        '신용/체크'}
+                         {item.membership.bill_service !== 'none' &&
+                        item.membership.bill_service === 'inicis' &&
                         '신용/체크'}
                       {item.membership.bill_service !== 'none' &&
                         item.membership.bill_service === 'nopassbook' &&
