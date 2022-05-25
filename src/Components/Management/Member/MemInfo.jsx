@@ -187,7 +187,7 @@ const MemInfo = () => {
         page: 1,
         count: 10000,
         membershipList: ['0', '1', '3', '6'],
-        serviceList: ['iamport', 'innopay', 'nopassbook', 'none'],
+        serviceList: ['iamport', 'innopay', 'nopassbook', 'kakao','inicis','none'],
         keyword: '',
         periodOption: {
           option: 'create_at',
@@ -399,6 +399,8 @@ const MemInfo = () => {
                 '멤버십을 구독하지 않은 회원입니다.'}
               {membership.bill_service === 'iamport' && '카카오페이'}
               {membership.bill_service === 'innopay' && '신용/체크'}
+              {membership.bill_service === "kakao" && "카카오페이"}
+              {membership.bill_service === "inicis" && "신용/체크카드 결제"}
               {membership.bill_service === 'nopassbook' && '무통장'}
             </p>
           </div>
