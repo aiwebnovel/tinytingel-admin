@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Flex,
@@ -25,8 +26,6 @@ const Container = styled(Box)`
   background-color: #fff;
   border: 1px solid #444;
   padding: 30px 20px;
-  max-width: 900px;
-  margin: 0 auto;
 `;
 
 const TextareaBox = styled(Box)`
@@ -53,6 +52,23 @@ const CancelBtn = styled.button`
     background-color:  #0098FA;
     border: 1px solid #0098FA;
     // color: #444;
+  }
+
+  @media screen and (max-width: 480px) {
+    width: 100%;
+  }
+`;
+
+const GoListBtn = styled.button`
+  background-color: #b8c6db;
+  border: 1px solid #b8c6db;
+  border-radius: 5px;
+  color: #444;
+  padding: 2px 25px;
+  transition: all 300ms ease;
+
+  &:hover {
+    font-weight: 600;
   }
 
   @media screen and (max-width: 480px) {
@@ -282,7 +298,10 @@ const PromptDetail = () => {
 
   return (
     <Layout>
-      <Box padding="48px">
+      <Box padding="48px"
+        maxW='1200px'
+        m='0 auto'
+      >
         <Container>
           <Flex w="100%" direction={'column'} className="makePromtLabelInput">
             <label htmlFor="name">서비스명</label>
@@ -440,6 +459,14 @@ const PromptDetail = () => {
             <DeleteBtn onClick={onOpen}>삭제</DeleteBtn>
           </Flex>
         </Container>
+        <Box
+        textAlign={'right'}
+        mt='15px'
+        >
+          <Link to='/prompts'>
+          <GoListBtn>목록</GoListBtn>
+          </Link>
+        </Box>
       </Box>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
