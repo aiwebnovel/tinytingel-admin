@@ -179,6 +179,7 @@ const PromptDetail = () => {
     } else {
 
       //console.log('modifyPrompt');
+      console.log(temperature, Number(temperature));
       const config = {
         method: 'put',
         url: `${server.SERVER_URL}/prompt/${id}`,
@@ -364,7 +365,7 @@ const PromptDetail = () => {
             >
               <label htmlFor="temperature">temperature</label>
               <input
-                type="text"
+                type="number"
                 id="temperature"
                 name='temperature'
                 disabled={isModify ? false : true}
@@ -379,7 +380,7 @@ const PromptDetail = () => {
             >
               <label htmlFor="max_tokens">max_tokens</label>
               <input
-                type="text"
+                 type="number"
                 id="max_tokens"
                 name="max_tokens"
                 disabled={isModify ? false : true}
@@ -401,7 +402,7 @@ const PromptDetail = () => {
             >
               <label htmlFor="presence_penalty">presence_penalty</label>
               <input
-                type="text"
+                 type="number"
                 id="presence_penalty"
                 name="presence_penalty"
                 disabled={isModify ? false : true}
@@ -416,7 +417,7 @@ const PromptDetail = () => {
             >
               <label htmlFor="frequency_penalty">frequency_penalty</label>
               <input
-                type="text"
+                 type="number"
                 id="frequency_penalty"
                 name="frequency_penalty"
                 disabled={isModify ? false : true}

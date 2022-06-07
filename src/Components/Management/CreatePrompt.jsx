@@ -96,6 +96,7 @@ const CreatePropmt = () => {
     setPrompt({ ...prompts, [e.target.id]: e.target.value });
   };
 
+
   const ChangeStop = e => {
     setStop(e.target.value);
   }
@@ -244,7 +245,7 @@ const CreatePropmt = () => {
             >
               <label htmlFor="temperature">temperature</label>
               <input
-                type="text"
+                type="number"
                 id="temperature"
                 value={temperature}
                 onChange={ChangeValues}
@@ -257,7 +258,7 @@ const CreatePropmt = () => {
             >
               <label htmlFor="max_tokens">max_tokens</label>
               <input
-                type="text"
+                 type="number"
                 id="max_tokens"
                 value={max_tokens}
                 onChange={ChangeValues}
@@ -277,7 +278,7 @@ const CreatePropmt = () => {
             >
               <label htmlFor="presence_penalty">presence_penalty</label>{' '}
               <input
-                type="text"
+                type="number"
                 id="presence_penalty"
                 value={presence_penalty}
                 onChange={ChangeValues}
@@ -290,7 +291,7 @@ const CreatePropmt = () => {
             >
               <label htmlFor="frequency_penalty">frequency_penalty</label>
               <input
-                type="text"
+                 type="number"
                 id="frequency_penalty"
                 value={frequency_penalty}
                 onChange={ChangeValues}
