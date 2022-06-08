@@ -115,7 +115,7 @@ const PromptDetail = () => {
     text: '',
   });
 
-  const [stop_sequence, setStop] = useState('');
+  const [stop_sequence, setStop] = useState([]);
 
   const {
     admin_uid,
@@ -129,14 +129,12 @@ const PromptDetail = () => {
   } = prompts;
 
   const addText = () => {
-    //.log(cursor, cursor.current.selectionStart);
+
     let textValue = cursor.current.value;
     const cursorStart = cursor.current.selectionStart;
 
     const startValue = textValue.substring(cursorStart, 0);
     const endValue = textValue.substring(cursorStart);
-   // console.log(startValue);
-   // console.log(endValue);
 
     cursor.current.value = startValue + `{}` + endValue;
   };
@@ -181,7 +179,6 @@ const PromptDetail = () => {
   const ModifyPrompt = () => {
     const adminState = admin.adminState;
     const isBlank = Object.values(prompts);
-    const sq = stop_sequence.split(',');
 
     if (isBlank.includes('') === true) {
       toast({
@@ -193,9 +190,8 @@ const PromptDetail = () => {
         isClosable: true,
       });
     } else {
+      console.log(stop_sequence.split(','),[stop_sequence])
 
-      //console.log('modifyPrompt');
-      console.log(temperature, Number(temperature));
       const config = {
         method: 'put',
         url: `${server.SERVER_URL}/prompt/${id}`,
@@ -207,7 +203,7 @@ const PromptDetail = () => {
           temperature: Number(temperature),
           frequency_penalty: Number(frequency_penalty),
           presence_penalty: Number(presence_penalty),
-          stop_sequence: sq,
+          stop_sequence: stop_sequence.length > 0 ? stop_sequence.split(',') : [stop_sequence],
           model: model,
         },
       };
@@ -215,8 +211,8 @@ const PromptDetail = () => {
       axios(config)
         .then(response => {
           console.log(response);
-          // navigate(0);
-       
+          navigate('/prompts');
+          setTimeout(
             toast({
             title: '성공',
             description: '수정 되었습니다!',
@@ -224,8 +220,7 @@ const PromptDetail = () => {
             status: 'success',
             duration: 5000,
             isClosable: true,
-          });
-          
+          }),5000);
         })
         .catch(error => {
           console.log(error);
@@ -239,7 +234,6 @@ const PromptDetail = () => {
   };
 
   const ChangePrompt = e => {
-   // console.log(e.target.name, e.target.value);
     setprompt({ ...prompts, [e.target.name]: e.target.value });
   };
 
@@ -258,8 +252,8 @@ const PromptDetail = () => {
         console.log(response);
         const list = response.data.data;
         const prompt = list.find(item => item.uid === id);
-        console.log(prompt);
-        console.log(prompt.stop_sequence)
+        console.log(prompt, prompt.stop_sequence);
+
         setprompt({
           ...prompt,
           admin_uid: prompt.admin_uid,
