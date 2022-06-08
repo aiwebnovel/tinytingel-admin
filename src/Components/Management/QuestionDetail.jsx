@@ -18,7 +18,7 @@ import {
 import Layout from 'Common/Layout.jsx';
 import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
-
+import {Back} from 'styles/ComponentStyle';
 import * as server from 'config/Config';
 
 const BtnBox = styled.div`
@@ -27,19 +27,6 @@ const BtnBox = styled.div`
   padding: 30px 0;
 `;
 
-const Back = styled.button`
-  background-color: #b8c6db;
-  padding: 2px 10px;
-  border: 1px solid #b8c6db;
-  border-radius: 5px;
-  margin-right: 10px;
-  transition: all 300ms ease;
-
-  &:hover {
-    background-color: #e2e8f0;
-    border: 1px solid #e2e8f0;
-  }
-`;
 
 const ModifyOpen = styled.button`
   background-color: #444;

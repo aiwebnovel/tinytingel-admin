@@ -190,7 +190,6 @@ const PromptDetail = () => {
         isClosable: true,
       });
     } else {
-      console.log(stop_sequence.split(','),[stop_sequence])
 
       const config = {
         method: 'put',
@@ -203,7 +202,7 @@ const PromptDetail = () => {
           temperature: Number(temperature),
           frequency_penalty: Number(frequency_penalty),
           presence_penalty: Number(presence_penalty),
-          stop_sequence: stop_sequence.length > 0 ? stop_sequence.split(',') : [stop_sequence],
+          stop_sequence: stop_sequence.length > 1 ? stop_sequence.split(',') : [stop_sequence],
           model: model,
         },
       };
