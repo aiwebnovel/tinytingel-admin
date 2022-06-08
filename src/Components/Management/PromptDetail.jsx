@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
+import { Link } from 'react-router-dom';
 import {
   Box,
   Flex,
@@ -25,8 +26,6 @@ const Container = styled(Box)`
   background-color: #fff;
   border: 1px solid #444;
   padding: 30px 20px;
-  max-width: 900px;
-  margin: 0 auto;
 `;
 
 const TextareaBox = styled(Box)`
@@ -53,6 +52,23 @@ const CancelBtn = styled.button`
     background-color:  #0098FA;
     border: 1px solid #0098FA;
     // color: #444;
+  }
+
+  @media screen and (max-width: 480px) {
+    width: 100%;
+  }
+`;
+
+const GoListBtn = styled.button`
+  background-color: #b8c6db;
+  border: 1px solid #b8c6db;
+  border-radius: 5px;
+  color: #444;
+  padding: 2px 25px;
+  transition: all 300ms ease;
+
+  &:hover {
+    font-weight: 600;
   }
 
   @media screen and (max-width: 480px) {
@@ -99,7 +115,7 @@ const PromptDetail = () => {
     text: '',
   });
 
-  const [stop_sequence, setStop] = useState('');
+  const [stop_sequence, setStop] = useState([]);
 
   const {
     admin_uid,
@@ -113,14 +129,12 @@ const PromptDetail = () => {
   } = prompts;
 
   const addText = () => {
-    //.log(cursor, cursor.current.selectionStart);
+
     let textValue = cursor.current.value;
     const cursorStart = cursor.current.selectionStart;
 
     const startValue = textValue.substring(cursorStart, 0);
     const endValue = textValue.substring(cursorStart);
-   // console.log(startValue);
-   // console.log(endValue);
 
     cursor.current.value = startValue + `{}` + endValue;
   };
@@ -165,7 +179,6 @@ const PromptDetail = () => {
   const ModifyPrompt = () => {
     const adminState = admin.adminState;
     const isBlank = Object.values(prompts);
-    const sq = stop_sequence.split(',');
 
     if (isBlank.includes('') === true) {
       toast({
@@ -178,7 +191,6 @@ const PromptDetail = () => {
       });
     } else {
 
-      //console.log('modifyPrompt');
       const config = {
         method: 'put',
         url: `${server.SERVER_URL}/prompt/${id}`,
@@ -190,7 +202,7 @@ const PromptDetail = () => {
           temperature: Number(temperature),
           frequency_penalty: Number(frequency_penalty),
           presence_penalty: Number(presence_penalty),
-          stop_sequence: sq,
+          stop_sequence: stop_sequence.length > 1 ? stop_sequence.split(',') : [stop_sequence],
           model: model,
         },
       };
@@ -198,8 +210,8 @@ const PromptDetail = () => {
       axios(config)
         .then(response => {
           console.log(response);
-          // navigate(0);
-       
+          navigate('/prompts');
+          setTimeout(
             toast({
             title: '성공',
             description: '수정 되었습니다!',
@@ -207,8 +219,7 @@ const PromptDetail = () => {
             status: 'success',
             duration: 5000,
             isClosable: true,
-          });
-          
+          }),5000);
         })
         .catch(error => {
           console.log(error);
@@ -222,7 +233,6 @@ const PromptDetail = () => {
   };
 
   const ChangePrompt = e => {
-   // console.log(e.target.name, e.target.value);
     setprompt({ ...prompts, [e.target.name]: e.target.value });
   };
 
@@ -241,8 +251,8 @@ const PromptDetail = () => {
         console.log(response);
         const list = response.data.data;
         const prompt = list.find(item => item.uid === id);
-        console.log(prompt);
-        console.log(prompt.stop_sequence)
+        console.log(prompt, prompt.stop_sequence);
+
         setprompt({
           ...prompt,
           admin_uid: prompt.admin_uid,
@@ -281,7 +291,10 @@ const PromptDetail = () => {
 
   return (
     <Layout>
-      <Box padding="48px">
+      <Box padding="48px"
+        maxW='1200px'
+        m='0 auto'
+      >
         <Container>
           <Flex w="100%" direction={'column'} className="makePromtLabelInput">
             <label htmlFor="name">서비스명</label>
@@ -364,7 +377,7 @@ const PromptDetail = () => {
             >
               <label htmlFor="temperature">temperature</label>
               <input
-                type="text"
+                type="number"
                 id="temperature"
                 name='temperature'
                 disabled={isModify ? false : true}
@@ -379,7 +392,7 @@ const PromptDetail = () => {
             >
               <label htmlFor="max_tokens">max_tokens</label>
               <input
-                type="text"
+                 type="number"
                 id="max_tokens"
                 name="max_tokens"
                 disabled={isModify ? false : true}
@@ -401,7 +414,7 @@ const PromptDetail = () => {
             >
               <label htmlFor="presence_penalty">presence_penalty</label>
               <input
-                type="text"
+                 type="number"
                 id="presence_penalty"
                 name="presence_penalty"
                 disabled={isModify ? false : true}
@@ -416,7 +429,7 @@ const PromptDetail = () => {
             >
               <label htmlFor="frequency_penalty">frequency_penalty</label>
               <input
-                type="text"
+                 type="number"
                 id="frequency_penalty"
                 name="frequency_penalty"
                 disabled={isModify ? false : true}
@@ -439,6 +452,14 @@ const PromptDetail = () => {
             <DeleteBtn onClick={onOpen}>삭제</DeleteBtn>
           </Flex>
         </Container>
+        <Box
+        textAlign={'right'}
+        mt='15px'
+        >
+          <Link to='/prompts'>
+          <GoListBtn>목록</GoListBtn>
+          </Link>
+        </Box>
       </Box>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
