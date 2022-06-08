@@ -24,6 +24,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import ko from 'date-fns/locale/ko';
 import moment from 'moment';
 import * as server from 'config/Config';
+import {Back} from 'styles/ComponentStyle';
 
 const MemInfo = () => {
   const { id } = useParams();
@@ -517,20 +518,6 @@ const BtnBox = styled.div`
   padding: 30px 0;
 `;
 
-const Back = styled.button`
-  background-color: #b8c6db;
-  padding: 2px 8px;
-  border: 1px solid #b8c6db;
-  border-radius: 5px;
-  margin-right: 10px;
-
-  transition: all 300ms ease;
-
-  &:hover {
-    background-color: #e2e8f0;
-    border: 1px solid #e2e8f0;
-  }
-`;
 
 const Modify = styled.button`
   background-color: #444;
