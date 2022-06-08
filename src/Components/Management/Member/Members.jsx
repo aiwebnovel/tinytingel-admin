@@ -269,7 +269,12 @@ const Members = () => {
         page: currentPage,
         count: postPerPage,
         membershipList: membershipList,
-        serviceList: ['iamport', 'innopay', 'nopassbook', 'none'],
+        serviceList: ['iamport',
+        'innopay',
+        'inicis',
+        'kakao',
+        'nopassbook',
+        'none',],
         keyword: keyword,
         periodOption: {
           option: selected,
@@ -283,12 +288,17 @@ const Members = () => {
       .then(response => {
         const data = response.data.data;
         const config = response.data.config;
-        console.log(data);
+
+        const orderList = data.sort(
+          (a, b) => new Date(b.user.create_at) - new Date(a.user.create_at)
+        );
+
+        console.log(orderList);
         setMaxPage(config.maxPage);
-        setSearchList(data);
+        setSearchList(orderList);
 
         let idList = [];
-        const ids = data.map((item, i) => (idList[i] = item.user.user_uid));
+        const ids = orderList.map((item, i) => (idList[i] = item.user.user_uid));
         setIdList(ids);
       })
       .catch(error => {
