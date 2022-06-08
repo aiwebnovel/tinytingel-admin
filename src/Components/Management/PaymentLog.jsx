@@ -506,6 +506,8 @@ const PaymentLog = () => {
               headers={headers}
               data={searchList}
               filename={'결제_현황'}
+              download='결제_현황.csv'
+
               onClick={() => {
                 if (window.confirm('다운로드 하시겠습니까?') === true) {
                   console.log('저장');

@@ -106,6 +106,7 @@ const LoginLog = () => {
             headers={headers}
             data={List}
             filename={'로그인_기록'}
+            download='로그인_기록.csv'
             onClick={() => {
               if (window.confirm('다운로드 하시겠습니까?') === true) {
                 console.log('저장');

@@ -482,6 +482,8 @@ const Members = () => {
               headers={headers}
               data={searchList}
               filename={'회원_현황'}
+              download='회원_현황.csv'
+              
               onClick={() => {
                 if (window.confirm('다운로드 하시겠습니까?') === true) {
                   console.log('저장');
