@@ -8,11 +8,13 @@ import MemInfo from 'Components/Management/Member/MemInfo.jsx';
 import Landing from 'Components/Landing/index.jsx';
 import MemPay from 'Components/Management/Member/MemPay.jsx';
 import QuestionDetail from 'Components/Management/QuestionDetail.jsx';
-import Prompts from 'Components/Management/Prompts'
-import PromptDetail from 'Components/Management/PromptDetail.jsx';
+import Prompts from 'Components/Management/Prompt/Prompts'
+import PromptDetail from 'Components/Management/Prompt/PromptDetail.jsx';
 import CreatePropmt from 'Components/Management/CreatePrompt';
 import PaymentLog from 'Components/Management/PaymentLog';
 import NotFound from 'Common/NotFound';
+import CreateSerial from 'Components/Management/Serials/CreateSerial';
+import GetSerial from 'Components/Management/Serials/GetSerial';
 
 
 function Apps() {
@@ -39,6 +41,8 @@ function Apps() {
           <Route path="/prompts" element={<Prompts />}></Route>
           <Route path='/prompts/create' element={<CreatePropmt/>}/>
           <Route path='/prompts/:id' element={<PromptDetail/>}/>
+          <Route path='/createSerial' element={<CreateSerial/>}/>
+          <Route path='/getSerial' element={<GetSerial/>}/>
           </>
         ) : (
           <>
