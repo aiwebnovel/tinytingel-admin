@@ -12,6 +12,7 @@ import {
   NumberDecrementStepper,
 } from '@chakra-ui/react';
 import styled from 'styled-components';
+import { CSVLink } from 'react-csv';
 
 const SerialInputBox = styled(Flex)`
   align-items: center;
@@ -24,6 +25,46 @@ const SerialInputBox = styled(Flex)`
     margin-bottom: 5px;
   }
 `;
+
+const ExcelDownBtn = styled.button`
+  background-color: #444;
+  color: #fff;
+  padding: 2px 10px;
+  font-size: 15px;
+  transition: all 300ms ease;
+  word-break: keep-all;
+
+  &:hover {
+    background-color: #0098fa;
+  }
+`;
+
+const TrStyle = styled.tr`
+   text-align: center;
+
+  .Custom-1 {
+    width: 80px;
+  }
+
+  .Custom-2 {
+    width: 250px;
+  }
+
+  .Custom-3, .Custom-4 {
+    width: 300px;
+  }
+
+  .Custom-6 {
+    width: 100px;
+  }
+`
+
+const TbodyStyle = styled.tbody`
+  > td {
+    padding: 10px;
+  }
+`
+
 
 const CreateSerial = () => {
   return (
@@ -78,6 +119,76 @@ const CreateSerial = () => {
           <Box textAlign={'right'}>
             <Button>생성하기</Button>
           </Box>
+        </Box>
+
+        {/* 시리얼 결과 테이블 */}
+        <Box className="TableContainer">
+        <Flex justify="flex-end" mb={25} spacing="15px">
+        <CSVLink
+              headers={[]}
+              data={[]}
+              filename={'시리얼넘버'}
+              download='시리얼넘버.csv'
+              
+              onClick={() => {
+                if (window.confirm('다운로드 하시겠습니까?') === true) {
+                  console.log('저장');
+                } else {
+                  return false;
+                }
+              }}
+            >
+              <ExcelDownBtn>CSV 내려받기</ExcelDownBtn>
+            </CSVLink>
+        </Flex>
+        <Box
+          overflowX="auto"
+          css={{
+            '&::-webkit-scrollbar': {
+              //스크롤바 전체영역
+              width: '5px',
+            },
+            '&::-webkit-scrollbar-track': {
+              //스크롤바 움직이는 영역
+              backgroundColor: '#fff',
+            },
+            '&::-webkit-scrollbar-thumb': {
+              //스크롤
+              backgroundColor: '#E6F4F1',
+              borderRadius: '5px',
+            },
+          }}
+        >
+          <table className="MemberCustomTableStyle">
+            <thead>
+              <TrStyle className="MemberCustom-tr MemberCustom-thead-tr">
+                <th className="Custom-1">No</th>
+                <th className="Custom-2">시리얼 넘버</th>
+                <th className="Custom-3">캠페인명</th>
+                <th className="Custom-4">생성일자</th>
+                <th className="Custom-5">혜택구분</th>
+                <th className="Custom-6">복사</th>
+
+              </TrStyle>
+            </thead>
+            <TbodyStyle>
+                <td className="textCenter">1</td>
+                <td className="textCenter">tt-yymmdd-abc-03-001</td>
+                <td className="textCenter">
+                OO초등학교 글쓰기 교실
+                </td>
+                <td className="textCenter">
+                yyyy.mm.dd hh:mm:ss
+                </td>
+                <td className="textCenter">
+                    3개월
+                </td>
+                <td className="textCenter">
+                    <button>복사</button>
+                </td>                  
+            </TbodyStyle>
+          </table>
+        </Box>
         </Box>
       </Box>
     </Layout>
