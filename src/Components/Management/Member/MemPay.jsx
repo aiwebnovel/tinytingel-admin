@@ -5,7 +5,7 @@ import Layout from 'Common/Layout';
 import { Box, Heading } from '@chakra-ui/react';
 import moment from 'moment';
 import styled from 'styled-components';
-
+import {BtnBox} from 'styles/ComponentStyle';
 import * as config from 'config/Config';
 
 const MemPay = () => {
@@ -96,12 +96,6 @@ const MemPay = () => {
 };
 
 export default MemPay;
-
-const BtnBox = styled.div`
-  width: 100%;
-  text-align: center;
-  // padding: 30px 0;
-`;
 
 const Back = styled.button`
   background-color: #b8c6db;

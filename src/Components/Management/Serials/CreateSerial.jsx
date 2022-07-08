@@ -13,6 +13,7 @@ import {
 } from '@chakra-ui/react';
 import styled from 'styled-components';
 import { CSVLink } from 'react-csv';
+import { ExcelDownBtn, TrStyle, TbodyStyle } from 'styles/ComponentStyle';
 
 const SerialInputBox = styled(Flex)`
   align-items: center;
@@ -26,20 +27,7 @@ const SerialInputBox = styled(Flex)`
   }
 `;
 
-const ExcelDownBtn = styled.button`
-  background-color: #444;
-  color: #fff;
-  padding: 2px 10px;
-  font-size: 15px;
-  transition: all 300ms ease;
-  word-break: keep-all;
-
-  &:hover {
-    background-color: #0098fa;
-  }
-`;
-
-const TrStyle = styled.tr`
+const TrThStyle = styled.tr`
    text-align: center;
 
   .Custom-1 {
@@ -62,14 +50,6 @@ const TrStyle = styled.tr`
     width: 100px;
   }
 `
-
-const TbodyStyle = styled.tbody`
-  > tr> td {
-    padding: 10px;
-  }
-`
-
-
 const CreateSerial = () => {
   return (
     <Layout>
@@ -165,7 +145,7 @@ const CreateSerial = () => {
         >
           <table className="MemberCustomTableStyle">
             <thead>
-              <TrStyle className="MemberCustom-tr MemberCustom-thead-tr">
+              <TrThStyle className="MemberCustom-tr MemberCustom-thead-tr">
                 <th className="Custom-1">No</th>
                 <th className="Custom-2">시리얼 넘버</th>
                 <th className="Custom-3">캠페인명</th>
@@ -173,7 +153,7 @@ const CreateSerial = () => {
                 <th className="Custom-5">혜택구분</th>
                 <th className="Custom-6">복사</th>
 
-              </TrStyle>
+              </TrThStyle>
             </thead>
             <TbodyStyle>
                 <TrStyle>

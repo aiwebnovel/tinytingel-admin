@@ -24,7 +24,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import ko from 'date-fns/locale/ko';
 import moment from 'moment';
 import * as server from 'config/Config';
-import {Back} from 'styles/ComponentStyle';
+import {Back, BtnBox} from 'styles/ComponentStyle';
 import { CustomInput } from 'Common/CustomInput';
 
 const MemInfo = () => {
@@ -504,13 +504,6 @@ const MemInfo = () => {
 };
 
 export default MemInfo;
-
-const BtnBox = styled.div`
-  width: 100%;
-  text-align: center;
-  padding: 30px 0;
-`;
-
 
 const Modify = styled.button`
   background-color: #444;

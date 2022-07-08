@@ -30,6 +30,7 @@ import {
 import Layout from 'Common/Layout.jsx';
 import styled from 'styled-components';
 import moment from 'moment';
+import { DeleteBtn,CancelBtn } from 'styles/ComponentStyle';
 
 import * as config from 'config/Config';
 
@@ -39,36 +40,6 @@ const DetailBtn = styled.button`
   padding: 2px 10px;
   border-radius: 5px;
 `;
-
-const DeleteBtn = styled.button`
-  background-color: #ff5a52;
-  //border: 1px solid #FF5A52;
-  border-radius: 5px;
-  color: #fff;
-  padding: 2px 25px;
-  transition: all 300ms ease;
-
-  &:hover {
-    background-color: #d83536;
-    //border: 1px solid #D83536;
-    color: #fff;
-  }
-`
-
-const CancelBtn = styled.button`
-  background-color: #f9f9f9;
-  border: 1px solid #444;
-  border-radius: 5px;
-  color: #444;
-  padding: 2px 25px;
-  transition: all 300ms ease;
-
-  &:hover {
-    background-color: #444;
-    //border: 1px solid #444;
-    color: #fff;
-  }
-`
 
 const Prompts = () => {
   const admin = JSON.parse(localStorage.getItem('admin'));

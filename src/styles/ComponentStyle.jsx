@@ -14,3 +14,74 @@ export const Back = styled.button`
     border: 1px solid #e2e8f0;
   }
 `;
+
+export const DeleteBtn = styled.button`
+background-color: #ff5a52;
+border-radius: 5px;
+color: #fff;
+padding: 2px 25px;
+transition: all 300ms ease;
+
+&:hover {
+  background-color: #d83536;
+  color: #fff;
+}
+`
+
+export const CancelBtn = styled.button`
+  background-color: #f9f9f9;
+  border: 1px solid #444;
+  border-radius: 5px;
+  color: #444;
+  padding: 2px 25px;
+  transition: all 300ms ease;
+
+  &:hover {
+    background-color: #444;
+    color: #fff;
+  }
+`
+
+export const ExcelDownBtn = styled.button`
+  background-color: #444;
+  color: #fff;
+  padding: 2px 10px;
+  font-size: 15px;
+  transition: all 300ms ease;
+  word-break: keep-all;
+
+  &:hover {
+    background-color: #0098fa;
+  }
+`;
+
+export const ResetBtn = styled.button`
+background-color: #e6f4f1;
+border: 1px solid #e6f4f1;
+color: #444;
+padding: 2px 10px;
+font-size: 15px;
+transition: all 300ms ease;
+margin-right: 8px;
+word-break: keep-all;
+
+&:hover {
+  background-color: #b8c6db;
+}
+`; 
+
+export const BtnBox = styled.div`
+width: 100%;
+text-align: center;
+padding: 30px 0;
+`;
+
+export const TrStyle = styled.tr`
+text-align: center;
+`;
+
+export const TbodyStyle = styled.tbody`
+> tr > td {
+  padding: 10px;
+}
+`;

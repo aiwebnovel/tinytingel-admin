@@ -15,10 +15,9 @@ import {
   ArrowRightIcon,
 } from '@chakra-ui/icons';
 import Layout from 'Common/Layout.jsx';
-import styled from 'styled-components';
 import moment from 'moment';
 import { CSVLink } from 'react-csv';
-
+import { ExcelDownBtn } from 'styles/ComponentStyle';
 import * as server from 'config/Config';
 
 const LoginLog = () => {
@@ -294,15 +293,3 @@ const LoginLog = () => {
 };
 
 export default LoginLog;
-
-const ExcelDownBtn = styled.button`
-  background-color: #444;
-  color: #fff;
-  padding: 2px 10px;
-  font-size: 15px;
-  transition: all 300ms ease;
-
-  &:hover {
-    background-color: #0098fa;
-  }
-`;

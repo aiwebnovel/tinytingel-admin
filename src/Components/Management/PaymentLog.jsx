@@ -24,8 +24,8 @@ import Layout from 'Common/Layout.jsx';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ko from 'date-fns/locale/ko';
-import styled from 'styled-components';
 import moment from 'moment';
+import { ExcelDownBtn, ResetBtn } from 'styles/ComponentStyle';
 
 const PaymentLog = () => {
   const toast = useToast();
@@ -741,30 +741,3 @@ const PaymentLog = () => {
 
 export default PaymentLog;
 
-const ExcelDownBtn = styled.button`
-  background-color: #444;
-  color: #fff;
-  padding: 2px 10px;
-  font-size: 15px;
-  transition: all 300ms ease;
-  word-break: keep-all;
-
-  &:hover {
-    background-color: #0098fa;
-  }
-`;
-
-const ResetBtn = styled.button`
-  background-color: #e6f4f1;
-  border: 1px solid #e6f4f1;
-  color: #444;
-  padding: 2px 10px;
-  font-size: 15px;
-  transition: all 300ms ease;
-  margin-right: 8px;
-  word-break: keep-all;
-
-  &:hover {
-    background-color: #b8c6db;
-  }
-`;

@@ -78,7 +78,6 @@ const GoListBtn = styled.button`
 
 const DeleteBtn = styled.button`
   background-color: #ff5a52;
-  //border: 1px solid #FF5A52;
   border-radius: 5px;
   color: #fff;
   padding: 2px 25px;
@@ -86,7 +85,6 @@ const DeleteBtn = styled.button`
 
   &:hover {
     background-color: #d83536;
-    //border: 1px solid #D83536;
     color: #fff;
   }
 

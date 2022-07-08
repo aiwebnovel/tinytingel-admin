@@ -13,6 +13,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import ko from 'date-fns/locale/ko';
 import styled from 'styled-components';
 import { CustomInput } from 'Common/CustomInput';
+import { DeleteBtn, CancelBtn, TrStyle, TbodyStyle } from 'styles/ComponentStyle';
 
 const SerialInputBox = styled(Flex)`
   align-items: center;
@@ -26,48 +27,9 @@ const SerialInputBox = styled(Flex)`
   }
 `;
 
-const TrStyle = styled.tr`
-  text-align: center;
-`;
-const TbodyStyle = styled.tbody`
-  > tr > td {
-    padding: 10px;
-  }
-`;
-
 const DateInputStyle = styled(Flex)`
   > div:nth-child(2) {
     width: 30px;
-  }
-`
-
-const DeleteBtn = styled.button`
-  background-color: #ff5a52;
-  //border: 1px solid #FF5A52;
-  border-radius: 5px;
-  color: #fff;
-  padding: 2px 25px;
-  transition: all 300ms ease;
-
-  &:hover {
-    background-color: #d83536;
-    //border: 1px solid #D83536;
-    color: #fff;
-  }
-`
-
-const CancelBtn = styled.button`
-  background-color: #f9f9f9;
-  border: 1px solid #444;
-  border-radius: 5px;
-  color: #444;
-  padding: 2px 25px;
-  transition: all 300ms ease;
-
-  &:hover {
-    background-color: #444;
-    //border: 1px solid #444;
-    color: #fff;
   }
 `
 
