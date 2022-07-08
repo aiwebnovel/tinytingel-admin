@@ -10,7 +10,7 @@ import MemPay from 'Components/Management/Member/MemPay.jsx';
 import QuestionDetail from 'Components/Management/QuestionDetail.jsx';
 import Prompts from 'Components/Management/Prompt/Prompts'
 import PromptDetail from 'Components/Management/Prompt/PromptDetail.jsx';
-import CreatePropmt from 'Components/Management/CreatePrompt';
+import CreatePropmt from 'Components/Management/Prompt/CreatePrompt';
 import PaymentLog from 'Components/Management/PaymentLog';
 import NotFound from 'Common/NotFound';
 import CreateSerial from 'Components/Management/Serials/CreateSerial';

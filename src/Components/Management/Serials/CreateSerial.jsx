@@ -54,13 +54,17 @@ const TrStyle = styled.tr`
     width: 300px;
   }
 
+  .Custom-5 {
+    width: 150px;
+  }
+
   .Custom-6 {
     width: 100px;
   }
 `
 
 const TbodyStyle = styled.tbody`
-  > td {
+  > tr> td {
     padding: 10px;
   }
 `
@@ -172,20 +176,22 @@ const CreateSerial = () => {
               </TrStyle>
             </thead>
             <TbodyStyle>
-                <td className="textCenter">1</td>
-                <td className="textCenter">tt-yymmdd-abc-03-001</td>
-                <td className="textCenter">
+                <TrStyle>
+                <td>1</td>
+                <td>tt-yymmdd-abc-03-001</td>
+                <td>
                 OO초등학교 글쓰기 교실
                 </td>
-                <td className="textCenter">
+                <td>
                 yyyy.mm.dd hh:mm:ss
                 </td>
-                <td className="textCenter">
+                <td>
                     3개월
                 </td>
-                <td className="textCenter">
+                <td>
                     <button>복사</button>
-                </td>                  
+                </td>     
+                </TrStyle>             
             </TbodyStyle>
           </table>
         </Box>

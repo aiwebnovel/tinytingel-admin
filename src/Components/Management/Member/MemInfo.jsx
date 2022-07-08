@@ -1,6 +1,6 @@
-import React, { useEffect, useState, forwardRef } from 'react';
+import React, { useEffect, useState} from 'react';
 import axios from 'axios';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   Box,
   Heading,
@@ -16,7 +16,7 @@ import {
   HStack,
   Flex,
 } from '@chakra-ui/react';
-import { FcCalendar } from 'react-icons/fc';
+
 import Layout from 'Common/Layout.jsx';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
@@ -25,6 +25,7 @@ import ko from 'date-fns/locale/ko';
 import moment from 'moment';
 import * as server from 'config/Config';
 import {Back} from 'styles/ComponentStyle';
+import { CustomInput } from 'Common/CustomInput';
 
 const MemInfo = () => {
   const { id } = useParams();
@@ -49,15 +50,7 @@ const MemInfo = () => {
 
   const [passbook, setPassbook] = useState(false);
 
-  const CustomInput = forwardRef(({ value, onClick }, ref) => (
-    <button
-      style={{ background: 'transparent', border: '0', outline: '0' }}
-      onClick={onClick}
-      ref={ref}
-    >
-      <FcCalendar style={{ width: '30px', height: '30px' }}>{moment(value).format('yyyy/MM/DD')}</FcCalendar>
-    </button>
-  ));
+  
 
   const ChangeSelectedAndEndDate = e => {
     setSelected(e.target.value);
