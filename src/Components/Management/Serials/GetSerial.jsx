@@ -1,5 +1,12 @@
 import Layout from 'Common/Layout';
-import { Box, Flex, Button, Input, Checkbox } from '@chakra-ui/react';
+import { Box, Flex, Button, Input, Checkbox,  HStack, useDisclosure,
+    Modal,
+    ModalOverlay,
+    ModalContent,
+    ModalHeader,
+    ModalFooter,
+    ModalBody,
+    ModalCloseButton, } from '@chakra-ui/react';
 import {  DeleteIcon } from '@chakra-ui/icons';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -34,7 +41,40 @@ const DateInputStyle = styled(Flex)`
   }
 `
 
+const DeleteBtn = styled.button`
+  background-color: #ff5a52;
+  //border: 1px solid #FF5A52;
+  border-radius: 5px;
+  color: #fff;
+  padding: 2px 25px;
+  transition: all 300ms ease;
+
+  &:hover {
+    background-color: #d83536;
+    //border: 1px solid #D83536;
+    color: #fff;
+  }
+`
+
+const CancelBtn = styled.button`
+  background-color: #f9f9f9;
+  border: 1px solid #444;
+  border-radius: 5px;
+  color: #444;
+  padding: 2px 25px;
+  transition: all 300ms ease;
+
+  &:hover {
+    background-color: #444;
+    //border: 1px solid #444;
+    color: #fff;
+  }
+`
+
 const GetSerial = () => {
+
+    const { isOpen, onOpen, onClose } = useDisclosure();
+
   return (
     <Layout>
       <Box className="MemberContainer">
@@ -102,7 +142,7 @@ const GetSerial = () => {
         <Box className="TableContainer">
           <Flex justify="flex-end" mb={25} spacing="15px">
           <DeleteIcon
-           // onClick={onOpen}
+           onClick={onOpen}
             w={5}
             h={5}
             style={{ cursor: 'pointer' }}
@@ -161,6 +201,26 @@ const GetSerial = () => {
           </Box>
         </Box>
       </Box>
+      <Modal isOpen={isOpen} onClose={onClose}>
+        <ModalOverlay />
+        <ModalContent>
+          <ModalHeader>
+            <ModalCloseButton />
+          </ModalHeader>
+
+          <ModalBody textAlign={'center'} fontSize='1.2rem' fontWeight={600} padding='20px 24px 10px'>삭제하시겠습니까?</ModalBody>
+          <ModalFooter justifyContent={'center'}>
+            <HStack>
+            <DeleteBtn 
+            // onClick={DeletePrompt}
+            >삭제</DeleteBtn>
+            <CancelBtn
+             onClick={onClose}
+             >취소</CancelBtn>
+            </HStack>
+          </ModalFooter>
+        </ModalContent>
+      </Modal>
     </Layout>
   );
 };
