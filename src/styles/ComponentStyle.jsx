@@ -132,7 +132,7 @@ export const TbodyStyle = styled.tbody`
 
 export const ExtraBtn = styled.button`
   background-color : #37a169;
-  font-weight: 600;
+
   color : #fff;
   border-radius : 5px;
   padding : 2px 10px;
