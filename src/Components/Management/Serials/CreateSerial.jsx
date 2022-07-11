@@ -13,7 +13,7 @@ import {
 } from '@chakra-ui/react';
 import styled from 'styled-components';
 import { CSVLink } from 'react-csv';
-import { ExcelDownBtn, TrStyle, TbodyStyle, SerialInputBox } from 'styles/ComponentStyle';
+import { ExcelDownBtn, TrStyle, TbodyStyle, SerialInputBox, ExtraBtn } from 'styles/ComponentStyle';
 
 const TrThStyle = styled.tr`
    text-align: center;
@@ -38,6 +38,7 @@ const TrThStyle = styled.tr`
     width: 100px;
   }
 `
+
 const CreateSerial = () => {
   return (
     <Layout>
@@ -89,7 +90,7 @@ const CreateSerial = () => {
           </Flex>
 
           <Box textAlign={'right'}>
-            <Button>생성하기</Button>
+            <Button colorScheme='blue'>생성하기</Button>
           </Box>
         </Box>
 
@@ -157,7 +158,7 @@ const CreateSerial = () => {
                     3개월
                 </td>
                 <td>
-                    <button>복사</button>
+                    <ExtraBtn colorScheme='blue'>Copy</ExtraBtn>
                 </td>     
                 </TrStyle>             
             </TbodyStyle>

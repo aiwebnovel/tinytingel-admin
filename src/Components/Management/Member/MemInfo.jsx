@@ -24,7 +24,7 @@ import 'react-datepicker/dist/react-datepicker.css';
 import ko from 'date-fns/locale/ko';
 import moment from 'moment';
 import * as server from 'config/Config';
-import {Back, BtnBox} from 'styles/ComponentStyle';
+import {Back, BtnBox, SmallDelete, Modify} from 'styles/ComponentStyle';
 import { CustomInput } from 'Common/CustomInput';
 
 const MemInfo = () => {
@@ -494,7 +494,7 @@ const MemInfo = () => {
             <HStack>
               <Back onClick={UnSubscribe}>구독해지</Back>
               <Modify onClick={ModifyUserData}>구독수정</Modify>
-              <Delete onClick={DeleteUser}>회원삭제</Delete>
+              <SmallDelete onClick={DeleteUser}>회원삭제</SmallDelete>
             </HStack>
           </ModalFooter>
         </ModalContent>
@@ -505,36 +505,7 @@ const MemInfo = () => {
 
 export default MemInfo;
 
-const Modify = styled.button`
-  background-color: #444;
-  padding: 2px 8px;
-  border: 1px solid #444;
-  border-radius: 5px;
-  color: #fff;
 
-  transition: all 300ms ease;
-
-  &:hover {
-    background-color: #e6f4f1;
-    border: 1px solid #e6f4f1;
-    color: #444;
-  }
-`;
-
-const Delete = styled.button`
-  background-color: #ff5a52;
-  padding: 2px 8px;
-  border: 1px solid #ff5a52;
-  border-radius: 5px;
-  color: #fff;
-  width: 80px;
-  transition: all 300ms ease;
-
-  &:hover {
-    background-color: #d83536;
-    border: 1px solid #d83536;
-  }
-`;
 
 const Canceled = styled.span`
   background-color: transparent;

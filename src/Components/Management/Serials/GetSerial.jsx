@@ -14,9 +14,8 @@ import 'react-datepicker/dist/react-datepicker.css';
 import ko from 'date-fns/locale/ko';
 import styled from 'styled-components';
 import { CustomInput } from 'Common/CustomInput';
-import { DeleteBtn, CancelBtn, TrStyle, TbodyStyle, SerialInputBox } from 'styles/ComponentStyle';
+import { DeleteBtn, CancelBtn, TrStyle, TbodyStyle, SerialInputBox, ExtraBtn } from 'styles/ComponentStyle';
 import SerialDetail from './SerialDetail';
-
 
 const DateInputStyle = styled(Flex)`
   > div:nth-child(2) {
@@ -151,7 +150,7 @@ const GetSerial = () => {
                 <td>Y</td>
                 <td>appplatform@appplatform.co.kr</td>
                 <td>
-                  <Button onClick={HandleDetailModal}>상세</Button>
+                  <ExtraBtn onClick={HandleDetailModal} >상세</ExtraBtn>
                 </td>
                 </TrStyle>
               </TbodyStyle>

@@ -43,6 +43,37 @@ export const CancelBtn = styled.button`
   }
 `
 
+export const SmallDelete = styled.button`
+background-color: #ff5a52;
+padding: 2px 8px;
+border: 1px solid #ff5a52;
+border-radius: 5px;
+color: #fff;
+width: 80px;
+transition: all 300ms ease;
+
+&:hover {
+  background-color: #d83536;
+  border: 1px solid #d83536;
+}
+`;
+
+export const Modify = styled.button`
+background-color: #444;
+padding: 2px 8px;
+border: 1px solid #444;
+border-radius: 5px;
+color: #fff;
+width: 80px;
+transition: all 300ms ease;
+
+&:hover {
+  background-color: #e6f4f1;
+  border: 1px solid #e6f4f1;
+  color: #444;
+}
+`;
+
 export const ExcelDownBtn = styled.button`
   background-color: #444;
   color: #fff;
@@ -95,6 +126,19 @@ text-align: center;
 
 export const TbodyStyle = styled.tbody`
 > tr > td {
-  padding: 10px;
+  padding: 5px 8px;
 }
 `;
+
+export const ExtraBtn = styled.button`
+  background-color : #37a169;
+  font-weight: 600;
+  color : #fff;
+  border-radius : 5px;
+  padding : 2px 10px;
+  transition: all 300ms ease-in-out;
+
+  &:hover {
+    background-color : #318e5d;
+  }
+`

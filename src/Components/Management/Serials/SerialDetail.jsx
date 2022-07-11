@@ -1,5 +1,6 @@
 import {
     Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, HStack, Button } from '@chakra-ui/react';
+import { Modify, SmallDelete } from 'styles/ComponentStyle';
 
 const SerialDetail = ({isOpen, onClose}) => {
     return(
@@ -48,8 +49,8 @@ const SerialDetail = ({isOpen, onClose}) => {
           </ModalBody>
           <ModalFooter justifyContent={'center'}>
             <HStack>
-              <Button>수정</Button>
-              <Button>삭제</Button>
+              <Modify>수정</Modify>
+              <SmallDelete>삭제</SmallDelete>
             </HStack>
           </ModalFooter>
         </ModalContent>
