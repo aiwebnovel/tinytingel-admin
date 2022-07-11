@@ -1,3 +1,4 @@
+import {useState} from 'react';
 import Layout from 'Common/Layout';
 import { Box, Flex, Button, Input, Checkbox,  HStack, useDisclosure,
     Modal,
@@ -13,19 +14,9 @@ import 'react-datepicker/dist/react-datepicker.css';
 import ko from 'date-fns/locale/ko';
 import styled from 'styled-components';
 import { CustomInput } from 'Common/CustomInput';
-import { DeleteBtn, CancelBtn, TrStyle, TbodyStyle } from 'styles/ComponentStyle';
+import { DeleteBtn, CancelBtn, TrStyle, TbodyStyle, SerialInputBox } from 'styles/ComponentStyle';
+import SerialDetail from './SerialDetail';
 
-const SerialInputBox = styled(Flex)`
-  align-items: center;
-  margin-bottom: 20px;
-
-  > label {
-    min-width: 120px;
-    font-weight: 600;
-    word-break: keep-all;
-    margin-bottom: 5px;
-  }
-`;
 
 const DateInputStyle = styled(Flex)`
   > div:nth-child(2) {
@@ -36,6 +27,11 @@ const DateInputStyle = styled(Flex)`
 const GetSerial = () => {
 
     const { isOpen, onOpen, onClose } = useDisclosure();
+    const [modalOpen, setModalOpen] = useState(false);
+    
+    const HandleDetailModal = () => {
+      setModalOpen(!modalOpen);
+    }
 
   return (
     <Layout>
@@ -155,7 +151,7 @@ const GetSerial = () => {
                 <td>Y</td>
                 <td>appplatform@appplatform.co.kr</td>
                 <td>
-                  <Button>상세</Button>
+                  <Button onClick={HandleDetailModal}>상세</Button>
                 </td>
                 </TrStyle>
               </TbodyStyle>
@@ -163,6 +159,7 @@ const GetSerial = () => {
           </Box>
         </Box>
       </Box>
+      <SerialDetail isOpen={modalOpen} onClose={HandleDetailModal}/>
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -174,7 +171,6 @@ const GetSerial = () => {
           <ModalFooter justifyContent={'center'}>
             <HStack>
             <DeleteBtn 
-            // onClick={DeletePrompt}
             >삭제</DeleteBtn>
             <CancelBtn
              onClick={onClose}

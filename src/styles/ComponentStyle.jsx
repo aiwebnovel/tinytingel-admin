@@ -1,4 +1,5 @@
 import styled from 'styled-components';
+import {Flex} from '@chakra-ui/react';
 
 export const Back = styled.button`
   background-color: #b8c6db;
@@ -74,6 +75,18 @@ export const BtnBox = styled.div`
 width: 100%;
 text-align: center;
 padding: 30px 0;
+`;
+
+export const SerialInputBox = styled(Flex)`
+align-items: center;
+margin-bottom: 20px;
+
+> label {
+  min-width: 120px;
+  font-weight: 600;
+  word-break: keep-all;
+  margin-bottom: 5px;
+}
 `;
 
 export const TrStyle = styled.tr`

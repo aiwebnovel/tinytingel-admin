@@ -13,19 +13,7 @@ import {
 } from '@chakra-ui/react';
 import styled from 'styled-components';
 import { CSVLink } from 'react-csv';
-import { ExcelDownBtn, TrStyle, TbodyStyle } from 'styles/ComponentStyle';
-
-const SerialInputBox = styled(Flex)`
-  align-items: center;
-  margin-bottom: 20px;
-
-  > label {
-    min-width: 120px;
-    font-weight: 600;
-    word-break: keep-all;
-    margin-bottom: 5px;
-  }
-`;
+import { ExcelDownBtn, TrStyle, TbodyStyle, SerialInputBox } from 'styles/ComponentStyle';
 
 const TrThStyle = styled.tr`
    text-align: center;
