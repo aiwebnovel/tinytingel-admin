@@ -3,7 +3,7 @@ import { useParams, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Layout from 'Common/Layout';
 import { Box, Heading } from '@chakra-ui/react';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import styled from 'styled-components';
 import {BtnBox} from 'styles/ComponentStyle';
 import * as config from 'config/Config';
@@ -63,7 +63,7 @@ const MemPay = () => {
           </div>
           <div className="payBox">
             <h4>주문일시</h4>
-            <p>{moment(item.orderDate).format('YYYY-MM-DD')}</p>
+            <p>{dayjs(item.orderDate).format('YYYY-MM-DD')}</p>
           </div>
           <div className="payBox">
             <h4>주문 상태</h4>

@@ -24,7 +24,7 @@ import Layout from 'Common/Layout.jsx';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ko from 'date-fns/locale/ko';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { ExcelDownBtn, ResetBtn } from 'styles/ComponentStyle';
 
 const PaymentLog = () => {
@@ -204,7 +204,7 @@ const PaymentLog = () => {
 
   const fetchData = useCallback(async () => {
     const today = new Date();
-    const formatToday = moment(today).format('YYYY-MM-DD');
+    const formatToday = dayjs(today).format('YYYY-MM-DD');
 
     const config = {
       method: 'post',
@@ -576,7 +576,7 @@ const PaymentLog = () => {
                     </td>
                     <td className="textCenter">
                       {item.user.membership_recent_date !== null &&
-                        moment(item.user.membership_recent_date).format(
+                        dayjs(item.user.membership_recent_date).format(
                           'YYYY-MM-DD'
                         )}
                       {item.user.membership_recent_date === null &&
@@ -584,7 +584,7 @@ const PaymentLog = () => {
                         '없음'}
                       {item.user.membership_recent_date === null &&
                         item.membership.start_date !== null &&
-                        moment(item.membership.start_date).format('YYYY-MM-DD')}
+                        dayjs(item.membership.start_date).format('YYYY-MM-DD')}
                     </td>
                     <td>{item.user.name}</td>
                     <td>{item.user.email}</td>

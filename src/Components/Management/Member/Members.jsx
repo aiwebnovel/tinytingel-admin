@@ -36,7 +36,7 @@ import Layout from 'Common/Layout.jsx';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ko from 'date-fns/locale/ko';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { DeleteBtn, CancelBtn, ExcelDownBtn, ResetBtn } from 'styles/ComponentStyle';
 
 const Members = () => {
@@ -229,7 +229,7 @@ const Members = () => {
 
   const fetchData = useCallback(async () => {
     const today = new Date();
-    const formatToday = moment(today).format('YYYY-MM-DD');
+    const formatToday = dayjs(today).format('YYYY-MM-DD');
 
     const config = {
       method: 'post',
@@ -533,11 +533,11 @@ const Members = () => {
                     <td>{item.user.name}</td>
                     <td>{item.user.email}</td>
                     <td className="textCenter">
-                      {moment(item.user.create_at).format('YYYY-MM-DD')}
+                      {dayjs(item.user.create_at).format('YYYY-MM-DD')}
                     </td>
                     <td className="textCenter">
                       {item.user.login_at !== null
-                        ? moment(item.user.login_at).format('YYYY-MM-DD')
+                        ? dayjs(item.user.login_at).format('YYYY-MM-DD')
                         : '기록 없음'}
                     </td>
                     <td className="textCenter">
@@ -559,19 +559,19 @@ const Members = () => {
                       {/* 최초 구독 있음, 최근결제 없음  */}
                       {item.membership.start_date !== null 
                       && item.user.membership_recent_date === null
-                      && moment(item.membership.start_date).format(
+                      && dayjs(item.membership.start_date).format(
                             'YYYY-MM-DD'
                       )}
                    {/* 최초 구독 없음 , 최근 결제 있음 (start_date null인 경우_무통장) */}
                          {item.membership.start_date === null 
                       && item.user.membership_recent_date !== null
-                      && moment(item.user.membership_recent_date).format(
+                      && dayjs(item.user.membership_recent_date).format(
                             'YYYY-MM-DD'
                       )}
                     {/* 최초 구독, 최근 결제 있음 */}
                       {item.user.membership_recent_date !== null &&
                       item.membership.start_date !== null &&
-                        moment(item.membership.start_date).format(
+                        dayjs(item.membership.start_date).format(
                           'YYYY-MM-DD'
                         )}
                     </td>
@@ -583,17 +583,17 @@ const Members = () => {
                       {/* 최초 구독 있음, 최근결제 없음  */}
                       {item.user.membership_recent_date !== null &&
                       item.membership.start_date === null &&
-                        moment(item.user.membership_recent_date).format(
+                        dayjs(item.user.membership_recent_date).format(
                           'YYYY-MM-DD'
                         )}
                    {/* 최초 구독 없음 , 최근 결제 있음 (start_date null인 경우_무통장) */}
                       {item.user.membership_recent_date === null &&
                       item.membership.start_date !== null &&
-                        moment(item.membership.start_date).format('YYYY-MM-DD')}
+                        dayjs(item.membership.start_date).format('YYYY-MM-DD')}
                          {/* 최초 구독, 최근 결제 있음 */}
                       {item.user.membership_recent_date !== null &&
                       item.membership.start_date !== null &&
-                        moment(item.user.membership_recent_date).format(
+                        dayjs(item.user.membership_recent_date).format(
                           'YYYY-MM-DD'
                         )}
 

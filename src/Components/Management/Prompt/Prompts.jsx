@@ -29,7 +29,7 @@ import {
 } from '@chakra-ui/icons';
 import Layout from 'Common/Layout.jsx';
 import styled from 'styled-components';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import { DeleteBtn,CancelBtn } from 'styles/ComponentStyle';
 
 import * as config from 'config/Config';
@@ -271,10 +271,10 @@ const Prompts = () => {
                     <td className="textLeft">{item.name}</td>
                     <td className="textCenter">관리자</td>
                     <td className="textCenter">
-                      {moment(item.create_at).format('YYYY-MM-DD')}
+                      {dayjs(item.create_at).format('YYYY-MM-DD')}
                     </td>
                     <td className="textCenter">
-                      {moment(item.update_at).format('YYYY-MM-DD')}
+                      {dayjs(item.update_at).format('YYYY-MM-DD')}
                     </td>
                     <td className="textCenter">
                       <Link to={`/prompts/${item.uid}`}><DetailBtn>보기</DetailBtn></Link>

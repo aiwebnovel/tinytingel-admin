@@ -1,6 +1,6 @@
 import { forwardRef } from "react";
 import { FcCalendar } from 'react-icons/fc';
-import moment from 'moment';
+import dayjs from 'dayjs';
 
 export const CustomInput = forwardRef(({ value, onClick }, ref) => (
     <button
@@ -8,7 +8,7 @@ export const CustomInput = forwardRef(({ value, onClick }, ref) => (
       onClick={onClick}
       ref={ref}
     >
-      <FcCalendar style={{ width: '30px', height: '30px' }}>{moment(value).format('yyyy/MM/DD')}</FcCalendar>
+      <FcCalendar style={{ width: '30px', height: '30px' }}>{dayjs(value).format('yyyy/MM/DD')}</FcCalendar>
     </button>
   ));
 

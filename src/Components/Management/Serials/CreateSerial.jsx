@@ -26,7 +26,8 @@ import {
   SerialInputBox,
   ExtraBtn,
 } from 'styles/ComponentStyle';
-import moment from 'moment';
+import {CopyToClipboard} from 'react-copy-to-clipboard';
+import dayjs from 'dayjs';
 
 const TrThStyle = styled.tr`
   text-align: center;
@@ -56,6 +57,16 @@ const TrThStyle = styled.tr`
 const CreateSerial = () => {
   const toast = useToast();
   const admin = JSON.parse(localStorage.getItem('admin'));
+
+  const headers = [
+    { label: '시리얼 넘버', key: 'coupon_uid' },
+    { label: '캠페인명', key: 'campaign_name' },
+    { label: '생성일자', key: 'create_at' },
+    { label: '혜택구분', key: 'plan' },
+  ];
+
+
+  const [copied, setCopied] = useState(false);
   const [StringStates, setStringStates] = useState({
     campaign: '',
     description: '',
@@ -71,6 +82,19 @@ const CreateSerial = () => {
   const HandleStringStates = e => {
     setStringStates({ ...StringStates, [e.target.id]: e.target.value });
   };
+
+  const OnCopied = () => {
+    setCopied(true);
+    toast({
+      title: '성공!',
+      description: `시리얼 넘버를 복사했습니다!`,
+      position: 'top-right',
+      status: 'success',
+      duration: 5000,
+      isClosable: true,
+    })
+  }
+
 
   const MakeSerial = () => {
     const objectValue = Object.values(StringStates);
@@ -103,9 +127,8 @@ const CreateSerial = () => {
 
       axios(config)
         .then(response => {
-          console.log(response.data);
           const resData = response.data.data;
-          const keyArray = Object.keys(resData);
+          console.log(resData);
           setData(resData);
         })
         .catch(error => {
@@ -225,8 +248,8 @@ const CreateSerial = () => {
           <Box className="TableContainer">
             <Flex justify="flex-end" mb={25} spacing="15px">
               <CSVLink
-                headers={[]}
-                data={[]}
+                headers={headers}
+                data={data}
                 filename={'시리얼넘버'}
                 download="시리얼넘버.csv"
                 onClick={() => {
@@ -272,15 +295,17 @@ const CreateSerial = () => {
                 <TbodyStyle>
                  
                    {data.map(item => (
-                   
-                      <TrStyle>
+                      <TrStyle key={item.coupon_uid} className="MemberCustom-tr">
                         <td>{num = num +1 }</td>
                         <td>{item.coupon_uid}</td>
                         <td>{item.campaign_name}</td>
-                        <td>{moment(item.create_at).format('YYYY-MM-DD')}</td>
+                        <td>{dayjs(item.create_at).format('YYYY-MM-DD')}</td>
                         <td>{item.plan}개월</td>
                         <td>
+                        <CopyToClipboard text={item.coupon_uid}
+                            onCopy={OnCopied}>
                           <ExtraBtn colorScheme="blue">Copy</ExtraBtn>
+                          </CopyToClipboard>
                         </td>
                       </TrStyle>
                    

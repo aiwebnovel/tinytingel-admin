@@ -22,7 +22,7 @@ import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ko from 'date-fns/locale/ko';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import * as server from 'config/Config';
 import {Back, BtnBox, SmallDelete, Modify} from 'styles/ComponentStyle';
 import { CustomInput } from 'Common/CustomInput';
@@ -35,7 +35,7 @@ const MemInfo = () => {
   const navigate = useNavigate();
   const admin = JSON.parse(localStorage.getItem('admin'));
   const today = new Date();
-  const formatToday = moment(today).format('YYYY-MM-DD');
+  const formatToday = dayjs(today).format('YYYY-MM-DD');
 
   const [Data, setData] = useState({
     membership: '',
@@ -54,14 +54,14 @@ const MemInfo = () => {
 
   const ChangeSelectedAndEndDate = e => {
     setSelected(e.target.value);
-    const addMonth = moment(startDate).add(e.target.value, 'months').calendar();
+    const addMonth = dayjs(startDate).add(e.target.value, 'months').calendar();
     setEndDate(addMonth);
   };
 
   const ModifyUserData = () => {
     console.log(parseInt(selectedMembership), passbook, endDate);
     const plan = parseInt(selectedMembership);
-    const fomatEndDate = moment(endDate).format('YYYY-MM-DD');
+    const fomatEndDate = dayjs(endDate).format('YYYY-MM-DD');
 
     if(membership.bill_service === 'none' && !passbook) {
       toast({
@@ -273,7 +273,7 @@ const MemInfo = () => {
           </div>
           <div className="InfoBox">
             <h4>가입일자</h4>
-            <p>{`${moment(user.create_at).format('YYYY-MM-DD')}`}</p>
+            <p>{`${dayjs(user.create_at).format('YYYY-MM-DD')}`}</p>
           </div>
           <div className="InfoBox" style={{ backgroundColor: '#f9f9f9' }}>
             <h4>결제내역</h4>
@@ -333,14 +333,14 @@ const MemInfo = () => {
               {/* 구독한 적 있음 / 구독 시작날짜 있음 */}
               {membership.bill_service !== 'none' &&
                 membership.start_date !== null &&
-                `${moment(membership.start_date).format(
+                `${dayjs(membership.start_date).format(
                   'YYYY-MM-DD')}`}
 
 
               {/* 구독한 적 있음 / 구독 시작날짜 없음 */}
               {membership.bill_service !== 'none' &&
                 membership.start_date === null &&
-                `${moment(user.membership_recent_date).format(
+                `${dayjs(user.membership_recent_date).format(
                   'YYYY-MM-DD')}`}
 
             </p>
@@ -355,16 +355,16 @@ const MemInfo = () => {
               {/* 구독한 적 있음 / 최근 결제일 없음 */}
               {membership.bill_service !== 'none' &&
                 user.membership_recent_date === null &&
-                `${moment(membership.start_date).format(
+                `${dayjs(membership.start_date).format(
                   'YYYY-MM-DD'
-                )} ~ ${moment(membership.next_date).format('YYYY-MM-DD')}`}
+                )} ~ ${dayjs(membership.next_date).format('YYYY-MM-DD')}`}
 
               {/* 구독한 적 있음 / 최근 결제일 있음  */}
               {membership.bill_service !== 'none' &&
                 user.membership_recent_date !== null &&
-                `${moment(user.membership_recent_date).format(
+                `${dayjs(user.membership_recent_date).format(
                   'YYYY-MM-DD'
-                )} ~ ${moment(membership.next_date).format('YYYY-MM-DD')}`}
+                )} ~ ${dayjs(membership.next_date).format('YYYY-MM-DD')}`}
             </p>
           </div>
           <div className="InfoBox">
@@ -378,7 +378,7 @@ const MemInfo = () => {
 
               {membership.bill_service !== 'none' &&
                 !user.membership_cancel &&
-                moment(membership.next_date).format('YYYY-MM-DD')}
+                dayjs(membership.next_date).format('YYYY-MM-DD')}
 
               {/* 구독 중 & 취소함 */}
               {membership.bill_service !== 'none' &&
@@ -429,11 +429,11 @@ const MemInfo = () => {
               </div>
               <div className="ModalInfoBox">
                 <h4>가입일자</h4>
-                <p>{`${moment(user.create_at).format('YYYY-MM-DD')}`}</p>
+                <p>{`${dayjs(user.create_at).format('YYYY-MM-DD')}`}</p>
               </div>
                 <div className="ModalInfoBox">
                 <h4>가입일자</h4>
-                <p>{`${moment(user.create_at).format('YYYY-MM-DD')}`}</p>
+                <p>{`${dayjs(user.create_at).format('YYYY-MM-DD')}`}</p>
               </div>
               <div className="ModalInfoBox">
                 <h4>구독상품</h4>
@@ -456,7 +456,7 @@ const MemInfo = () => {
                   <Flex align='center' gridGap={'5px'}>
                   <input
                     className="ModalDatePickerStyle"
-                    value={moment(startDate).format('yyyy/MM/DD')}
+                    value={dayjs(startDate).format('yyyy/MM/DD')}
                     readOnly
                   /> 
                   <SpanBtn onClick={()=> setStartDate(today)}>오늘 날짜</SpanBtn>
@@ -465,7 +465,7 @@ const MemInfo = () => {
                   <Flex justify="space-between" align="flex-start" w="100%">
                     <input
                       className="ModalDatePickerStyle no-outline"
-                      value={moment(endDate).format('yyyy/MM/DD')}
+                      value={dayjs(endDate).format('yyyy/MM/DD')}
                       readOnly
                     />
 

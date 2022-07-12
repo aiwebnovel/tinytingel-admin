@@ -15,7 +15,7 @@ import {
   ArrowRightIcon,
 } from '@chakra-ui/icons';
 import Layout from 'Common/Layout.jsx';
-import moment from 'moment';
+import dayjs from 'dayjs'
 import { CSVLink } from 'react-csv';
 import { ExcelDownBtn } from 'styles/ComponentStyle';
 import * as server from 'config/Config';
@@ -41,7 +41,7 @@ const LoginLog = () => {
 
   const fetchData = useCallback(async () => {
     const today = new Date();
-    const formatToday = moment(today).format('YYYY-MM-DD');
+    const formatToday = dayjs(today).format('YYYY-MM-DD');
 
     const config = {
       method: 'post',
@@ -154,11 +154,11 @@ const LoginLog = () => {
                     <td className="textCenter">
                       {item.user.login_at !== null ? (
                         <p style={{padding: '3px'}}>
-                          <span style={{fontWeight: 600}}>{moment(item.user.login_at).format(
+                          <span style={{fontWeight: 600}}>{dayjs(item.user.login_at).format(
                             'YYYY-MM-DD'
                           )} </span>
                           <br />
-                          {moment(item.user.login_at).format('hh:mm:ss')}
+                          {dayjs(item.user.login_at).format('hh:mm:ss')}
                         </p>
                       ) : (
                         '기록 없음'
@@ -167,7 +167,7 @@ const LoginLog = () => {
                     <td>{item.user.name}</td>
                     <td>{item.user.email}</td>
                     <td className="textCenter">
-                      {moment(item.user.create_at).format('YYYY-MM-DD')}
+                      {dayjs(item.user.create_at).format('YYYY-MM-DD')}
                     </td>
 
                     <td className="textCenter">
@@ -177,14 +177,14 @@ const LoginLog = () => {
                     </td>
                     <td className="textCenter">
                       {item.membership.start_date !== null
-                        ? moment(item.membership.start_date).format(
+                        ? dayjs(item.membership.start_date).format(
                             'YYYY-MM-DD'
                           )
                         : "없음"}
                     </td>
                     <td className="textCenter">
                       {item.membership.start_date !== null
-                        ? moment(item.membership.start_date).format(
+                        ? dayjs(item.membership.start_date).format(
                             'YYYY-MM-DD'
                           )
                         : "없음"}
