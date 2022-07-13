@@ -1,13 +1,12 @@
 import { useEffect, useState } from 'react';
 import axios from 'axios';
 import * as server from 'config/Config';
-import {Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, HStack, useToast} from '@chakra-ui/react';
+import {Box, Modal, ModalOverlay, ModalContent, ModalHeader, ModalFooter, ModalBody, ModalCloseButton, HStack, Select, useToast} from '@chakra-ui/react';
 import { Modify, SmallDelete } from 'styles/ComponentStyle';
 import dayjs from 'dayjs';
 
 const SerialDetail = ({UID, admin, isOpen, onClose}) => {
-  const toast = useToast();
-  
+  const toast = useToast()
   const [details, setDeatils] = useState({
     coupon_uid:'',
     campaign_name:'',
@@ -18,14 +17,70 @@ const SerialDetail = ({UID, admin, isOpen, onClose}) => {
     create_at:''
   });
   const [endDate, setEndDate] = useState('');
-
   const {coupon_uid, campaign_name, desc, plan, is_used, used_user_id, create_at} = details;  
-  console.log(details);
+
+  const [previous, setPrevious] = useState({
+    PreCampaign_name: '',
+    PreDesc: '',
+    PrePlan : ''
+  });
+
+  const {PreCampaign_name, PreDesc, PrePlan} = previous;
+
   const InputChange = (e) => {
     setDeatils({
       ...details,
       [e.target.id]: e.target.value
     })
+  }
+
+  const ModifyDetail = () => {
+    if((PreCampaign_name === campaign_name) && (PreDesc === desc) && (PrePlan === plan)){
+      toast({
+        title: '내용이 그대로 입니다!',
+        description: `수정된 내용이 없습니다.`,
+        position: 'top-right',
+        status: 'warning',
+        duration: 5000,
+        isClosable: true,
+      });
+    } else {
+      const config = {
+        method: 'put',
+        url: `${server.SERVER_URL}/coupon?coupon_uid=${UID}`,
+        headers: { Authorization: `Bearer ${admin.adminState.token}` },
+        data: {
+          campaign_name: campaign_name,
+          desc: desc,
+          plan: plan
+        }
+      }
+
+      axios(config)
+      .then((response)=>{
+        //console.log(response);
+        toast({
+          title:'성공!',
+          description: `수정 완료!`,
+          position: 'top-right',
+          status: 'success',
+          duration: 5000,
+          isClosable: true,
+        });
+      })
+      .catch((error)=>{
+        toast({
+          title: 'error!',
+          description: `${error.message}`,
+          position: 'top-right',
+          status: 'error',
+          duration: 5000,
+          isClosable: true,
+        });
+      })
+
+    }
+     
   }
 
   useEffect(()=>{
@@ -56,6 +111,11 @@ const SerialDetail = ({UID, admin, isOpen, onClose}) => {
         let afterDay = dayjs(after.$d).format("YYYY-MM-DD");
         setEndDate(afterDay);
 
+        setPrevious({...previous, 
+          PreCampaign_name:data.campaign_name, 
+          PreDesc:data.desc,
+           PrePlan:data.plan});
+
       })
       .catch((error)=>{
         toast({
@@ -82,7 +142,7 @@ const SerialDetail = ({UID, admin, isOpen, onClose}) => {
             <Box>
               <div className="SerialDetailModal">
                 <h4>시리얼넘버</h4>
-                <input type='text' id='coupon_uid' value={coupon_uid} onChange={InputChange}/>
+                <p>{coupon_uid}</p>
               </div>
              <div className="SerialDetailModal">
                 <h4>캠페인명</h4>
@@ -98,7 +158,19 @@ const SerialDetail = ({UID, admin, isOpen, onClose}) => {
               </div>
               <div className="SerialDetailModal">
                 <h4>혜택구분</h4>
-                <p>{`${plan}개월`}</p>
+                <Select
+                className="selectOption"
+                id="plan"
+                value={plan}
+                onChange={(e)=> setDeatils({...details, plan : Number(e.target.value)})}
+              >
+                <option value={0} disabled>
+                  혜택을 선택해주세요
+                </option>
+                <option value={1}>1개월</option>
+                <option value={3}>3개월</option>
+                <option value={6}>6개월</option>
+              </Select>
               </div>
              <div className="SerialDetailModal">
                 <h4>사용여부</h4>
@@ -117,7 +189,7 @@ const SerialDetail = ({UID, admin, isOpen, onClose}) => {
           </ModalBody>
           <ModalFooter justifyContent={'center'}>
             <HStack>
-              <Modify>수정</Modify>
+              <Modify onClick={ModifyDetail}>수정</Modify>
               <SmallDelete>삭제</SmallDelete>
             </HStack>
           </ModalFooter>

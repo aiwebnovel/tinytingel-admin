@@ -703,7 +703,7 @@ $gray-1 : #E2E8F0;
     display: flex;
     align-items: center;
     padding: 15px 15px 12px 15px;
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid #ededed;
 
     >h4 {
         min-width: 100px;
@@ -711,10 +711,10 @@ $gray-1 : #E2E8F0;
     }
 
     > input {
-        border: 1px solid #444;
+        border: 1px solid #E2E8F0;
     border-radius : 5px;
     width: 100%;
-    padding: 2px 8px;
+    padding: 7px 8px 7px 15px;
     }
 
     @media screen and (max-width: 768px) {
