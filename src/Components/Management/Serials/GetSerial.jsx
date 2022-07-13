@@ -61,6 +61,7 @@ const GetSerial = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const admin = JSON.parse(localStorage.getItem('admin'));
+  const [uid, setUid] = useState('');
 
   //체크된 아이템
   const [checkedItems, setCheckedItems] = useState([]);
@@ -110,8 +111,10 @@ const GetSerial = () => {
     console.log(campaign_name);
   }
   
-  const HandleDetailModal = () => {
+  const HandleDetailModal = (UID) => {
     setModalOpen(!modalOpen);
+    setUid(UID);
+
   };
 
   //시리얼 넘버 전부 체크
@@ -178,7 +181,6 @@ const GetSerial = () => {
             isClosable: true,
           });
       }
-
           toast({
             title: 'error!',
             description: `${error.message}`,
@@ -354,7 +356,8 @@ const GetSerial = () => {
                   <td>{item.is_used === 0 ? 'N' : 'Y'}</td>
                   <td>{item.email}</td>
                   <td>
-                    <ExtraBtn onClick={HandleDetailModal}>상세</ExtraBtn>
+                    <ExtraBtn onClick={()=> HandleDetailModal(item.coupon_uid)}>상세</ExtraBtn>
+
                   </td>
                 </TrStyle>
                   ))}
@@ -444,7 +447,7 @@ const GetSerial = () => {
                 </>
         )}
       </Box>
-      <SerialDetail isOpen={modalOpen} onClose={HandleDetailModal} />
+      <SerialDetail admin={admin} UID={uid} isOpen={modalOpen} onClose={HandleDetailModal} />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
