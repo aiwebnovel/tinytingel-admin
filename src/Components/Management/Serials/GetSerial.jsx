@@ -62,6 +62,12 @@ const GetSerial = () => {
   const toast = useToast();
   const admin = JSON.parse(localStorage.getItem('admin'));
 
+  //체크된 아이템
+  const [checkedItems, setCheckedItems] = useState([]);
+  //체크용 id 리스트
+  const [uidList, setUidList] = useState([]);
+  const isIndeterminate = checkedItems.some(Boolean);
+
   const [modalOpen, setModalOpen] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentPage, setCurrent] = useState(1); //현재 페이지;
@@ -81,7 +87,7 @@ const GetSerial = () => {
    count: postPerPage,
    campaign_name:campaign_name,
    coupon_uid:coupon_uid,
-   is_used:is_used,
+   is_used:Number(is_used),
    user:user
   };
 
@@ -90,7 +96,7 @@ const GetSerial = () => {
     count: postPerPage,
     campaign_name:campaign_name,
     coupon_uid:coupon_uid,
-    is_used:is_used,
+    is_used:Number(is_used),
     plan:plan,
     user:user
   }
@@ -108,8 +114,20 @@ const GetSerial = () => {
     setModalOpen(!modalOpen);
   };
 
- 
+  //시리얼 넘버 전부 체크
+  const CheckAll = e => {
+    setCheckedItems(e.target.checked ? uidList : []);
+  };
 
+  const CheckEach = (e, uid) => {
+    //체크 되면 CheckedItems에 해당 uid 넣기
+    if (e.target.checked) {
+      setCheckedItems([...checkedItems, uid]);
+    } else {
+      setCheckedItems(checkedItems.filter(item => item !== uid));
+    }
+
+  };
 
   const SearchSerial = useCallback(() => {
     console.log(initial)
@@ -138,6 +156,10 @@ const GetSerial = () => {
       const orderList = data.sort(
         (a, b) => new Date(b.create_at) - new Date(a.create_at)
       );
+      
+      let uidList = [];
+      const uids = orderList.map((item, i) => (uidList[i]=item.coupon_uid));
+      setUidList(uids);
 
       setMaxPage(maxPage);
       setData(orderList);
@@ -237,10 +259,10 @@ const GetSerial = () => {
               </Select>
             </SerialInputBox>
             <SerialInputBox w="50%">
-            <label htmlFor='is_user'>사용여부</label>
+            <label htmlFor='is_used'>사용여부</label>
             <Flex gridGap={'8px'}>
-              <Checkbox id='is_user' value={1} onChange={HandleSearchBody}>사용</Checkbox>
-              <Checkbox id='is_user' value={0} onChange={HandleSearchBody}>미사용</Checkbox>
+              <Checkbox id='is_used' value={1} onChange={HandleSearchBody}>사용</Checkbox>
+              <Checkbox id='is_used' value={0} onChange={HandleSearchBody}>미사용</Checkbox>
             </Flex>
           </SerialInputBox>
             </Flex>
@@ -301,7 +323,11 @@ const GetSerial = () => {
                 <thead>
                   <TrThStyle  className="MemberCustom-tr MemberCustom-thead-tr">
                     <th className="Custom-1">
-                      <Checkbox name="all" value="all" colorScheme="blue" />
+                      <Checkbox name="all" value="all" colorScheme="blue"
+                      isChecked={checkedItems.length === uidList.length}
+                      isIndeterminate={isIndeterminate}
+                      onChange={CheckAll}
+                       />
                     </th>
                     <th className="Custom-2">시리얼 넘버</th>
                     <th className="Custom-3">캠페인명</th>
@@ -316,7 +342,10 @@ const GetSerial = () => {
                   {data.map(item=>(
                   <TrStyle  className="MemberCustom-tr" key={item.coupon_uid}>
                   <td>
-                    <Checkbox name="all" value="all" colorScheme="blue" />
+                    <Checkbox name="uid" value={item.coupon_uid} colorScheme="blue" 
+                    isChecked={checkedItems.includes(item.coupon_uid)}
+                    onChange={e=> CheckEach(e, item.coupon_uid)}
+                    />
                   </td>
                   <td>{item.coupon_uid}</td>
                   <td>{item.campaign_name}</td>
