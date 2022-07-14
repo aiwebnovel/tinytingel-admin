@@ -24,6 +24,7 @@ import * as server from 'config/Config';
 import SerialTable from './SerialTable';
 import Pagination from './Pagination';
 import SearchSerialBox from './SearchSerialBox';
+import dayjs from 'dayjs';
 
 const GetSerial = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
@@ -47,6 +48,9 @@ const GetSerial = () => {
     user: '', // 유저 이메일
   });
   const [plan, setPlan] = useState(0);
+  const [startDate, setStartDate] = useState(new Date('July 1, 2022'));
+  const [endDate, setEndDate] = useState(new Date());
+  
   const { campaign_name, coupon_uid, is_used, user } = searchBody;
 
   let initial = {
@@ -54,8 +58,10 @@ const GetSerial = () => {
     count: 30,
     campaign_name: campaign_name,
     coupon_uid: coupon_uid,
-    is_used: Number(is_used),
+    is_used: is_used,
     user: user,
+    startDate: startDate, 
+    endDate: dayjs(endDate).add('1','day').$d
   };
 
   let withPlan = {
@@ -63,17 +69,17 @@ const GetSerial = () => {
     count: 30,
     campaign_name: campaign_name,
     coupon_uid: coupon_uid,
-    is_used: Number(is_used),
+    is_used: is_used,
     plan: plan,
     user: user,
+    startDate: startDate, 
+    endDate: dayjs(endDate).add('1','day').$d
   };
   const [data, setData] = useState('');
 
   const HandleSearchBody = e => {
     setSearchBody({ ...searchBody, [e.target.id]: e.target.value });
-    console.log(campaign_name);
   };
-
   const HandleDetailModal = UID => {
     setModalOpen(!modalOpen);
     setUid(UID);
@@ -168,11 +174,13 @@ const GetSerial = () => {
       is_used: '',
       user: '', 
     });
-    setPlan(0)
+    setPlan(0);
+    setStartDate(new Date('July 1, 2022'));
+    setEndDate(new Date());
   }
 
   const SearchSerial = useCallback(() => {
-    console.log(currentPage);
+    console.log(startDate, endDate);
     const config = {
       method: 'post',
       url: `${server.SERVER_URL}/coupon/list`,
@@ -189,7 +197,7 @@ const GetSerial = () => {
 
     axios(plan > 0 ? configWithPlan : config)
       .then(response => {
-       // console.log(response);
+       console.log(response);
         const data = response.data.data;
         const maxPage = response.data.config.maxPage;
 
@@ -218,7 +226,7 @@ const GetSerial = () => {
           });
         }
       })
-  }, [currentPage, campaign_name, coupon_uid, is_used, plan, user]);
+  }, [currentPage, maxPage, campaign_name, coupon_uid, is_used, plan, user, startDate, endDate]);
   
   useLayoutEffect(()=>{
     SearchSerial();
@@ -234,10 +242,16 @@ const GetSerial = () => {
         plan={plan}
         setPlan={setPlan}
         user={user}
+        is_used={is_used}
+        startDate={startDate}
+        endDate={endDate}
+        setStartDate={setStartDate}
+        setEndDate={setEndDate}
         SearchSerial={SearchSerial}
         Reset={Reset}
         />
         {/* 시리얼 결과 테이블 */}
+        {!data && (<div>해당되는 결과가 없습니다!</div> )}
         {data && (
           <>
             <Box className="TableContainer">

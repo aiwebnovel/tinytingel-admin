@@ -8,7 +8,7 @@ export const CustomInput = forwardRef(({ value, onClick }, ref) => (
       onClick={onClick}
       ref={ref}
     >
-      <FcCalendar style={{ width: '30px', height: '30px' }}>{dayjs(value).format('yyyy/MM/DD')}</FcCalendar>
+      <FcCalendar style={{ width: '30px', height: '30px' }}>{value}</FcCalendar>
     </button>
   ));
 

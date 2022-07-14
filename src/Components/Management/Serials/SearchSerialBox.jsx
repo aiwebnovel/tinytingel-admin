@@ -1,9 +1,10 @@
-import {Box, Flex, Button, Input,Checkbox,  Select} from '@chakra-ui/react';
+import {Box, Flex, Button, Input,Radio,  Select, RadioGroup} from '@chakra-ui/react';
 import { CustomInput } from 'Common/CustomInput';
 import DatePicker from 'react-datepicker';
 import ko from 'date-fns/locale/ko';
 import { SerialInputBox, ResetBtn } from 'styles/ComponentStyle';
 import styled from 'styled-components';
+import dayjs from 'dayjs';
 
 const DateInputStyle = styled(Flex)`
   > div:nth-child(2) {
@@ -11,7 +12,7 @@ const DateInputStyle = styled(Flex)`
   }
 `;
 
-const SearchSerialBox = ({campaign_name,HandleSearchBody,coupon_uid, plan, setPlan, user, SearchSerial,Reset}) => {
+const SearchSerialBox = ({campaign_name,HandleSearchBody,coupon_uid, plan, setPlan, user, SearchSerial,is_used ,Reset, startDate, endDate, setStartDate, setEndDate }) => {
     return(
         <Box
         maxW="1300px"
@@ -44,25 +45,27 @@ const SearchSerialBox = ({campaign_name,HandleSearchBody,coupon_uid, plan, setPl
           <label>생성일자</label>
           <DateInputStyle align="center" gridGap={'5px'}>
             <Input
-              // value={moment(startDate).format('yyyy/MM/DD')}
+              value={dayjs(startDate).format('YYYY/MM/DD')}
               readOnly
             />
             <DatePicker
               locale={ko}
-              //   onChange={date => setEndDate(date)}
+              selected={startDate}
+              onChange={date => setStartDate(date)}
               customInput={<CustomInput />}
             />
           </DateInputStyle>
           ~
           <DateInputStyle ml={'8px'} align="center" gridGap={'5px'}>
             <Input
-              //   value={moment(endDate).format('yyyy/MM/DD')}
-              readOnly
+                value={dayjs(endDate).format('YYYY/MM/DD')}
+                readOnly
             />
 
             <DatePicker
               locale={ko}
-              //   onChange={date => setEndDate(date)}
+              selected={endDate}
+                onChange={date => setEndDate(date)}
               customInput={<CustomInput />}
             />
           </DateInputStyle>
@@ -88,14 +91,14 @@ const SearchSerialBox = ({campaign_name,HandleSearchBody,coupon_uid, plan, setPl
 
           <SerialInputBox w="50%">
             <label htmlFor="is_used">사용여부</label>
-            <Flex gridGap={'8px'}>
-              <Checkbox id="is_used" value={1} onChange={HandleSearchBody}>
+            <RadioGroup>
+              <Radio mr='10px' id="is_used" value={'1'} onChange={HandleSearchBody} >
                 사용
-              </Checkbox>
-              <Checkbox id="is_used" value={0} onChange={HandleSearchBody}>
+              </Radio>
+              <Radio id="is_used" value={'0'} onChange={HandleSearchBody} >
                 미사용
-              </Checkbox>
-            </Flex>
+              </Radio>
+            </RadioGroup>
           </SerialInputBox>
         </Flex>
 
