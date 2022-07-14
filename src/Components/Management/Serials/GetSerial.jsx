@@ -18,7 +18,7 @@ import {
 } from '@chakra-ui/react';
 import { DeleteIcon } from '@chakra-ui/icons';
 import 'react-datepicker/dist/react-datepicker.css';
-import { DeleteBtn, CancelBtn } from 'styles/ComponentStyle';
+import { DeleteBtn, CancelBtn, NoDataBox } from 'styles/ComponentStyle';
 import SerialDetail from './SerialDetail';
 import * as server from 'config/Config';
 import SerialTable from './SerialTable';
@@ -251,8 +251,8 @@ const GetSerial = () => {
         Reset={Reset}
         />
         {/* 시리얼 결과 테이블 */}
-        {!data && (<div>해당되는 결과가 없습니다!</div> )}
-        {data && (
+        {data.length === 0 && (<NoDataBox>결과가 없습니다! 🤭</NoDataBox> )}
+        {data.length !== 0 && (
           <>
             <Box className="TableContainer">
               <Flex justify="flex-end" mb={25} spacing="15px">

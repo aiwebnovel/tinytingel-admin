@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import {Flex} from '@chakra-ui/react';
+import {Box, Flex} from '@chakra-ui/react';
 
 export const Back = styled.button`
   background-color: #b8c6db;
@@ -141,4 +141,21 @@ export const ExtraBtn = styled.button`
   &:hover {
     background-color : #318e5d;
   }
+`
+
+export const NoDataBox = styled(Flex)`
+  justify-content: center;
+  align-items: center;
+
+  background-color : #fff;
+  height: 200px;
+  margin-top: 30px;
+  max-width: 1400px;
+  margin: 30px auto 0;
+  box-shadow:rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px;
+
+  text-align : center;
+  font-size : 1.3rem;
+  font-weight: 600;
+
 `
