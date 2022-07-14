@@ -78,13 +78,43 @@ const SerialDetail = ({UID, admin, isOpen, onClose}) => {
           isClosable: true,
         });
       })
+    }  
+  }
 
+  const DeleteDetail = () => {
+    const config = {
+      method: 'delete',
+      url: `${server.SERVER_URL}/coupon?coupon_uid=${UID}`,
+      headers: { Authorization: `Bearer ${admin.adminState.token}` },
     }
-     
+
+    axios(config)
+    .then((response)=>{
+      toast({
+        title: '성공',
+        description: '삭제 되었습니다!',
+        position: 'top-right',
+        status: 'success',
+        duration: 5000,
+        isClosable: true,
+      });
+      onClose();
+    })
+    .catch((error)=>{
+      console.log(error.response);
+      toast({
+        title: 'error!',
+        description: `${error.message}`,
+        position: 'top-right',
+        status: 'error',
+        duration: 5000,
+        isClosable: true,
+      });
+    });
+
   }
 
   useEffect(()=>{
-      console.log(UID);
       if(UID) {
       const config = {
         method: 'get',
@@ -95,7 +125,7 @@ const SerialDetail = ({UID, admin, isOpen, onClose}) => {
       axios(config)
       .then((response)=>{
         const data = response.data.data;
-        console.log(data);
+        //console.log(data);
         setDeatils({
           ...details,
           coupon_uid: data.coupon_uid,
@@ -190,7 +220,7 @@ const SerialDetail = ({UID, admin, isOpen, onClose}) => {
           <ModalFooter justifyContent={'center'}>
             <HStack>
               <Modify onClick={ModifyDetail}>수정</Modify>
-              <SmallDelete>삭제</SmallDelete>
+              <SmallDelete onClick={DeleteDetail}>삭제</SmallDelete>
             </HStack>
           </ModalFooter>
         </ModalContent>

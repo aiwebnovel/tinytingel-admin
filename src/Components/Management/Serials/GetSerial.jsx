@@ -1,15 +1,34 @@
-import { useState,useCallback } from 'react';
+import { useState, useCallback, useLayoutEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 import Layout from 'Common/Layout';
 import {
-  Box,Flex,Button,Input,Checkbox,HStack,useDisclosure,Skeleton,Stack,Modal,ModalOverlay, useToast,
-  ModalContent,ModalHeader,ModalFooter,ModalBody,ModalCloseButton,Tooltip,Text,IconButton,Select} from '@chakra-ui/react';
+  Box,
+  Flex,
+  Button,
+  Input,
+  Checkbox,
+  HStack,
+  useDisclosure,
+  Modal,
+  ModalOverlay,
+  useToast,
+  ModalContent,
+  ModalHeader,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+  Tooltip,
+  Text,
+  IconButton,
+  Select,
+} from '@chakra-ui/react';
 import {
   ArrowLeftIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   ArrowRightIcon,
-  DeleteIcon
+  DeleteIcon,
 } from '@chakra-ui/icons';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
@@ -51,16 +70,18 @@ const TrThStyle = styled.tr`
     width: 200px;
   }
 
-  .Custom-5, .Custom-6, .Custom-8 {
+  .Custom-5,
+  .Custom-6,
+  .Custom-8 {
     width: 100px;
   }
-
 `;
 
 const GetSerial = () => {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const toast = useToast();
   const admin = JSON.parse(localStorage.getItem('admin'));
+  const navigate = useNavigate();
   const [uid, setUid] = useState('');
 
   //체크된 아이템
@@ -70,51 +91,45 @@ const GetSerial = () => {
   const isIndeterminate = checkedItems.some(Boolean);
 
   const [modalOpen, setModalOpen] = useState(false);
-  const [loading, setLoading] = useState(false);
   const [currentPage, setCurrent] = useState(1); //현재 페이지;
-  const [postPerPage, setPostPerPage] = useState(30); //페이지당 포스트 개수
   const [maxPage, setMaxPage] = useState('');
   const [searchBody, setSearchBody] = useState({
-    campaign_name: "", //캠페인명
-    coupon_uid: "", // 쿠폰 uid
-    is_used: "", // 시용 여부
-    user: "" // 유저 이메일
+    campaign_name: '', //캠페인명
+    coupon_uid: '', // 쿠폰 uid
+    is_used: '', // 시용 여부
+    user: '', // 유저 이메일
   });
   const [plan, setPlan] = useState(0);
-  const {campaign_name,coupon_uid,is_used,user} = searchBody
+  const { campaign_name, coupon_uid, is_used, user } = searchBody;
 
-   let initial = {
+  let initial = {
     page: currentPage,
-   count: postPerPage,
-   campaign_name:campaign_name,
-   coupon_uid:coupon_uid,
-   is_used:Number(is_used),
-   user:user
+    count: 30,
+    campaign_name: campaign_name,
+    coupon_uid: coupon_uid,
+    is_used: Number(is_used),
+    user: user,
   };
 
   let withPlan = {
     page: currentPage,
-    count: postPerPage,
-    campaign_name:campaign_name,
-    coupon_uid:coupon_uid,
-    is_used:Number(is_used),
-    plan:plan,
-    user:user
-  }
-
-
-
+    count: 30,
+    campaign_name: campaign_name,
+    coupon_uid: coupon_uid,
+    is_used: Number(is_used),
+    plan: plan,
+    user: user,
+  };
   const [data, setData] = useState('');
 
-  const HandleSearchBody = (e) => {
-    setSearchBody({...searchBody, [e.target.id]:e.target.value});
+  const HandleSearchBody = e => {
+    setSearchBody({ ...searchBody, [e.target.id]: e.target.value });
     console.log(campaign_name);
-  }
-  
-  const HandleDetailModal = (UID) => {
+  };
+
+  const HandleDetailModal = UID => {
     setModalOpen(!modalOpen);
     setUid(UID);
-
   };
 
   //시리얼 넘버 전부 체크
@@ -129,58 +144,35 @@ const GetSerial = () => {
     } else {
       setCheckedItems(checkedItems.filter(item => item !== uid));
     }
-
   };
 
-  const SearchSerial = useCallback(() => {
-    console.log(initial)
-     const config = {
-      method: 'post',
-      url: `${server.SERVER_URL}/coupon/list`,
-      headers: { Authorization: `Bearer ${admin.adminState.token}` },
-      data: initial
+  const DeleteSerial = () => {
+    //uid 전부 넣은 리스트에서 checkeditem에 있는 uid만 가져오기
+    const checkedArray = uidList.filter(item => checkedItems.includes(item));
+
+    if (checkedArray.length === 0) {
+      onClose();
+      toast({
+        title: '선택한 유저가 없어요!',
+        description: '삭제할 유저를 선택해주세요.',
+        position: 'top-right',
+        status: 'info',
+        duration: 5000,
+        isClosable: true,
+      });
     }
 
-    const configWithPlan = {
-      method: 'post',
-      url: `${server.SERVER_URL}/coupon/list`,
-      headers: { Authorization: `Bearer ${admin.adminState.token}` },
-      data: withPlan
-    }
-
-    setLoading(true);
-
-    axios(plan > 0 ? configWithPlan : config)
-    .then((response)=>{
-      console.log(response);
-      const data = response.data.data;
-      const maxPage = response.data.config.maxPage;
-
-      const orderList = data.sort(
-        (a, b) => new Date(b.create_at) - new Date(a.create_at)
-      );
-      
-      let uidList = [];
-      const uids = orderList.map((item, i) => (uidList[i]=item.coupon_uid));
-      setUidList(uids);
-
-      setMaxPage(maxPage);
-      setData(orderList);
-
-    })
-    .catch((error)=>{
-      console.log(error.response);
-      if (error.response.status === 412) {
-        localStorage.clear();
-          toast({
-            title: '토큰이 만료됐습니다.',
-            description: '새로 로그인 해주세요!',
-            position: 'top-right',
-            status: 'error',
-            duration: 5000,
-            isClosable: true,
-          });
-      }
+    if (checkedArray.length === 1) {
+      axios
+        .delete(`${server.SERVER_URL}/coupon?coupon_uid=${checkedArray[0]}`, {
+          headers: { Authorization: `Bearer ${admin.adminState.token}` },
+        })
+        .then(response => {
+          console.log(response);
+          navigate(0);
+        })
+        .catch(error => {
+          console.log(error.response);
           toast({
             title: 'error!',
             description: `${error.message}`,
@@ -189,14 +181,90 @@ const GetSerial = () => {
             duration: 5000,
             isClosable: true,
           });
-    })
-    .finally(()=>{
-      setLoading(false);
-    })
+        });
+    }
 
-  },[currentPage,campaign_name,coupon_uid,is_used,plan,user]);
+    if (checkedArray.length > 1) {
+      Promise.all(
+        checkedArray.map(async param => {
+          return await axios.delete(
+            `${server.SERVER_URL}/coupon?coupon_uid=${param}`,
+            {
+              headers: { Authorization: `Bearer ${admin.adminState.token}` },
+            }
+          );
+        })
+      )
+        .then(response => {
+          console.log(response);
+          navigate(0);
+        })
+        .catch(error => {
+          console.log(error.response);
+          toast({
+            title: 'error!',
+            description: `${error.message}`,
+            position: 'top-right',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          });
+        });
+    }
+  };
 
+  const SearchSerial = useCallback(() => {
+    console.log(currentPage);
+    const config = {
+      method: 'post',
+      url: `${server.SERVER_URL}/coupon/list`,
+      headers: { Authorization: `Bearer ${admin.adminState.token}` },
+      data: initial,
+    };
 
+    const configWithPlan = {
+      method: 'post',
+      url: `${server.SERVER_URL}/coupon/list`,
+      headers: { Authorization: `Bearer ${admin.adminState.token}` },
+      data: withPlan,
+    };
+
+    axios(plan > 0 ? configWithPlan : config)
+      .then(response => {
+       // console.log(response);
+        const data = response.data.data;
+        const maxPage = response.data.config.maxPage;
+
+        const orderList = data.sort(
+          (a, b) => new Date(b.create_at) - new Date(a.create_at)
+        );
+
+        let uidList = [];
+        const uids = orderList.map((item, i) => (uidList[i] = item.coupon_uid));
+        setUidList(uids);
+
+        setMaxPage(maxPage);
+        setData(orderList);
+      })
+      .catch(error => {
+        console.log(error.response);
+        if (error.response.status === 412) {
+          localStorage.clear();
+          toast({
+            title: '토큰이 만료됐습니다.',
+            description: '새로 로그인 해주세요!',
+            position: 'top-right',
+            status: 'error',
+            duration: 5000,
+            isClosable: true,
+          });
+        }
+      })
+  }, [currentPage, campaign_name, coupon_uid, is_used, plan, user]);
+  
+  useLayoutEffect(()=>{
+    SearchSerial();
+  },[currentPage]);
 
   return (
     <Layout>
@@ -210,12 +278,24 @@ const GetSerial = () => {
         >
           <SerialInputBox>
             <label htmlFor="campaign_name">캠페인명</label>
-            <Input type="text" id="campaign_name" value={campaign_name} onChange={HandleSearchBody}></Input>
+            <Input
+              type="text"
+              id="campaign_name"
+              value={campaign_name}
+              onChange={HandleSearchBody}
+            ></Input>
           </SerialInputBox>
+
           <SerialInputBox>
             <label htmlFor="coupon_uid">시리얼넘버</label>
-            <Input type="text" id="coupon_uid"  value={coupon_uid} onChange={HandleSearchBody}></Input>
+            <Input
+              type="text"
+              id="coupon_uid"
+              value={coupon_uid}
+              onChange={HandleSearchBody}
+            ></Input>
           </SerialInputBox>
+
           <SerialInputBox>
             <label>생성일자</label>
             <DateInputStyle align="center" gridGap={'5px'}>
@@ -243,8 +323,9 @@ const GetSerial = () => {
               />
             </DateInputStyle>
           </SerialInputBox>
+
           <Flex justify={'space-between'} gridGap="20px">
-          <SerialInputBox w="50%">
+            <SerialInputBox w="50%">
               <label htmlFor="plan">혜택구분</label>
               <Select
                 className="selectOption"
@@ -260,194 +341,205 @@ const GetSerial = () => {
                 <option value={6}>6개월</option>
               </Select>
             </SerialInputBox>
+
             <SerialInputBox w="50%">
-            <label htmlFor='is_used'>사용여부</label>
-            <Flex gridGap={'8px'}>
-              <Checkbox id='is_used' value={1} onChange={HandleSearchBody}>사용</Checkbox>
-              <Checkbox id='is_used' value={0} onChange={HandleSearchBody}>미사용</Checkbox>
-            </Flex>
-          </SerialInputBox>
-            </Flex>
-         
+              <label htmlFor="is_used">사용여부</label>
+              <Flex gridGap={'8px'}>
+                <Checkbox id="is_used" value={1} onChange={HandleSearchBody}>
+                  사용
+                </Checkbox>
+                <Checkbox id="is_used" value={0} onChange={HandleSearchBody}>
+                  미사용
+                </Checkbox>
+              </Flex>
+            </SerialInputBox>
+          </Flex>
 
           <SerialInputBox>
             <label htmlFor="user">사용자</label>
-            <Input type="text" id="user" value={user} onChange={HandleSearchBody}></Input>
+            <Input
+              type="text"
+              id="user"
+              value={user}
+              onChange={HandleSearchBody}
+            ></Input>
           </SerialInputBox>
           <Box textAlign={'right'}>
             <Button onClick={SearchSerial}>검색하기</Button>
           </Box>
         </Box>
-
-        {loading && (
-          <Box p="36px">
-            <Stack>
-              <Skeleton height="30px" />
-              <Skeleton height="30px" />
-              <Skeleton height="30px" />
-              <Skeleton height="30px" />
-              <Skeleton height="30px" />
-            </Stack>
-          </Box>
-        )}
-
         {/* 시리얼 결과 테이블 */}
-        {!loading && data && (
+        {data && (
           <>
-          <Box className="TableContainer">
-            <Flex justify="flex-end" mb={25} spacing="15px">
-              <DeleteIcon
-                onClick={onOpen}
-                w={5}
-                h={5}
-                style={{ cursor: 'pointer' }}
-              />
-            </Flex>
-            <Box
-              overflowX="auto"
-              css={{
-                '&::-webkit-scrollbar': {
-                  //스크롤바 전체영역
-                  width: '5px',
-                },
-                '&::-webkit-scrollbar-track': {
-                  //스크롤바 움직이는 영역
-                  backgroundColor: '#fff',
-                },
-                '&::-webkit-scrollbar-thumb': {
-                  //스크롤
-                  backgroundColor: '#E6F4F1',
-                  borderRadius: '5px',
-                },
-              }}
-            >
-              <table className="MemberCustomTableStyle">
-                <thead>
-                  <TrThStyle  className="MemberCustom-tr MemberCustom-thead-tr">
-                    <th className="Custom-1">
-                      <Checkbox name="all" value="all" colorScheme="blue"
-                      isChecked={checkedItems.length === uidList.length}
-                      isIndeterminate={isIndeterminate}
-                      onChange={CheckAll}
-                       />
-                    </th>
-                    <th className="Custom-2">시리얼 넘버</th>
-                    <th className="Custom-3">캠페인명</th>
-                    <th className="Custom-4">생성일자</th>
-                    <th className="Custom-5">혜택구분</th>
-                    <th className="Custom-6">사용</th>
-                    <th className="Custom-7">사용자</th>
-                    <th className="Custom-8">상세</th>
-                  </TrThStyle >
-                </thead>
-                <TbodyStyle>
-                  {data.map(item=>(
-                  <TrStyle  className="MemberCustom-tr" key={item.coupon_uid}>
-                  <td>
-                    <Checkbox name="uid" value={item.coupon_uid} colorScheme="blue" 
-                    isChecked={checkedItems.includes(item.coupon_uid)}
-                    onChange={e=> CheckEach(e, item.coupon_uid)}
-                    />
-                  </td>
-                  <td>{item.coupon_uid}</td>
-                  <td>{item.campaign_name}</td>
-                  <td>{dayjs(item.create_at).format('YYYY-MM-DD')}</td>
-                  <td>{item.plan}개월</td>
-                  <td>{item.is_used === 0 ? 'N' : 'Y'}</td>
-                  <td>{item.email}</td>
-                  <td>
-                    <ExtraBtn onClick={()=> HandleDetailModal(item.coupon_uid)}>상세</ExtraBtn>
-
-                  </td>
-                </TrStyle>
-                  ))}
-
-                </TbodyStyle>
-              </table>
+            <Box className="TableContainer">
+              <Flex justify="flex-end" mb={25} spacing="15px">
+                <DeleteIcon
+                  onClick={onOpen}
+                  w={5}
+                  h={5}
+                  style={{ cursor: 'pointer' }}
+                />
+              </Flex>
+              <Box
+                overflowX="auto"
+                css={{
+                  '&::-webkit-scrollbar': {
+                    //스크롤바 전체영역
+                    width: '5px',
+                  },
+                  '&::-webkit-scrollbar-track': {
+                    //스크롤바 움직이는 영역
+                    backgroundColor: '#fff',
+                  },
+                  '&::-webkit-scrollbar-thumb': {
+                    //스크롤
+                    backgroundColor: '#E6F4F1',
+                    borderRadius: '5px',
+                  },
+                }}
+              >
+                <table className="MemberCustomTableStyle">
+                  <thead>
+                    <TrThStyle className="MemberCustom-tr MemberCustom-thead-tr">
+                      <th className="Custom-1">
+                        <Checkbox
+                          name="all"
+                          value="all"
+                          colorScheme="blue"
+                          isChecked={checkedItems.length === uidList.length}
+                          isIndeterminate={isIndeterminate}
+                          onChange={CheckAll}
+                        />
+                      </th>
+                      <th className="Custom-2">시리얼 넘버</th>
+                      <th className="Custom-3">캠페인명</th>
+                      <th className="Custom-4">생성일자</th>
+                      <th className="Custom-5">혜택구분</th>
+                      <th className="Custom-6">사용</th>
+                      <th className="Custom-7">사용자</th>
+                      <th className="Custom-8">상세</th>
+                    </TrThStyle>
+                  </thead>
+                  <TbodyStyle>
+                    {data.map(item => (
+                      <TrStyle
+                        className="MemberCustom-tr"
+                        key={item.coupon_uid}
+                      >
+                        <td>
+                          <Checkbox
+                            name="uid"
+                            value={item.coupon_uid}
+                            colorScheme="blue"
+                            isChecked={checkedItems.includes(item.coupon_uid)}
+                            onChange={e => CheckEach(e, item.coupon_uid)}
+                          />
+                        </td>
+                        <td>{item.coupon_uid}</td>
+                        <td>{item.campaign_name}</td>
+                        <td>{dayjs(item.create_at).format('YYYY-MM-DD')}</td>
+                        <td>{item.plan}개월</td>
+                        <td>{item.is_used === 0 ? 'N' : 'Y'}</td>
+                        <td>{item.email}</td>
+                        <td>
+                          <ExtraBtn
+                            onClick={() => HandleDetailModal(item.coupon_uid)}
+                          >
+                            상세
+                          </ExtraBtn>
+                        </td>
+                      </TrStyle>
+                    ))}
+                  </TbodyStyle>
+                </table>
+              </Box>
             </Box>
-          </Box>
-                  <Flex m={4} alignItems="center" justifyContent="center">
-                  <Flex justifyContent="space-between">
-                    <Tooltip label="First Page">
-                      <IconButton
-                        size="sm"
-                        onClick={() => {
-                          setCurrent(1);
-                          if (currentPage === 1) {
-                            toast({
-                              title: '맨 처음 페이지',
-                              description: '맨 처음 페이지에요!',
-                              position: 'top-right',
-                              status: 'info',
-                              duration: 5000,
-                              isClosable: true,
-                            });
-                          }
-                        }}
-                        icon={<ArrowLeftIcon h={3} w={3} />}
-                        mr={4}
-                      />
-                    </Tooltip>
-        
-                    <IconButton
-                      size="sm"
-                      onClick={() => {
-                        setCurrent(currentPage => currentPage - 1);
-                      }}
-                      isDisabled={currentPage === 1 && true}
-                      icon={<ChevronLeftIcon h={6} w={6} />}
-                    />
-                  </Flex>
-        
-                  <Flex alignItems="center" flexShrink="0" ml={5} mr={5}>
-                    <Text>
-                      <Text fontWeight="bold" as="span">
-                        {currentPage}
-                      </Text>{' '}
-                      of{' '}
-                      <Text fontWeight="bold" as="span">
-                        {maxPage}
-                      </Text>
-                    </Text>
-                  </Flex>
-        
-                  <Flex>
-                    <IconButton
-                      size="sm"
-                      onClick={() => {
-                        setCurrent(currentPage => currentPage + 1);
-                      }}
-                      isDisabled={currentPage === maxPage && true}
-                      icon={<ChevronRightIcon h={6} w={6} />}
-                    />
-        
-                    <Tooltip label="Last Page">
-                      <IconButton
-                        size="sm"
-                        onClick={() => {
-                          setCurrent(maxPage);
-        
-                          if (currentPage === maxPage) {
-                            toast({
-                              title: '마지막 페이지',
-                              description: '마지막 페이지에요!',
-                              position: 'top-right',
-                              status: 'info',
-                              duration: 5000,
-                              isClosable: true,
-                            });
-                          }
-                        }}
-                        icon={<ArrowRightIcon h={3} w={3} />}
-                        ml={4}
-                      />
-                    </Tooltip>
-                  </Flex>
-                </Flex>
-                </>
+            <Flex m={4} alignItems="center" justifyContent="center">
+              <Flex justifyContent="space-between">
+                <Tooltip label="First Page">
+                  <IconButton
+                    size="sm"
+                    onClick={() => {
+                      if (currentPage === 1) {
+                        toast({
+                          title: '맨 처음 페이지',
+                          description: '맨 처음 페이지에요!',
+                          position: 'top-right',
+                          status: 'info',
+                          duration: 5000,
+                          isClosable: true,
+                        });
+                      }
+                      setCurrent(1);
+                    }}
+                    icon={<ArrowLeftIcon h={3} w={3} />}
+                    mr={4}
+                  />
+                </Tooltip>
+
+                <IconButton
+                  size="sm"
+                  onClick={() => {
+                    setCurrent(currentPage - 1);
+                  }}
+                  isDisabled={currentPage === 1 && true}
+                  icon={<ChevronLeftIcon h={6} w={6} />}
+                />
+              </Flex>
+
+              <Flex alignItems="center" flexShrink="0" ml={5} mr={5}>
+                <Text>
+                  <Text fontWeight="bold" as="span">
+                    {currentPage}
+                  </Text>{' '}
+                  of{' '}
+                  <Text fontWeight="bold" as="span">
+                    {maxPage}
+                  </Text>
+                </Text>
+              </Flex>
+
+              <Flex>
+                <IconButton
+                  size="sm"
+                  onClick={() => {
+                    setCurrent(currentPage + 1);
+                  }}
+                  isDisabled={currentPage === maxPage && true}
+                  icon={<ChevronRightIcon h={6} w={6} />}
+                />
+
+                <Tooltip label="Last Page">
+                  <IconButton
+                    size="sm"
+                    onClick={() => {
+                      if (currentPage === maxPage) {
+                        toast({
+                          title: '마지막 페이지',
+                          description: '마지막 페이지에요!',
+                          position: 'top-right',
+                          status: 'info',
+                          duration: 5000,
+                          isClosable: true,
+                        });
+                      }
+                      setCurrent(maxPage);
+                    }}
+                    icon={<ArrowRightIcon h={3} w={3} />}
+                    ml={4}
+                  />
+                </Tooltip>
+              </Flex>
+            </Flex>
+          </>
         )}
       </Box>
-      <SerialDetail admin={admin} UID={uid} isOpen={modalOpen} onClose={HandleDetailModal} />
+      <SerialDetail
+        admin={admin}
+        UID={uid}
+        isOpen={modalOpen}
+        onClose={HandleDetailModal}
+      />
       <Modal isOpen={isOpen} onClose={onClose}>
         <ModalOverlay />
         <ModalContent>
@@ -465,7 +557,7 @@ const GetSerial = () => {
           </ModalBody>
           <ModalFooter justifyContent={'center'}>
             <HStack>
-              <DeleteBtn>삭제</DeleteBtn>
+              <DeleteBtn onClick={DeleteSerial}>삭제</DeleteBtn>
               <CancelBtn onClick={onClose}>취소</CancelBtn>
             </HStack>
           </ModalFooter>

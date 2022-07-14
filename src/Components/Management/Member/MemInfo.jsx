@@ -50,8 +50,6 @@ const MemInfo = () => {
 
   const [passbook, setPassbook] = useState(false);
 
-  
-
   const ChangeSelectedAndEndDate = e => {
     setSelected(e.target.value);
     const addMonth = dayjs(startDate).add(e.target.value, 'months').calendar();
