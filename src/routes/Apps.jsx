@@ -2,7 +2,7 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from 'Components/Home.jsx';
 import Members from 'Components/Management/Member/Members.jsx';
-import LoginLog from 'Components/Management/LoginLog.jsx';
+import LoginLog from 'Components/Management/LoginLog/index.jsx';
 import Questions from 'Components/Management/Questions.jsx';
 import MemInfo from 'Components/Management/Member/MemInfo.jsx';
 import Landing from 'Components/Landing/index.jsx';
