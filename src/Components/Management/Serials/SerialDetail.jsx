@@ -14,10 +14,11 @@ const SerialDetail = ({UID, admin, isOpen, onClose}) => {
     plan:'',
     is_used:'',
     used_user_id:'',
-    create_at:''
+    create_at:'',
+    user_email:''
   });
   const [endDate, setEndDate] = useState('');
-  const {coupon_uid, campaign_name, desc, plan, is_used, used_user_id, create_at} = details;  
+  const {coupon_uid, campaign_name, desc, plan, is_used, user_email, create_at} = details;  
 
   const [previous, setPrevious] = useState({
     PreCampaign_name: '',
@@ -69,9 +70,10 @@ const SerialDetail = ({UID, admin, isOpen, onClose}) => {
         });
       })
       .catch((error)=>{
+
         toast({
           title: 'error!',
-          description: `${error.message}`,
+          description: `${error.response.data.message}`,
           position: 'top-right',
           status: 'error',
           duration: 5000,
@@ -125,7 +127,7 @@ const SerialDetail = ({UID, admin, isOpen, onClose}) => {
       axios(config)
       .then((response)=>{
         const data = response.data.data;
-        //console.log(data);
+        console.log(data);
         setDeatils({
           ...details,
           coupon_uid: data.coupon_uid,
@@ -134,7 +136,8 @@ const SerialDetail = ({UID, admin, isOpen, onClose}) => {
           plan: data.plan,
           is_used: data.is_used,
           used_user_id: data.used_user_id,
-          create_at: data.create_at
+          create_at: data.create_at,
+          user_email: data.user_email
         });
 
         let after = dayjs(data.create_at).add(data.plan, 'month');
@@ -212,7 +215,7 @@ const SerialDetail = ({UID, admin, isOpen, onClose}) => {
               </div>
               <div className="SerialDetailModal">
                 <h4>사용자</h4>
-                <p>{used_user_id ? used_user_id : '사용자 아이디가 없습니다.'}</p> 
+                <p>{user_email ? user_email : '사용자 아이디가 없습니다.'}</p> 
               </div>
           </Box> 
           {/* )} */}
