@@ -2,44 +2,14 @@ import React, { useEffect, useState } from 'react';
 import {Link, useNavigate} from 'react-router-dom';
 import axios from 'axios';
 import {
-  Box,
-  Checkbox,
-  Text,
-  Flex,
-  Tooltip,
-  IconButton,
-  useToast,
-  HStack,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-} from '@chakra-ui/react';
-import {
-  ArrowLeftIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ArrowRightIcon,
-  PlusSquareIcon,
-  DeleteIcon,
-} from '@chakra-ui/icons';
+  Box,Checkbox,useToast,HStack,useDisclosure} from '@chakra-ui/react';
+import {PlusSquareIcon, DeleteIcon} from '@chakra-ui/icons';
 import Layout from 'Common/Layout.jsx';
-import styled from 'styled-components';
-import dayjs from 'dayjs';
-import { DeleteBtn,CancelBtn } from 'styles/ComponentStyle';
 
 import * as config from 'config/Config';
-
-const DetailBtn = styled.button`
-  background-color: #0098fa;
-  color: #fff;
-  padding: 2px 10px;
-  border-radius: 5px;
-`;
+import IsDeleteModal from 'Common/IsDeleteModal';
+import PromptTable from './PromptTable';
+import Pagination from './Pagination';
 
 const Prompts = () => {
   const admin = JSON.parse(localStorage.getItem('admin'));
@@ -123,7 +93,6 @@ const Prompts = () => {
     });
    }
    
-   
    if(checkedArray.length > 1) {
       Promise.all(
         checkedArray.map(async param => {
@@ -153,9 +122,6 @@ const Prompts = () => {
       });
     }
 }
-
-
-
   const fetchData = async () => {
     
     const adminState = admin.adminState;
@@ -255,133 +221,12 @@ const Prompts = () => {
                 <th className="Custom-th4">상세보기</th>
               </tr>
             </thead>
-            <tbody>
-              {List &&
-                List.map(item => (
-                  <tr key={item.name} className="Custom-tr">
-                    <td className="CheckBox textCenter">
-                      <Checkbox
-                        name="list"
-                        value={item.uid}
-                        colorScheme="blue"
-                        isChecked={checkedItems.includes(item.uid)}
-                        onChange={(e) => CheckEach(e, item.uid)}
-                      />
-                    </td>
-                    <td className="textLeft">{item.name}</td>
-                    <td className="textCenter">관리자</td>
-                    <td className="textCenter">
-                      {dayjs(item.create_at).format('YYYY-MM-DD')}
-                    </td>
-                    <td className="textCenter">
-                      {dayjs(item.update_at).format('YYYY-MM-DD')}
-                    </td>
-                    <td className="textCenter">
-                      <Link to={`/prompts/${item.uid}`}><DetailBtn>보기</DetailBtn></Link>
-                    </td>
-                  </tr>
-                ))}
-            </tbody>
+            <PromptTable List={List} checkedItems={checkedItems} CheckEach={CheckEach}/>
           </table>
         </Box>
-        <Flex m={4} alignItems="center" justifyContent="center">
-          <Flex justifyContent="space-between">
-            <Tooltip label="First Page">
-              <IconButton
-                size="sm"
-                onClick={() => {
-                  setCurrent(1);
-                  if (currentPage === 1) {
-                    toast({
-                      title: '맨 처음 페이지',
-                      description: '맨 처음 페이지에요!',
-                      position: 'top-right',
-                      status: 'info',
-                      duration: 5000,
-                      isClosable: true,
-                    });
-                  }
-                }}
-                icon={<ArrowLeftIcon h={3} w={3} />}
-                mr={4}
-              />
-            </Tooltip>
-            <Tooltip label="Previous Page">
-              <IconButton
-                size="sm"
-                onClick={() => {
-                  setCurrent(currentPage - 1);
-                }}
-                isDisabled={currentPage === 1 && true}
-                icon={<ChevronLeftIcon h={6} w={6} />}
-              />
-            </Tooltip>
-          </Flex>
-
-          <Flex alignItems="center">
-            <Text flexShrink="0" ml={5} mr={5}>
-              <Text fontWeight="bold" as="span">
-                {/* {pageIndex + 1} */}
-                {currentPage}
-              </Text>{' '}
-              of{' '}
-              <Text fontWeight="bold" as="span">
-                {maxPage}
-              </Text>
-            </Text>
-          </Flex>
-
-          <Flex>
-            <Tooltip label="Next Page">
-              <IconButton
-                size="sm"
-                onClick={() => {
-                  setCurrent(currentPage + 1);
-                }}
-                isDisabled={currentPage === maxPage && true}
-                icon={<ChevronRightIcon h={6} w={6} />}
-              />
-            </Tooltip>
-            <Tooltip label="Last Page">
-              <IconButton
-                size="sm"
-                onClick={() => {
-                  setCurrent(maxPage);
-
-                  if (currentPage === maxPage) {
-                    toast({
-                      title: '마지막 페이지',
-                      description: '마지막 페이지에요!',
-                      position: 'top-right',
-                      status: 'info',
-                      duration: 5000,
-                      isClosable: true,
-                    });
-                  }
-                }}
-                icon={<ArrowRightIcon h={3} w={3} />}
-                ml={4}
-              />
-            </Tooltip>
-          </Flex>
-        </Flex>
+       <Pagination setCurrent={setCurrent} currentPage={currentPage} toast={toast} maxPage={maxPage}/>
       </Box>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>
-            <ModalCloseButton />
-          </ModalHeader>
-
-          <ModalBody textAlign={'center'} fontSize='1.2rem' fontWeight={600} padding='20px 24px 10px'>삭제하시겠습니까?</ModalBody>
-          <ModalFooter justifyContent={'center'}>
-            <HStack>
-            <DeleteBtn onClick={DeletePrompt}>삭제</DeleteBtn>
-            <CancelBtn onClick={onClose}>취소</CancelBtn>
-            </HStack>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <IsDeleteModal isOpen={isOpen} onClose={onClose} Delete={DeletePrompt}/>
     </Layout>
   );
 };

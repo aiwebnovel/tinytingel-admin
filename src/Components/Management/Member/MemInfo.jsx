@@ -291,15 +291,7 @@ const MemInfo = () => {
               >
                 보러가기
               </p>
-            ) : (
-              // <Link
-              //   to={`/members/${id}/payment`}
-              //   style={{ textDecoration: 'underline' }}
-              // >
-              //   보러가기
-              // </Link>
-              '멤버십을 구독하지 않은 회원입니다.'
-            )}
+            ) : ('멤버십을 구독하지 않은 회원입니다.')}
           </div>
           <div className="InfoBox">
             <h4>구독상품</h4>
