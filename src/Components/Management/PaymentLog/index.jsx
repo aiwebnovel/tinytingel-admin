@@ -2,30 +2,16 @@ import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
 import * as server from 'config/Config';
 import { CSVLink } from 'react-csv';
-import {
-  Box,
-  Button,
-  Checkbox,
-  Text,
-  Flex,
-  Tooltip,
-  IconButton,
-  Select,
-  useToast,
-} from '@chakra-ui/react';
-import {
-  ArrowLeftIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ArrowRightIcon,
-  SearchIcon,
-} from '@chakra-ui/icons';
+import {Box,Button,Checkbox,Flex,Select,useToast} from '@chakra-ui/react';
+import {SearchIcon} from '@chakra-ui/icons';
 import Layout from 'Common/Layout.jsx';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ko from 'date-fns/locale/ko';
 import dayjs from 'dayjs';
 import { ExcelDownBtn, ResetBtn } from 'styles/ComponentStyle';
+import Pagination from './Pagination';
+import PayLogs from './PayLogs';
 
 const PaymentLog = () => {
   const toast = useToast();
@@ -561,179 +547,10 @@ const PaymentLog = () => {
                 <th className="paymentCustom-th6 textCenter">결제수단</th>
               </tr>
             </thead>
-            <tbody>
-              {searchList.length !== 0 ? (
-                searchList.map(item => (
-                  <tr key={item.user.user_uid} className="MemberCustom-tr">
-                    <td className="CheckBox textCenter">
-                      <Checkbox
-                        name="list"
-                        value={item.user.user_uid}
-                        colorScheme="blue"
-                        isChecked={checkedItems.includes(item.user.user_uid)}
-                        onChange={e => CheckEach(e, item.user.user_uid)}
-                      />
-                    </td>
-                    <td className="textCenter">
-                      {item.user.membership_recent_date !== null &&
-                        dayjs(item.user.membership_recent_date).format(
-                          'YYYY-MM-DD'
-                        )}
-                      {item.user.membership_recent_date === null &&
-                        item.membership.start_date === null &&
-                        '없음'}
-                      {item.user.membership_recent_date === null &&
-                        item.membership.start_date !== null &&
-                        dayjs(item.membership.start_date).format('YYYY-MM-DD')}
-                    </td>
-                    <td>{item.user.name}</td>
-                    <td>{item.user.email}</td>
-                    <td className="textCenter">
-                      {item.membership.bill_service === 'none' && '없음'}
-                      {item.membership.bill_service !== 'none' &&
-                        item.membership.current > 0 &&
-                        `${item.membership.current}개월`}
-                      {item.membership.bill_service !== 'none' &&
-                        item.membership.current === 0 &&
-                        item.membership.before > 0 &&
-                        `${item.membership.before}개월`}
-                    </td>
-                    <td className="textCenter">
-                      {item.membership.bill_service === 'none' && '없음'}
-                      {item.membership.bill_service !== 'none' &&
-                        item.membership.current === 1 &&
-                        '25,000'}
-                      {item.membership.bill_service !== 'none' &&
-                        item.membership.current === 3 &&
-                        '60,000'}
-                      {item.membership.bill_service !== 'none' &&
-                        item.membership.current === 6 &&
-                        '90,000'}
-
-                      {item.membership.bill_service !== 'none' &&
-                        item.membership.current === 0 &&
-                        item.membership.before === 1 &&
-                        '25,000'}
-                      {item.membership.bill_service !== 'none' &&
-                        item.membership.current === 0 &&
-                        item.membership.before === 3 &&
-                        '60,000'}
-                      {item.membership.bill_service !== 'none' &&
-                        item.membership.current === 0 &&
-                        item.membership.before === 6 &&
-                        '90,000'}
-                    </td>
-                    <td className="textCenter">
-                      {item.membership.bill_service === 'none' && '없음'}
-                      {item.membership.bill_service !== 'none' &&
-                        item.membership.bill_service === 'iamport' &&
-                        '카카오페이'}
-                        {item.membership.bill_service !== 'none' &&
-                        item.membership.bill_service === 'kakao' &&
-                        '카카오페이'}
-                      {item.membership.bill_service !== 'none' &&
-                        item.membership.bill_service === 'innopay' &&
-                        '신용/체크'}
-                         {item.membership.bill_service !== 'none' &&
-                        item.membership.bill_service === 'inicis' &&
-                        '신용/체크'}
-                      {item.membership.bill_service !== 'none' &&
-                        item.membership.bill_service === 'nopassbook' &&
-                        '무통장'}
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td>결과가 없습니다</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              )}
-            </tbody>
+            <PayLogs searchList={searchList} checkedItems={checkedItems} CheckEach={CheckEach} />
           </table>
         </Box>
-        <Flex m={4} alignItems="center" justifyContent="center">
-          <Flex justifyContent="space-between">
-            <Tooltip label="First Page">
-              <IconButton
-                size="sm"
-                onClick={() => {
-                  setCurrent(1);
-                  if (currentPage === 1) {
-                    toast({
-                      title: '맨 처음 페이지',
-                      description: '맨 처음 페이지에요!',
-                      position: 'top-right',
-                      status: 'info',
-                      duration: 5000,
-                      isClosable: true,
-                    });
-                  }
-                }}
-                icon={<ArrowLeftIcon h={3} w={3} />}
-                mr={4}
-              />
-            </Tooltip>
-
-            <IconButton
-              size="sm"
-              onClick={() => {
-                setCurrent(currentPage => currentPage - 1);
-              }}
-              isDisabled={currentPage === 1 && true}
-              icon={<ChevronLeftIcon h={6} w={6} />}
-            />
-          </Flex>
-
-          <Flex alignItems="center" flexShrink="0" ml={5} mr={5}>
-            <Text>
-              <Text fontWeight="bold" as="span">
-                {currentPage}
-              </Text>{' '}
-              of{' '}
-              <Text fontWeight="bold" as="span">
-                {maxPage}
-              </Text>
-            </Text>
-          </Flex>
-
-          <Flex>
-            <IconButton
-              size="sm"
-              onClick={() => {
-                setCurrent(currentPage => currentPage + 1);
-              }}
-              isDisabled={currentPage === maxPage && true}
-              icon={<ChevronRightIcon h={6} w={6} />}
-            />
-
-            <Tooltip label="Last Page">
-              <IconButton
-                size="sm"
-                onClick={() => {
-                  setCurrent(maxPage);
-
-                  if (currentPage === maxPage) {
-                    toast({
-                      title: '마지막 페이지',
-                      description: '마지막 페이지에요!',
-                      position: 'top-right',
-                      status: 'info',
-                      duration: 5000,
-                      isClosable: true,
-                    });
-                  }
-                }}
-                icon={<ArrowRightIcon h={3} w={3} />}
-                ml={4}
-              />
-            </Tooltip>
-          </Flex>
-        </Flex>
+        <Pagination setCurrent={setCurrent} currentPage={currentPage} toast={toast} maxPage={maxPage}/>
       </Box>
     </Layout>
   );

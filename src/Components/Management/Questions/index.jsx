@@ -1,27 +1,13 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { Link } from 'react-router-dom';
 import axios from 'axios';
-import {
-  Box,
-  Text,
-  Flex,
-  Tooltip,
-  IconButton,
-  Select,
-  Input,
-  useToast,
-} from '@chakra-ui/react';
-import {
-  ArrowLeftIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ArrowRightIcon,
-  SearchIcon,
-} from '@chakra-ui/icons';
+import {Box,Flex,Select,Input,useToast} from '@chakra-ui/react';
+import {SearchIcon} from '@chakra-ui/icons';
 import Layout from 'Common/Layout.jsx';
 import styled from 'styled-components';
 
 import * as server from 'config/Config';
+import Pagination from './Pagination';
+import QuestionTable from './QuestionTable';
 
 const SearchBtn = styled.button`
   background-color: #b8c6db;
@@ -290,120 +276,10 @@ const Questions = () => {
                 <th className="QuestionCustom-th5 textLeft">문의 내용</th>
               </tr>
             </thead>
-            <tbody>
-              {listAll.length !== 0 ? (
-                listAll.map(item => (
-                  <tr
-                    className={`QuestionCustom-tr textCenter ${item.status}Question`}
-                    key={item.inquiry_uid}
-                  >
-                    <td>{item.name}</td>
-                    <td>{item.email}</td>
-                    <td>{item.category}</td>
-                    <td>
-                      {item.status === 'unchecked' && '미확인'}
-                      {item.status === 'checked' && '확인'}
-                      {item.status === 'answered' && '답변 완료'}
-                    </td>
-                    <td className="textLeft hoverUnderline">
-                      <Link to={`/questions/${item.inquiry_uid}`}>
-                        {item.content.length > 20 &&
-                          item.content.substring(0, 21)}
-                        {item.content.length < 20 && item.content}
-                      </Link>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr className="QuestionCustom-tr textCenter">
-                  <td></td>
-                  <td></td>
-                  <td>결과가 없습니다.</td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              )}
-            </tbody>
+            <QuestionTable listAll={listAll}/>
           </table>
         </Box>
-        <Flex justifyContent="space-between" m={4} alignItems="center">
-          <Flex justifyContent="space-between">
-            <Tooltip label="First Page">
-              <IconButton
-                size="sm"
-                onClick={() => {
-                  setCurrent(1);
-                  if (currentPage === 1) {
-                    toast({
-                      title: '맨 처음 페이지',
-                      description: '맨 처음 페이지에요!',
-                      position: 'top-right',
-                      status: 'info',
-                      duration: 5000,
-                      isClosable: true,
-                    });
-                  }
-                }}
-                icon={<ArrowLeftIcon h={3} w={3} />}
-                mr={4}
-              />
-            </Tooltip>
-
-            <IconButton
-              size="sm"
-              onClick={() => {
-                setCurrent(currentPage => currentPage - 1);
-              }}
-              isDisabled={currentPage === 1 && true}
-              icon={<ChevronLeftIcon h={6} w={6} />}
-            />
-          </Flex>
-
-          <Flex alignItems="center" flexShrink="0" ml={5} mr={5}>
-            <Text>
-              <Text fontWeight="bold" as="span">
-                {currentPage}
-              </Text>{' '}
-              of{' '}
-              <Text fontWeight="bold" as="span">
-                {maxPage}
-              </Text>
-            </Text>
-          </Flex>
-
-          <Flex>
-            <IconButton
-              size="sm"
-              onClick={() => {
-                setCurrent(currentPage => currentPage + 1);
-              }}
-              isDisabled={currentPage === maxPage && true}
-              icon={<ChevronRightIcon h={6} w={6} />}
-            />
-
-            <Tooltip label="Last Page">
-              <IconButton
-                size="sm"
-                onClick={() => {
-                  setCurrent(maxPage);
-
-                  if (currentPage === maxPage) {
-                    toast({
-                      title: '마지막 페이지',
-                      description: '마지막 페이지에요!',
-                      position: 'top-right',
-                      status: 'info',
-                      duration: 5000,
-                      isClosable: true,
-                    });
-                  }
-                }}
-                icon={<ArrowRightIcon h={3} w={3} />}
-                ml={4}
-              />
-            </Tooltip>
-          </Flex>
-        </Flex>
+        <Pagination setCurrent={setCurrent} toast={toast} currentPage={currentPage} maxPage={maxPage}/>
       </Box>
     </Layout>
   );
