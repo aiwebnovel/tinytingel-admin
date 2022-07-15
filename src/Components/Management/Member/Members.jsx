@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 import * as server from 'config/Config';
 import { CSVLink } from 'react-csv';
 import {
@@ -14,21 +14,12 @@ import {
   Select,
   useToast,
   useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  HStack,
 } from '@chakra-ui/react';
 import {
   ArrowLeftIcon,
   ChevronLeftIcon,
   ChevronRightIcon,
   ArrowRightIcon,
-  InfoIcon,
   SearchIcon,
   DeleteIcon,
 } from '@chakra-ui/icons';
@@ -37,7 +28,9 @@ import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ko from 'date-fns/locale/ko';
 import dayjs from 'dayjs';
-import { DeleteBtn, CancelBtn, ExcelDownBtn, ResetBtn } from 'styles/ComponentStyle';
+import {ExcelDownBtn, ResetBtn } from 'styles/ComponentStyle';
+import IsDeleteModal from 'Common/IsDeleteModal';
+import MemberTable from './MemberTable';
 
 const Members = () => {
   const toast = useToast();
@@ -517,107 +510,7 @@ const Members = () => {
                 <th className="MemberCustom-th8 textCenter">수정</th>
               </tr>
             </thead>
-            <tbody>
-              {searchList.length !== 0 ? (
-                searchList.map(item => (
-                  <tr key={item.user.user_uid} className="MemberCustom-tr">
-                    <td className="CheckBox textCenter">
-                      <Checkbox
-                        name="list"
-                        value={item.user.user_uid}
-                        colorScheme="blue"
-                        isChecked={checkedItems.includes(item.user.user_uid)}
-                        onChange={e => CheckEach(e, item.user.user_uid)}
-                      />
-                    </td>
-                    <td>{item.user.name}</td>
-                    <td>{item.user.email}</td>
-                    <td className="textCenter">
-                      {dayjs(item.user.create_at).format('YYYY-MM-DD')}
-                    </td>
-                    <td className="textCenter">
-                      {item.user.login_at !== null
-                        ? dayjs(item.user.login_at).format('YYYY-MM-DD')
-                        : '기록 없음'}
-                    </td>
-                    <td className="textCenter">
-                      {item.membership.bill_service === 'none' && '없음'}
-                      {item.membership.bill_service !== 'none' &&
-                        item.membership.current > 0 &&
-                        `${item.membership.current}개월`}
-                      {item.membership.bill_service !== 'none' &&
-                        item.membership.current === 0 &&
-                        item.membership.before > 0 &&
-                        `${item.membership.before}개월`}
-                    </td>
-                    <td className="textCenter">
-                      {/* 최초 구독, 최근 결제 없음 */}
-                    {item.user.membership_recent_date === null &&
-                        item.membership.start_date === null &&
-                        '없음'}
-
-                      {/* 최초 구독 있음, 최근결제 없음  */}
-                      {item.membership.start_date !== null 
-                      && item.user.membership_recent_date === null
-                      && dayjs(item.membership.start_date).format(
-                            'YYYY-MM-DD'
-                      )}
-                   {/* 최초 구독 없음 , 최근 결제 있음 (start_date null인 경우_무통장) */}
-                         {item.membership.start_date === null 
-                      && item.user.membership_recent_date !== null
-                      && dayjs(item.user.membership_recent_date).format(
-                            'YYYY-MM-DD'
-                      )}
-                    {/* 최초 구독, 최근 결제 있음 */}
-                      {item.user.membership_recent_date !== null &&
-                      item.membership.start_date !== null &&
-                        dayjs(item.membership.start_date).format(
-                          'YYYY-MM-DD'
-                        )}
-                    </td>
-                    <td className="textCenter">
-                      {/* 최초 구독, 최근 결제 없음 */}
-                    {item.user.membership_recent_date === null &&
-                        item.membership.start_date === null &&
-                        '없음'}
-                      {/* 최초 구독 있음, 최근결제 없음  */}
-                      {item.user.membership_recent_date !== null &&
-                      item.membership.start_date === null &&
-                        dayjs(item.user.membership_recent_date).format(
-                          'YYYY-MM-DD'
-                        )}
-                   {/* 최초 구독 없음 , 최근 결제 있음 (start_date null인 경우_무통장) */}
-                      {item.user.membership_recent_date === null &&
-                      item.membership.start_date !== null &&
-                        dayjs(item.membership.start_date).format('YYYY-MM-DD')}
-                         {/* 최초 구독, 최근 결제 있음 */}
-                      {item.user.membership_recent_date !== null &&
-                      item.membership.start_date !== null &&
-                        dayjs(item.user.membership_recent_date).format(
-                          'YYYY-MM-DD'
-                        )}
-
-                    </td>
-                    <td className="textCenter">
-                      <Link to={`/members/${item.user.user_uid}`}>
-                        <InfoIcon w={5} h={5} />
-                      </Link>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td>결과가 없습니다</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              )}
-            </tbody>
+          <MemberTable searchList={searchList} checkedItems={checkedItems} CheckEach={CheckEach}/>
           </table>
         </Box>
         <Flex m={4} alignItems="center" justifyContent="center">
@@ -699,29 +592,7 @@ const Members = () => {
           </Flex>
         </Flex>
       </Box>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>
-            <ModalCloseButton />
-          </ModalHeader>
-
-          <ModalBody
-            textAlign={'center'}
-            fontSize="1.2rem"
-            fontWeight={600}
-            padding="20px 24px 10px"
-          >
-            삭제하시겠습니까?
-          </ModalBody>
-          <ModalFooter justifyContent={'center'}>
-            <HStack>
-              <DeleteBtn onClick={DeleteUsers}>삭제</DeleteBtn>
-              <CancelBtn onClick={onClose}>취소</CancelBtn>
-            </HStack>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <IsDeleteModal isOpen={isOpen} onClose={onClose} Delete={DeleteUsers}/>
     </Layout>
   );
 };
