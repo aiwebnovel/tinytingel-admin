@@ -26,7 +26,6 @@ const PaymentLog = () => {
   ];
 
   const [currentPage, setCurrent] = useState(1); //현재 페이지;
-  const [postPerPage, setPostPerPage] = useState(50); //페이지당 포스트 개수
   const [maxPage, setMaxPage] = useState('');
 
   const [startDate, setStartDate] = useState(new Date('January 1, 2021'));
@@ -88,13 +87,10 @@ const PaymentLog = () => {
       const set = [...new Set(payFilterValue)];
       setPayFilterValue(set);
       setPayMethod(set);
-      // console.log(set)
     }
 
     if (e.target.checked === false) {
       setPayMethod(['iamport', 'innopay', 'inicis','kakao' ,'nopassbook', 'none']);
-      // payFilterValue.splice(0);
-      // setPayMethod(payFilterValue);
     }
   };
 
@@ -102,7 +98,6 @@ const PaymentLog = () => {
     if (e.target.checked === true) {
       payFilterValue.push(e.target.value);
       setPayMethod(payFilterValue);
-      //console.log(payFilterValue)
     } else {
       payFilterValue.splice(payFilterValue.indexOf(e.target.value), 1);
       const set = [...new Set(payFilterValue)];
@@ -113,7 +108,6 @@ const PaymentLog = () => {
       } else {
         setPayFilterValue(set);
         setPayMethod(set);
-        //console.log(set)
       }
     }
   };
@@ -131,13 +125,10 @@ const PaymentLog = () => {
       const set = [...new Set(filterCheckValue)];
       setCheckedFilterValue(set);
       setMembershipList(set);
-      // console.log(set)
     }
 
     if (e.target.checked === false) {
       setMembershipList(['0', '1', '3', '6']);
-      // filterCheckValue.splice(0);
-      // setMembershipList(filterCheckValue);
     }
   };
 
@@ -145,7 +136,6 @@ const PaymentLog = () => {
     if (e.target.checked === true) {
       filterCheckValue.push(e.target.value);
       setMembershipList(filterCheckValue);
-      // console.log(filterCheckValue)
     } else {
       filterCheckValue.splice(filterCheckValue.indexOf(e.target.value), 1);
       const set = [...new Set(filterCheckValue)];
@@ -161,12 +151,10 @@ const PaymentLog = () => {
   };
 
   const CheckAll = e => {
-    // console.log(e.target.checked);
     setCheckedItems(e.target.checked ? idList : []);
   };
 
   const CheckEach = (e, id) => {
-    //console.log(e.target);
     if (e.target.checked) {
       setCheckedItems([...checkedItems, id]);
     } else {
@@ -198,7 +186,7 @@ const PaymentLog = () => {
       headers: { Authorization: `Bearer ${admin.adminState.token}` },
       data: {
         page: currentPage,
-        count: postPerPage,
+        count: 50,
         membershipList: membershipList,
         serviceList: payMethod,
         keyword: keyword,
@@ -215,8 +203,12 @@ const PaymentLog = () => {
         const data = response.data.data;
         const config = response.data.config;
         console.log(data);
+        const orderList = data.sort(
+          (a, b) => new Date(b.user.create_at) - new Date(a.user.create_at)
+        );
+
         setMaxPage(config.maxPage);
-        setSearchList(data);
+        setSearchList(orderList);
 
         let idList = [];
         const ids = data.map((item, i) => (idList[i] = item.user.user_uid));
@@ -236,16 +228,7 @@ const PaymentLog = () => {
           });
         }
       });
-  }, [
-    membershipList,
-    payMethod,
-    selected,
-    startDate,
-    keyword,
-    currentPage,
-    maxPage,
-  ]);
-
+  }, [membershipList,payMethod,selected,startDate,keyword,currentPage,maxPage]);
 
   useEffect(() => {
     fetchData();
@@ -508,53 +491,10 @@ const PaymentLog = () => {
         </Box>
       </Box>
       <Box className="TableContainer">
-        <Box
-          overflowX="auto"
-          css={{
-            '&::-webkit-scrollbar': {
-              //스크롤바 전체영역
-              width: '5px',
-            },
-            '&::-webkit-scrollbar-track': {
-              //스크롤바 움직이는 영역
-              backgroundColor: '#fff',
-            },
-            '&::-webkit-scrollbar-thumb': {
-              //스크롤
-              backgroundColor: '#E6F4F1',
-              borderRadius: '5px',
-            },
-          }}
-        >
-          <table className="MemberCustomTableStyle">
-            <thead>
-              <tr className="MemberCustom-tr MemberCustom-thead-tr">
-                <th className="MemberCheckBox textCenter">
-                  <Checkbox
-                    name="all"
-                    value="all"
-                    colorScheme="blue"
-                    isChecked={checkedItems.length === idList.length}
-                    isIndeterminate={isIndeterminate}
-                    onChange={CheckAll}
-                  />
-                </th>
-                <th className="paymentCustom-th1 textCenter">최초 결제일자</th>
-                <th className="paymentCustom-th2 textLeft">회원명</th>
-                <th className="paymentCustom-th3 textLeft">이메일</th>
-                <th className="paymentCustom-th4 textCenter">구독상품</th>
-                <th className="paymentCustom-th5 textCenter">결제금액</th>
-                <th className="paymentCustom-th6 textCenter">결제수단</th>
-              </tr>
-            </thead>
-            <PayLogs searchList={searchList} checkedItems={checkedItems} CheckEach={CheckEach} />
-          </table>
-        </Box>
+        <PayLogs searchList={searchList} checkedItems={checkedItems} CheckEach={CheckEach} CheckAll={CheckAll} idList={idList} isIndeterminate={isIndeterminate} />
         <Pagination setCurrent={setCurrent} currentPage={currentPage} toast={toast} maxPage={maxPage}/>
       </Box>
     </Layout>
   );
 };
-
 export default PaymentLog;
-

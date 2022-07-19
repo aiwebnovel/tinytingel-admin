@@ -36,7 +36,6 @@ const LoginLog = () => {
   ];
 
   const [currentPage, setCurrent] = useState(1); //현재 페이지;
-  const [postPerPage, setPostPerPage] = useState(1000); //페이지당 포스트 개수
   const [List, setList] = useState([]);
   const [maxPage, setMaxPage] = useState('');
 
@@ -50,7 +49,7 @@ const LoginLog = () => {
       headers: { Authorization: `Bearer ${admin.adminState.token}` },
       data: {
         page: currentPage,
-        count: postPerPage,
+        count: 1000,
         membershipList: [0, 1, 3, 6],
         serviceList: ['iamport', 'innopay', 'nopassbook', 'none'],
         keyword: '',

@@ -212,7 +212,6 @@ const CreateSerial = () => {
                 id="amount"
                 w="100%"
                 min={0}
-                max={50}
                 value={amount}
                 onChange={value => setAmount(Number(value))}
               >

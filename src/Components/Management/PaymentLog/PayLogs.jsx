@@ -1,8 +1,48 @@
-import { Checkbox } from "@chakra-ui/react";
+import { Box,Checkbox } from "@chakra-ui/react";
 import dayjs from 'dayjs';
 
-const PayLogs = ({searchList, checkedItems, CheckEach}) => {
+const PayLogs = ({searchList, checkedItems, idList,isIndeterminate ,CheckAll, CheckEach}) => {
     return(
+
+      <Box
+        overflowX="auto"
+        css={{
+          '&::-webkit-scrollbar': {
+            //스크롤바 전체영역
+            width: '5px',
+          },
+          '&::-webkit-scrollbar-track': {
+            //스크롤바 움직이는 영역
+            backgroundColor: '#fff',
+          },
+          '&::-webkit-scrollbar-thumb': {
+            //스크롤
+            backgroundColor: '#E6F4F1',
+            borderRadius: '5px',
+          },
+        }}
+      >
+        <table className="MemberCustomTableStyle">
+          <thead>
+            <tr className="MemberCustom-tr MemberCustom-thead-tr">
+              <th className="MemberCheckBox textCenter">
+                <Checkbox
+                  name="all"
+                  value="all"
+                  colorScheme="blue"
+                  isChecked={checkedItems.length === idList.length}
+                  isIndeterminate={isIndeterminate}
+                  onChange={CheckAll}
+                />
+              </th>
+              <th className="paymentCustom-th1 textCenter">최초 결제일자</th>
+              <th className="paymentCustom-th2 textLeft">회원명</th>
+              <th className="paymentCustom-th3 textLeft">이메일</th>
+              <th className="paymentCustom-th4 textCenter">구독상품</th>
+              <th className="paymentCustom-th5 textCenter">결제금액</th>
+              <th className="paymentCustom-th6 textCenter">결제수단</th>
+            </tr>
+          </thead>
         <tbody>
         {searchList.length !== 0 ? (
           searchList.map(item => (
@@ -96,6 +136,8 @@ const PayLogs = ({searchList, checkedItems, CheckEach}) => {
           </tr>
         )}
       </tbody>
+      </table>
+    </Box>
     )
 }
 
