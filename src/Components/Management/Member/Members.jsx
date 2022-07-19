@@ -90,7 +90,7 @@ const Members = () => {
           headers: { Authorization: `Bearer ${adminState.token}` },
         })
         .then(response => {
-          console.log(response);
+         // console.log(response);
           navigate(0);
         })
         .catch(error => {
@@ -118,7 +118,7 @@ const Members = () => {
         })
       )
         .then(response => {
-          console.log(response);
+         // console.log(response);
           navigate(0);
         })
         .catch(error => {
@@ -234,7 +234,7 @@ const Members = () => {
           (a, b) => new Date(b.user.create_at) - new Date(a.user.create_at)
         );
 
-        console.log(orderList);
+       // console.log(orderList);
         setMaxPage(config.maxPage);
         setSearchList(orderList);
 

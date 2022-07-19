@@ -57,7 +57,7 @@ const MemInfo = () => {
   };
 
   const ModifyUserData = () => {
-    console.log(parseInt(selectedMembership), passbook, endDate);
+   //console.log(parseInt(selectedMembership), passbook, endDate);
     const plan = parseInt(selectedMembership);
     const fomatEndDate = dayjs(endDate).format('YYYY-MM-DD');
 
@@ -84,7 +84,6 @@ const MemInfo = () => {
 
     axios(config)
       .then(response => {
-        console.log(response);
         onClose();
         navigate(0);
         toast({
@@ -141,7 +140,7 @@ const MemInfo = () => {
           headers: { Authorization: `Bearer ${admin.adminState.token}` },
         })
         .then(response => {
-          console.log(response);
+          //console.log(response);
           navigate('/members');
           setTimeout(
             toast({
@@ -191,7 +190,7 @@ const MemInfo = () => {
 
     await axios(config)
       .then(response => {
-        console.log(response);
+       // console.log(response);
         const data = response.data.data;
 
         const user = data.filter(item => item.user.user_uid === id);

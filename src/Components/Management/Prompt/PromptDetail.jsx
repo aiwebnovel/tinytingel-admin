@@ -148,7 +148,7 @@ const PromptDetail = () => {
         }
       )
       .then(response => {
-        console.log(response);
+        //console.log(response);
         navigate('/prompts');
         setTimeout( 
               toast({
@@ -207,7 +207,7 @@ const PromptDetail = () => {
 
       axios(config)
         .then(response => {
-          console.log(response);
+         // console.log(response);
           navigate('/prompts');
           setTimeout(
             toast({
@@ -226,7 +226,7 @@ const PromptDetail = () => {
   };
 
   const SettingModify = () => {
-    console.log('setting modify');
+   // console.log('setting modify');
     setModify(true);
   };
 
@@ -246,10 +246,10 @@ const PromptDetail = () => {
         headers: { Authorization: `Bearer ${adminState.token}` },
       })
       .then(response => {
-        console.log(response);
+       // console.log(response);
         const list = response.data.data;
         const prompt = list.find(item => item.uid === id);
-        console.log(prompt, prompt.stop_sequence);
+    //    console.log(prompt, prompt.stop_sequence);
 
         setprompt({
           ...prompt,

@@ -104,7 +104,7 @@ const CreatePropmt = () => {
   const MakePrompt = () => {
     const isBlank = Object.values(prompts);
     const sq = stop_sequence.split(',');
-    console.log(prompts, sq);
+    //console.log(prompts, sq);
 
     if (isBlank.includes('') === true) {
       toast({
@@ -177,14 +177,14 @@ const CreatePropmt = () => {
   };
 
   const addText = () => {
-  console.log(cursor, cursor.current.selectionStart);  
+  //console.log(cursor, cursor.current.selectionStart);  
   let textValue = cursor.current.value;
   const cursorStart = cursor.current.selectionStart;
 
   const startValue = textValue.substring(cursorStart,0);
   const endValue =  textValue.substring(cursorStart);
-  console.log(startValue);
-  console.log(endValue);
+  //console.log(startValue);
+  //console.log(endValue);
 
   cursor.current.value = startValue + `{}` + endValue;
 

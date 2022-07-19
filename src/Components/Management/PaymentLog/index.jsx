@@ -202,7 +202,7 @@ const PaymentLog = () => {
       .then(response => {
         const data = response.data.data;
         const config = response.data.config;
-        console.log(data);
+       // console.log(data);
         const orderList = data.sort(
           (a, b) => new Date(b.user.create_at) - new Date(a.user.create_at)
         );

@@ -76,7 +76,7 @@ const Prompts = () => {
       }
     )
     .then(response => {
-      console.log(response);
+      //console.log(response);
       navigate(0);
 
     })
@@ -106,7 +106,7 @@ const Prompts = () => {
         } )
       )
       .then(response => {
-        console.log(response);
+        //console.log(response);
         navigate(0);
       })
       .catch(error => {
@@ -134,7 +134,7 @@ const Prompts = () => {
         }
       )
       .then(response => {
-        console.log(response);
+       //console.log(response);
         const list = response.data.data;
         const config = response.data.config;
         const orderList = list.sort((a,b)=> new Date(b.update_at)- new Date(a.update_at));

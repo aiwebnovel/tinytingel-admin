@@ -121,7 +121,7 @@ const GetSerial = () => {
           headers: { Authorization: `Bearer ${admin.adminState.token}` },
         })
         .then(response => {
-          console.log(response);
+         // console.log(response);
           navigate(0);
         })
         .catch(error => {
@@ -149,7 +149,7 @@ const GetSerial = () => {
         })
       )
         .then(response => {
-          console.log(response);
+        //  console.log(response);
           navigate(0);
         })
         .catch(error => {
@@ -180,7 +180,7 @@ const GetSerial = () => {
   }
 
   const SearchSerial = useCallback(() => {
-    console.log(startDate, endDate);
+   //console.log(startDate, endDate);
     const config = {
       method: 'post',
       url: `${server.SERVER_URL}/coupon/list`,
@@ -197,7 +197,7 @@ const GetSerial = () => {
 
     axios(plan > 0 ? configWithPlan : config)
       .then(response => {
-       console.log(response);
+       //console.log(response);
         const data = response.data.data;
         const maxPage = response.data.config.maxPage;
 

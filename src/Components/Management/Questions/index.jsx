@@ -94,7 +94,7 @@ const Questions = () => {
   const AxiosSearch = useCallback(async config => {
     await axios(config)
       .then(response => {
-        console.log(response);
+       // console.log(response);
         const data = response.data.data;
         const maxpage = response.data.config.maxPage;
 
@@ -119,17 +119,14 @@ const Questions = () => {
   }, []);
 
   const HandleCategory = e => {
-    console.log(e.target.value);
     setCategory(e.target.value);
   };
 
   const HandleSerachContent = e => {
-    console.log(e.target.value);
     setSearchContent(e.target.value);
   };
 
   const HandleSearchKeyword = e => {
-    console.log(e.target.value);
     setSearchKeyword(e.target.value);
   };
 
@@ -153,7 +150,7 @@ const Questions = () => {
 
     axios(config)
       .then(response => {
-        console.log(response);
+        //console.log(response);
         const data = response.data.data;
         const maxpage = response.data.config.maxPage;
 

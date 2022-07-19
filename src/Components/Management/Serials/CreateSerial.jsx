@@ -99,7 +99,7 @@ const CreateSerial = () => {
   const MakeSerial = () => {
     const objectValue = Object.values(StringStates);
     const isBlank = objectValue.includes('');
-    console.log(campaign, description, amount, plan, objectValue);
+    //console.log(campaign, description, amount, plan, objectValue);
 
     if (isBlank || amount === 0 || plan === 0) {
       toast({
@@ -128,7 +128,7 @@ const CreateSerial = () => {
       axios(config)
         .then(response => {
           const resData = response.data.data;
-          console.log(resData);
+          //console.log(resData);
           setData(resData);
         })
         .catch(error => {

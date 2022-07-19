@@ -25,7 +25,7 @@ const MemPay = () => {
         headers: { Authorization: `Bearer ${admin.adminState.token}` },
       })
       .then(response => {
-        console.log(response);
+       // console.log(response);
         const data = response.data.data;
         setData(data);
       })

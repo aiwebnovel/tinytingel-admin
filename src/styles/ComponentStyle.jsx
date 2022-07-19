@@ -113,7 +113,7 @@ align-items: center;
 margin-bottom: 20px;
 
 > label {
-  min-width: 120px;
+  min-width: 110px;
   font-weight: 600;
   word-break: keep-all;
   margin-bottom: 5px;

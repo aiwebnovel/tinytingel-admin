@@ -35,7 +35,7 @@ const Home = () => {
  
     await axios(config)
       .then(response => {
-        console.log(response);
+        //console.log(response);
         const data = response.data.data;
         const subscribeAccumulate = data.subscribe.accumulate;
         const subscribeCurrent = data.subscribe.current;
