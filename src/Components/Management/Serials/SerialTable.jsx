@@ -27,8 +27,10 @@ const TrThStyle = styled.tr`
   }
 `;
 
-const SerialTable = ({data, uidList,checkedItems, CheckAll, CheckEach, HandleDetailModal }) => {
+const SerialTable = ({data, uidList,checkedItems, CheckAll, CheckEach, HandleDetailModal, offset }) => {
     const isIndeterminate = checkedItems.some(Boolean);
+    //현재 페이지 번호를 기준으로 표시해줘야할 게시물들의 범위, 즉, 해당 페이지의 첫 게시물의 위치(index)
+    //console.log(data.slice(offset, offset+ 50));
 
     return(
         <Box
@@ -72,7 +74,7 @@ const SerialTable = ({data, uidList,checkedItems, CheckAll, CheckEach, HandleDet
             </TrThStyle>
           </thead>
           <TbodyStyle>
-            {data.map(item => (
+            {data.slice(offset, offset+ 50).map(item => (
               <TrStyle
                 className="MemberCustom-tr"
                 key={item.coupon_uid}

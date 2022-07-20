@@ -1,8 +1,9 @@
 import { Flex, Tooltip, Text, IconButton, useToast} from '@chakra-ui/react';
 import { ArrowLeftIcon, ChevronLeftIcon, ChevronRightIcon, ArrowRightIcon} from '@chakra-ui/icons';
 
-const Pagination = ({currentPage, setCurrent, maxPage}) => {
+const Pagination = ({currentPage, setCurrent, total}) => {
     const toast = useToast();
+    const numPages = Math.ceil(total / 50);
 
     return(
         <Flex m={4} alignItems="center" justifyContent="center">
@@ -45,7 +46,7 @@ const Pagination = ({currentPage, setCurrent, maxPage}) => {
             </Text>{' '}
             of{' '}
             <Text fontWeight="bold" as="span">
-              {maxPage}
+              {numPages}
             </Text>
           </Text>
         </Flex>
@@ -56,7 +57,7 @@ const Pagination = ({currentPage, setCurrent, maxPage}) => {
             onClick={() => {
               setCurrent(currentPage + 1);
             }}
-            isDisabled={currentPage === maxPage && true}
+            isDisabled={currentPage === numPages && true}
             icon={<ChevronRightIcon h={6} w={6} />}
           />
 
@@ -64,7 +65,7 @@ const Pagination = ({currentPage, setCurrent, maxPage}) => {
             <IconButton
               size="sm"
               onClick={() => {
-                if (currentPage === maxPage) {
+                if (currentPage === numPages) {
                   toast({
                     title: '마지막 페이지',
                     description: '마지막 페이지에요!',
@@ -74,7 +75,7 @@ const Pagination = ({currentPage, setCurrent, maxPage}) => {
                     isClosable: true,
                   });
                 }
-                setCurrent(maxPage);
+                setCurrent(numPages);
               }}
               icon={<ArrowRightIcon h={3} w={3} />}
               ml={4}

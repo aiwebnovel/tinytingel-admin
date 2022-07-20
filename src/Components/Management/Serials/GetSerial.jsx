@@ -40,7 +40,6 @@ const GetSerial = () => {
 
   const [modalOpen, setModalOpen] = useState(false);
   const [currentPage, setCurrent] = useState(1); //현재 페이지;
-  const [maxPage, setMaxPage] = useState('');
   const [searchBody, setSearchBody] = useState({
     campaign_name: '', //캠페인명
     coupon_uid: '', // 쿠폰 uid
@@ -51,11 +50,13 @@ const GetSerial = () => {
   const [startDate, setStartDate] = useState(new Date('July 1, 2022'));
   const [endDate, setEndDate] = useState(new Date());
   
+  const offset = (currentPage -1) * 50;
+
   const { campaign_name, coupon_uid, is_used, user } = searchBody;
 
   let initial = {
     page: currentPage,
-    count: 30,
+    count: 1000,
     campaign_name: campaign_name,
     coupon_uid: coupon_uid,
     is_used: is_used,
@@ -66,7 +67,7 @@ const GetSerial = () => {
 
   let withPlan = {
     page: currentPage,
-    count: 30,
+    count: 1000,
     campaign_name: campaign_name,
     coupon_uid: coupon_uid,
     is_used: is_used,
@@ -197,9 +198,8 @@ const GetSerial = () => {
 
     axios(plan > 0 ? configWithPlan : config)
       .then(response => {
-       //console.log(response);
+        console.log(response);
         const data = response.data.data;
-        const maxPage = response.data.config.maxPage;
 
         const orderList = data.sort(
           (a, b) => new Date(b.create_at) - new Date(a.create_at)
@@ -208,8 +208,6 @@ const GetSerial = () => {
         let uidList = [];
         const uids = orderList.map((item, i) => (uidList[i] = item.coupon_uid));
         setUidList(uids);
-
-        setMaxPage(maxPage);
         setData(orderList);
       })
       .catch(error => {
@@ -226,11 +224,11 @@ const GetSerial = () => {
           });
         }
       })
-  }, [currentPage, maxPage, campaign_name, coupon_uid, is_used, plan, user, startDate, endDate]);
+  }, [currentPage, campaign_name, coupon_uid, is_used, plan, user, startDate, endDate]);
   
   useLayoutEffect(()=>{
     SearchSerial();
-  },[currentPage]);
+  },[]);
 
   return (
     <Layout>
@@ -264,10 +262,10 @@ const GetSerial = () => {
                 />
               </Flex>
               <SerialTable
-              data={data} uidList={uidList} checkedItems={checkedItems} CheckAll={CheckAll} CheckEach={CheckEach} HandleDetailModal={HandleDetailModal}
+              data={data} uidList={uidList} offset={offset} checkedItems={checkedItems} CheckAll={CheckAll} CheckEach={CheckEach} HandleDetailModal={HandleDetailModal}
               />
             </Box>
-           <Pagination currentPage={currentPage} setCurrent={setCurrent} maxPage={maxPage}/>
+           <Pagination total={data.length} currentPage={currentPage} setCurrent={setCurrent}/>
           </>
         )}
       </Box>

@@ -15,10 +15,11 @@ const SerialDetail = ({UID, admin, isOpen, onClose}) => {
     is_used:'',
     used_user_id:'',
     create_at:'',
+    used_at:'',
     user_email:''
   });
   const [endDate, setEndDate] = useState('');
-  const {coupon_uid, campaign_name, desc, plan, is_used, user_email, create_at} = details;  
+  const {coupon_uid, campaign_name, desc, plan, is_used, user_email, create_at, used_at} = details;  
 
   const [previous, setPrevious] = useState({
     PreCampaign_name: '',
@@ -127,7 +128,7 @@ const SerialDetail = ({UID, admin, isOpen, onClose}) => {
       axios(config)
       .then((response)=>{
         const data = response.data.data;
-        console.log(data);
+        //console.log(data);
         setDeatils({
           ...details,
           coupon_uid: data.coupon_uid,
@@ -137,10 +138,11 @@ const SerialDetail = ({UID, admin, isOpen, onClose}) => {
           is_used: data.is_used,
           used_user_id: data.used_user_id,
           create_at: data.create_at,
+          used_at : data.used_at,
           user_email: data.user_email
         });
 
-        let after = dayjs(data.create_at).add(data.plan, 'month');
+        let after = dayjs(data.used_at).add(data.plan, 'month');
         let afterDay = dayjs(after.$d).format("YYYY-MM-DD");
         setEndDate(afterDay);
 
@@ -211,7 +213,7 @@ const SerialDetail = ({UID, admin, isOpen, onClose}) => {
               </div>
                <div className="SerialDetailModal">
                 <h4>사용기간</h4>
-                <p>{`${dayjs(create_at).format("YYYY-MM-DD")} ~ ${endDate}`}</p> 
+                <p>{used_at ? `${dayjs(used_at).format("YYYY-MM-DD")} ~ ${endDate}` : '아직 사용되지 않았습니다.'}</p> 
               </div>
               <div className="SerialDetailModal">
                 <h4>사용자</h4>
