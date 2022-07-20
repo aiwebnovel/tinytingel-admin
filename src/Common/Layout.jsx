@@ -18,6 +18,7 @@ import {
   FcAssistant,
   FcConferenceCall,
   FcCommandLine,
+  FcNeutralTrading
 } from 'react-icons/fc';
 import Sider from './Sider.jsx';
 import styled from 'styled-components';
@@ -120,7 +121,7 @@ const Layout = ({ children }) => {
                 <Link to="/loginlog">로그인 기록 조회</Link>
               </Flex>
               <Flex direction="column" align="baseline" className="MobileNav">
-                <Heading as="h4" size="md" marginBottom="10px">
+                <Heading as="h4" size="md" marginBottom="10px">-
                   <FcAssistant />
                   문의사항 관리
                 </Heading>
@@ -133,6 +134,15 @@ const Layout = ({ children }) => {
                   프롬프트 관리
                 </Heading>
                 <Link to="/prompts">프롬프트 관리</Link>
+              </Flex>
+
+              <Flex direction="column" align="baseline" className="MobileNav">
+                <Heading as="h4" size="md" marginBottom="10px">
+                  <FcNeutralTrading />
+                  시리얼넘버 관리
+                </Heading>
+                <Link to="/createSerial">시리얼넘버 생성</Link>
+                 <Link to="/getSerial">시리얼넘버 조회</Link>
               </Flex>
             </VStack>
           </Box>

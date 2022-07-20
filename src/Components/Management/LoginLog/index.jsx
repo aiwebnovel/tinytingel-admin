@@ -15,11 +15,11 @@ import {
   ArrowRightIcon,
 } from '@chakra-ui/icons';
 import Layout from 'Common/Layout.jsx';
-import styled from 'styled-components';
-import moment from 'moment';
+import dayjs from 'dayjs'
 import { CSVLink } from 'react-csv';
-
+import { ExcelDownBtn } from 'styles/ComponentStyle';
 import * as server from 'config/Config';
+import Logs from './Logs';
 
 const LoginLog = () => {
   const toast = useToast();
@@ -36,13 +36,12 @@ const LoginLog = () => {
   ];
 
   const [currentPage, setCurrent] = useState(1); //현재 페이지;
-  const [postPerPage, setPostPerPage] = useState(1000); //페이지당 포스트 개수
   const [List, setList] = useState([]);
   const [maxPage, setMaxPage] = useState('');
 
   const fetchData = useCallback(async () => {
     const today = new Date();
-    const formatToday = moment(today).format('YYYY-MM-DD');
+    const formatToday = dayjs(today).format('YYYY-MM-DD');
 
     const config = {
       method: 'post',
@@ -50,7 +49,7 @@ const LoginLog = () => {
       headers: { Authorization: `Bearer ${admin.adminState.token}` },
       data: {
         page: currentPage,
-        count: postPerPage,
+        count: 1000,
         membershipList: [0, 1, 3, 6],
         serviceList: ['iamport', 'innopay', 'nopassbook', 'none'],
         keyword: '',
@@ -148,61 +147,7 @@ const LoginLog = () => {
                 <th className="MemberCustom-th7 textCenter">결제일자</th>
               </tr>
             </thead>
-            <tbody>
-              {List.length !== 0 ? (
-                List.map(item => (
-                  <tr key={item.user.user_uid} className="MemberCustom-tr">
-                    <td className="textCenter">
-                      {item.user.login_at !== null ? (
-                        <p style={{padding: '3px'}}>
-                          <span style={{fontWeight: 600}}>{moment(item.user.login_at).format(
-                            'YYYY-MM-DD'
-                          )} </span>
-                          <br />
-                          {moment(item.user.login_at).format('hh:mm:ss')}
-                        </p>
-                      ) : (
-                        '기록 없음'
-                      )}
-                    </td>
-                    <td>{item.user.name}</td>
-                    <td>{item.user.email}</td>
-                    <td className="textCenter">
-                      {moment(item.user.create_at).format('YYYY-MM-DD')}
-                    </td>
-
-                    <td className="textCenter">
-                      {item.membership.bill_service !== 'none'
-                        ? `${item.membership.current}개월`
-                        : "없음"}
-                    </td>
-                    <td className="textCenter">
-                      {item.membership.start_date !== null
-                        ? moment(item.membership.start_date).format(
-                            'YYYY-MM-DD'
-                          )
-                        : "없음"}
-                    </td>
-                    <td className="textCenter">
-                      {item.membership.start_date !== null
-                        ? moment(item.membership.start_date).format(
-                            'YYYY-MM-DD'
-                          )
-                        : "없음"}
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td>결과가 없습니다</td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              )}
-            </tbody>
+            <Logs List={List}/>
           </table>
         </Box>
         <Flex m={4} alignItems="center" justifyContent="center">
@@ -294,15 +239,3 @@ const LoginLog = () => {
 };
 
 export default LoginLog;
-
-const ExcelDownBtn = styled.button`
-  background-color: #444;
-  color: #fff;
-  padding: 2px 10px;
-  font-size: 15px;
-  transition: all 300ms ease;
-
-  &:hover {
-    background-color: #0098fa;
-  }
-`;
