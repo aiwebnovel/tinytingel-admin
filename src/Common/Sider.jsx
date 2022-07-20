@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Box, VStack,Flex, Avatar } from '@chakra-ui/react';
+import { Box, VStack, Flex, Avatar } from '@chakra-ui/react';
 import { ChevronDownIcon } from '@chakra-ui/icons';
 import {
   FcHome,
   FcConferenceCall,
   FcAssistant,
   FcCommandLine,
+  FcNeutralTrading,
 } from 'react-icons/fc';
 import '../styles/style.scss';
 import styled from 'styled-components';
@@ -34,20 +35,19 @@ const LogOut = styled.button`
   }
 `;
 
-
 const AvatarBox = styled(Box)`
   > h4 {
-    font-weight : 600;
+    font-weight: 600;
     font-size: 17px;
   }
-
-`
+`;
 
 const Sider = () => {
   const [toggle1, setToggle1] = useState(false);
   const [toggle2, setToggle2] = useState(false);
   const [toggle3, setToggle3] = useState(false);
-  
+  const [toggle4, setToggle4] = useState(false);
+
   const admin = JSON.parse(localStorage.getItem('admin'));
 
   const AdminLogOut = () => {
@@ -67,23 +67,22 @@ const Sider = () => {
       h="full"
       bg="#fff"
       display={{ base: 'none', lg: 'flex' }}
-      boxShadow='rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px'
-     
+      boxShadow="rgba(0, 0, 0, 0.15) 2.4px 2.4px 3.2px"
     >
       <VStack w="100%" spacing="15px">
         <Flex
-        w='100%'
-        justify={'space-between'}
-        align='center'
-        borderBottom={'1px solid #f3f3f3'}
-        padding="30px 18px 20px"
-        mb='25px'
+          w="100%"
+          justify={'space-between'}
+          align="center"
+          borderBottom={'1px solid #f3f3f3'}
+          padding="30px 18px 20px"
+          mb="25px"
         >
-            <Avatar
-            bg='#b8c6db'
+          <Avatar
+            bg="#b8c6db"
             name="user"
             size="md"
-            style={{cursor:'pointer'}}
+            style={{ cursor: 'pointer' }}
           />
           <AvatarBox>
             <h4>{admin && admin.adminState.name}</h4>
@@ -99,7 +98,12 @@ const Sider = () => {
           </Link>
         </Flex>
         <Flex w="100%" direction="column" align="baseline" className="nav">
-          <Headings id="toggle1" onClick={()=>{setToggle1(!toggle1)}}>
+          <Headings
+            id="toggle1"
+            onClick={() => {
+              setToggle1(!toggle1);
+            }}
+          >
             <FcConferenceCall />
             회원관리
             <ChevronDownIcon />
@@ -117,19 +121,29 @@ const Sider = () => {
           </ul>
         </Flex>
         <Flex w="100%" direction="column" align="baseline" className="nav">
-          <Headings id="toggle2"onClick={()=>{setToggle2(!toggle2)}}>
+          <Headings
+            id="toggle2"
+            onClick={() => {
+              setToggle2(!toggle2);
+            }}
+          >
             <FcAssistant />
             문의사항 관리
             <ChevronDownIcon />
           </Headings>
-          <ul  className={toggle2 ? 'toogleTrue' : 'toogleFalse'}>
+          <ul className={toggle2 ? 'toogleTrue' : 'toogleFalse'}>
             <Link to="/questions">
               <li>문의사항 조회</li>
             </Link>
           </ul>
         </Flex>
         <Flex w="100%" direction="column" align="baseline" className="nav">
-          <Headings id="toggle3" onClick={()=>{setToggle3(!toggle3)}}>
+          <Headings
+            id="toggle3"
+            onClick={() => {
+              setToggle3(!toggle3);
+            }}
+          >
             <FcCommandLine />
             프롬프트 관리
             <ChevronDownIcon />
@@ -140,8 +154,28 @@ const Sider = () => {
             </Link>
           </ul>
         </Flex>
+        <Flex w="100%" direction="column" align="baseline" className="nav">
+          <Headings
+            id="toggle4"
+            onClick={() => {
+              setToggle4(!toggle4);
+            }}
+          >
+            <FcNeutralTrading />
+            시리얼넘버 관리
+            <ChevronDownIcon />
+          </Headings>
+          <ul className={toggle4 ? 'toogleTrue' : 'toogleFalse'}>
+            <Link to="/createSerial">
+              <li>시리얼넘버 생성</li>
+            </Link>
+            <Link to="/getSerial">
+              <li>시리얼넘버 조회</li>
+            </Link>
+          </ul>
+        </Flex>
       </VStack>
-      <Box textAlign={'center'} mb='20px'>
+      <Box textAlign={'center'} mb="20px">
         <LogOut onClick={AdminLogOut}>Logout</LogOut>
       </Box>
     </Box>
@@ -149,4 +183,3 @@ const Sider = () => {
 };
 
 export default Sider;
-

@@ -1,73 +1,20 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import axios from 'axios';
-import { Link, useNavigate } from 'react-router-dom';
+import {useNavigate } from 'react-router-dom';
 import * as server from 'config/Config';
 import { CSVLink } from 'react-csv';
 import {
-  Box,
-  Button,
-  Checkbox,
-  Text,
-  Flex,
-  Tooltip,
-  IconButton,
-  Select,
-  useToast,
-  useDisclosure,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalFooter,
-  ModalBody,
-  ModalCloseButton,
-  HStack,
-} from '@chakra-ui/react';
-import {
-  ArrowLeftIcon,
-  ChevronLeftIcon,
-  ChevronRightIcon,
-  ArrowRightIcon,
-  InfoIcon,
-  SearchIcon,
-  DeleteIcon,
-} from '@chakra-ui/icons';
+  Box,Button,Checkbox,Flex,Select,useToast,useDisclosure } from '@chakra-ui/react';
+import {SearchIcon,DeleteIcon } from '@chakra-ui/icons';
 import Layout from 'Common/Layout.jsx';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ko from 'date-fns/locale/ko';
-import styled from 'styled-components';
-import moment from 'moment';
-
-const DeleteBtn = styled.button`
-  background-color: #ff5a52;
-  //border: 1px solid #FF5A52;
-  border-radius: 5px;
-  color: #fff;
-  padding: 2px 25px;
-  transition: all 300ms ease;
-
-  &:hover {
-    background-color: #d83536;
-    //border: 1px solid #D83536;
-    color: #fff;
-  }
-`;
-
-const CancelBtn = styled.button`
-  background-color: #f9f9f9;
-  border: 1px solid #444;
-  border-radius: 5px;
-  color: #444;
-  padding: 2px 25px;
-  transition: all 300ms ease;
-
-  &:hover {
-    background-color: #444;
-    //border: 1px solid #444;
-    color: #fff;
-  }
-`;
+import dayjs from 'dayjs';
+import {ExcelDownBtn, ResetBtn } from 'styles/ComponentStyle';
+import IsDeleteModal from 'Common/IsDeleteModal';
+import MemberTable from './MemberTable';
+import Pagination from './Pagination';
 
 const Members = () => {
   const toast = useToast();
@@ -143,7 +90,7 @@ const Members = () => {
           headers: { Authorization: `Bearer ${adminState.token}` },
         })
         .then(response => {
-          console.log(response);
+         // console.log(response);
           navigate(0);
         })
         .catch(error => {
@@ -171,7 +118,7 @@ const Members = () => {
         })
       )
         .then(response => {
-          console.log(response);
+         // console.log(response);
           navigate(0);
         })
         .catch(error => {
@@ -201,13 +148,10 @@ const Members = () => {
       const set = [...new Set(filterCheckValue)];
       setCheckedFilterValue(set);
       setMembershipList(set);
-      // console.log(set)
     }
 
     if (e.target.checked === false) {
       setMembershipList(['0', '1', '3', '6']);
-      // filterCheckValue.splice(0);
-      // setMembershipList(filterCheckValue);
     }
   };
 
@@ -215,7 +159,6 @@ const Members = () => {
     if (e.target.checked === true) {
       filterCheckValue.push(e.target.value);
       setMembershipList(filterCheckValue);
-      // console.log(filterCheckValue)
     } else {
       filterCheckValue.splice(filterCheckValue.indexOf(e.target.value), 1);
       const set = [...new Set(filterCheckValue)];
@@ -231,12 +174,10 @@ const Members = () => {
   };
 
   const CheckAll = e => {
-    // console.log(e.target.checked);
     setCheckedItems(e.target.checked ? idList : []);
   };
 
   const CheckEach = (e, id) => {
-    //console.log(e.target);
     if (e.target.checked) {
       setCheckedItems([...checkedItems, id]);
     } else {
@@ -259,7 +200,7 @@ const Members = () => {
 
   const fetchData = useCallback(async () => {
     const today = new Date();
-    const formatToday = moment(today).format('YYYY-MM-DD');
+    const formatToday = dayjs(today).format('YYYY-MM-DD');
 
     const config = {
       method: 'post',
@@ -293,7 +234,7 @@ const Members = () => {
           (a, b) => new Date(b.user.create_at) - new Date(a.user.create_at)
         );
 
-        console.log(orderList);
+       // console.log(orderList);
         setMaxPage(config.maxPage);
         setSearchList(orderList);
 
@@ -547,241 +488,14 @@ const Members = () => {
                 <th className="MemberCustom-th8 textCenter">수정</th>
               </tr>
             </thead>
-            <tbody>
-              {searchList.length !== 0 ? (
-                searchList.map(item => (
-                  <tr key={item.user.user_uid} className="MemberCustom-tr">
-                    <td className="CheckBox textCenter">
-                      <Checkbox
-                        name="list"
-                        value={item.user.user_uid}
-                        colorScheme="blue"
-                        isChecked={checkedItems.includes(item.user.user_uid)}
-                        onChange={e => CheckEach(e, item.user.user_uid)}
-                      />
-                    </td>
-                    <td>{item.user.name}</td>
-                    <td>{item.user.email}</td>
-                    <td className="textCenter">
-                      {moment(item.user.create_at).format('YYYY-MM-DD')}
-                    </td>
-                    <td className="textCenter">
-                      {item.user.login_at !== null
-                        ? moment(item.user.login_at).format('YYYY-MM-DD')
-                        : '기록 없음'}
-                    </td>
-                    <td className="textCenter">
-                      {item.membership.bill_service === 'none' && '없음'}
-                      {item.membership.bill_service !== 'none' &&
-                        item.membership.current > 0 &&
-                        `${item.membership.current}개월`}
-                      {item.membership.bill_service !== 'none' &&
-                        item.membership.current === 0 &&
-                        item.membership.before > 0 &&
-                        `${item.membership.before}개월`}
-                    </td>
-                    <td className="textCenter">
-                      {/* 최초 구독, 최근 결제 없음 */}
-                    {item.user.membership_recent_date === null &&
-                        item.membership.start_date === null &&
-                        '없음'}
-
-                      {/* 최초 구독 있음, 최근결제 없음  */}
-                      {item.membership.start_date !== null 
-                      && item.user.membership_recent_date === null
-                      && moment(item.membership.start_date).format(
-                            'YYYY-MM-DD'
-                      )}
-                   {/* 최초 구독 없음 , 최근 결제 있음 (start_date null인 경우_무통장) */}
-                         {item.membership.start_date === null 
-                      && item.user.membership_recent_date !== null
-                      && moment(item.user.membership_recent_date).format(
-                            'YYYY-MM-DD'
-                      )}
-                    {/* 최초 구독, 최근 결제 있음 */}
-                      {item.user.membership_recent_date !== null &&
-                      item.membership.start_date !== null &&
-                        moment(item.membership.start_date).format(
-                          'YYYY-MM-DD'
-                        )}
-                    </td>
-                    <td className="textCenter">
-                      {/* 최초 구독, 최근 결제 없음 */}
-                    {item.user.membership_recent_date === null &&
-                        item.membership.start_date === null &&
-                        '없음'}
-                      {/* 최초 구독 있음, 최근결제 없음  */}
-                      {item.user.membership_recent_date !== null &&
-                      item.membership.start_date === null &&
-                        moment(item.user.membership_recent_date).format(
-                          'YYYY-MM-DD'
-                        )}
-                   {/* 최초 구독 없음 , 최근 결제 있음 (start_date null인 경우_무통장) */}
-                      {item.user.membership_recent_date === null &&
-                      item.membership.start_date !== null &&
-                        moment(item.membership.start_date).format('YYYY-MM-DD')}
-                         {/* 최초 구독, 최근 결제 있음 */}
-                      {item.user.membership_recent_date !== null &&
-                      item.membership.start_date !== null &&
-                        moment(item.user.membership_recent_date).format(
-                          'YYYY-MM-DD'
-                        )}
-
-                    </td>
-                    <td className="textCenter">
-                      <Link to={`/members/${item.user.user_uid}`}>
-                        <InfoIcon w={5} h={5} />
-                      </Link>
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td>결과가 없습니다</td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              )}
-            </tbody>
+          <MemberTable searchList={searchList} checkedItems={checkedItems} CheckEach={CheckEach}/>
           </table>
         </Box>
-        <Flex m={4} alignItems="center" justifyContent="center">
-          <Flex justifyContent="space-between">
-            <Tooltip label="First Page">
-              <IconButton
-                size="sm"
-                onClick={() => {
-                  setCurrent(1);
-                  if (currentPage === 1) {
-                    toast({
-                      title: '맨 처음 페이지',
-                      description: '맨 처음 페이지에요!',
-                      position: 'top-right',
-                      status: 'info',
-                      duration: 5000,
-                      isClosable: true,
-                    });
-                  }
-                }}
-                icon={<ArrowLeftIcon h={3} w={3} />}
-                mr={4}
-              />
-            </Tooltip>
-
-            <IconButton
-              size="sm"
-              onClick={() => {
-                setCurrent(currentPage => currentPage - 1);
-              }}
-              isDisabled={currentPage === 1 && true}
-              icon={<ChevronLeftIcon h={6} w={6} />}
-            />
-          </Flex>
-
-          <Flex alignItems="center" flexShrink="0" ml={5} mr={5}>
-            <Text>
-              <Text fontWeight="bold" as="span">
-                {currentPage}
-              </Text>{' '}
-              of{' '}
-              <Text fontWeight="bold" as="span">
-                {maxPage}
-              </Text>
-            </Text>
-          </Flex>
-
-          <Flex>
-            <IconButton
-              size="sm"
-              onClick={() => {
-                setCurrent(currentPage => currentPage + 1);
-              }}
-              isDisabled={currentPage === maxPage && true}
-              icon={<ChevronRightIcon h={6} w={6} />}
-            />
-
-            <Tooltip label="Last Page">
-              <IconButton
-                size="sm"
-                onClick={() => {
-                  setCurrent(maxPage);
-
-                  if (currentPage === maxPage) {
-                    toast({
-                      title: '마지막 페이지',
-                      description: '마지막 페이지에요!',
-                      position: 'top-right',
-                      status: 'info',
-                      duration: 5000,
-                      isClosable: true,
-                    });
-                  }
-                }}
-                icon={<ArrowRightIcon h={3} w={3} />}
-                ml={4}
-              />
-            </Tooltip>
-          </Flex>
-        </Flex>
+          <Pagination setCurrent={setCurrent} currentPage={currentPage} toast={toast} maxPage={maxPage}/>
       </Box>
-      <Modal isOpen={isOpen} onClose={onClose}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>
-            <ModalCloseButton />
-          </ModalHeader>
-
-          <ModalBody
-            textAlign={'center'}
-            fontSize="1.2rem"
-            fontWeight={600}
-            padding="20px 24px 10px"
-          >
-            삭제하시겠습니까?
-          </ModalBody>
-          <ModalFooter justifyContent={'center'}>
-            <HStack>
-              <DeleteBtn onClick={DeleteUsers}>삭제</DeleteBtn>
-              <CancelBtn onClick={onClose}>취소</CancelBtn>
-            </HStack>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+      <IsDeleteModal isOpen={isOpen} onClose={onClose} Delete={DeleteUsers}/>
     </Layout>
   );
 };
 
 export default Members;
-
-const ExcelDownBtn = styled.button`
-  background-color: #444;
-  color: #fff;
-  padding: 2px 10px;
-  font-size: 15px;
-  transition: all 300ms ease;
-  word-break: keep-all;
-
-  &:hover {
-    background-color: #0098fa;
-  }
-`;
-
-const ResetBtn = styled.button`
-  background-color: #e6f4f1;
-  border: 1px solid #e6f4f1;
-  color: #444;
-  padding: 2px 10px;
-  font-size: 15px;
-  transition: all 300ms ease;
-  margin-right: 8px;
-  word-break: keep-all;
-
-  &:hover {
-    background-color: #b8c6db;
-  }
-`;

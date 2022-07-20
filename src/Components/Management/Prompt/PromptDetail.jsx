@@ -78,7 +78,6 @@ const GoListBtn = styled.button`
 
 const DeleteBtn = styled.button`
   background-color: #ff5a52;
-  //border: 1px solid #FF5A52;
   border-radius: 5px;
   color: #fff;
   padding: 2px 25px;
@@ -86,7 +85,6 @@ const DeleteBtn = styled.button`
 
   &:hover {
     background-color: #d83536;
-    //border: 1px solid #D83536;
     color: #fff;
   }
 
@@ -150,7 +148,7 @@ const PromptDetail = () => {
         }
       )
       .then(response => {
-        console.log(response);
+        //console.log(response);
         navigate('/prompts');
         setTimeout( 
               toast({
@@ -209,7 +207,7 @@ const PromptDetail = () => {
 
       axios(config)
         .then(response => {
-          console.log(response);
+         // console.log(response);
           navigate('/prompts');
           setTimeout(
             toast({
@@ -228,7 +226,7 @@ const PromptDetail = () => {
   };
 
   const SettingModify = () => {
-    console.log('setting modify');
+   // console.log('setting modify');
     setModify(true);
   };
 
@@ -248,10 +246,10 @@ const PromptDetail = () => {
         headers: { Authorization: `Bearer ${adminState.token}` },
       })
       .then(response => {
-        console.log(response);
+       // console.log(response);
         const list = response.data.data;
         const prompt = list.find(item => item.uid === id);
-        console.log(prompt, prompt.stop_sequence);
+    //    console.log(prompt, prompt.stop_sequence);
 
         setprompt({
           ...prompt,

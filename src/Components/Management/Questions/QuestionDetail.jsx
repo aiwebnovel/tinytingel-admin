@@ -20,13 +20,7 @@ import styled from 'styled-components';
 import { useNavigate } from 'react-router-dom';
 import {Back} from 'styles/ComponentStyle';
 import * as server from 'config/Config';
-
-const BtnBox = styled.div`
-  width: 100%;
-  text-align: center;
-  padding: 30px 0;
-`;
-
+import {BtnBox} from 'styles/ComponentStyle';
 
 const ModifyOpen = styled.button`
   background-color: #444;
@@ -63,7 +57,6 @@ const ModifyBtn = styled.button`
 
 const CancelBtn = styled.button`
   background-color: #ff5a52;
-  //border: 1px solid #FF5A52;
   border-radius: 5px;
   color: #fff;
   padding: 2px 25px;
@@ -71,7 +64,6 @@ const CancelBtn = styled.button`
 
   &:hover {
     background-color: #d83536;
-    //border: 1px solid #D83536;
     color: #fff;
   }
 

@@ -1,6 +1,6 @@
-import React, { useEffect, useState, forwardRef } from 'react';
+import React, { useEffect, useState} from 'react';
 import axios from 'axios';
-import { Link, useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import {
   Box,
   Heading,
@@ -16,15 +16,16 @@ import {
   HStack,
   Flex,
 } from '@chakra-ui/react';
-import { FcCalendar } from 'react-icons/fc';
+
 import Layout from 'Common/Layout.jsx';
 import styled from 'styled-components';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
 import ko from 'date-fns/locale/ko';
-import moment from 'moment';
+import dayjs from 'dayjs';
 import * as server from 'config/Config';
-import {Back} from 'styles/ComponentStyle';
+import {Back, BtnBox, SmallDelete, Modify} from 'styles/ComponentStyle';
+import { CustomInput } from 'Common/CustomInput';
 
 const MemInfo = () => {
   const { id } = useParams();
@@ -34,7 +35,7 @@ const MemInfo = () => {
   const navigate = useNavigate();
   const admin = JSON.parse(localStorage.getItem('admin'));
   const today = new Date();
-  const formatToday = moment(today).format('YYYY-MM-DD');
+  const formatToday = dayjs(today).format('YYYY-MM-DD');
 
   const [Data, setData] = useState({
     membership: '',
@@ -49,26 +50,16 @@ const MemInfo = () => {
 
   const [passbook, setPassbook] = useState(false);
 
-  const CustomInput = forwardRef(({ value, onClick }, ref) => (
-    <button
-      style={{ background: 'transparent', border: '0', outline: '0' }}
-      onClick={onClick}
-      ref={ref}
-    >
-      <FcCalendar style={{ width: '30px', height: '30px' }}>{moment(value).format('yyyy/MM/DD')}</FcCalendar>
-    </button>
-  ));
-
   const ChangeSelectedAndEndDate = e => {
     setSelected(e.target.value);
-    const addMonth = moment(startDate).add(e.target.value, 'months').calendar();
+    const addMonth = dayjs(startDate).add(e.target.value, 'months').calendar();
     setEndDate(addMonth);
   };
 
   const ModifyUserData = () => {
-    console.log(parseInt(selectedMembership), passbook, endDate);
+   //console.log(parseInt(selectedMembership), passbook, endDate);
     const plan = parseInt(selectedMembership);
-    const fomatEndDate = moment(endDate).format('YYYY-MM-DD');
+    const fomatEndDate = dayjs(endDate).format('YYYY-MM-DD');
 
     if(membership.bill_service === 'none' && !passbook) {
       toast({
@@ -93,7 +84,6 @@ const MemInfo = () => {
 
     axios(config)
       .then(response => {
-        console.log(response);
         onClose();
         navigate(0);
         toast({
@@ -150,7 +140,7 @@ const MemInfo = () => {
           headers: { Authorization: `Bearer ${admin.adminState.token}` },
         })
         .then(response => {
-          console.log(response);
+          //console.log(response);
           navigate('/members');
           setTimeout(
             toast({
@@ -200,7 +190,7 @@ const MemInfo = () => {
 
     await axios(config)
       .then(response => {
-        console.log(response);
+       // console.log(response);
         const data = response.data.data;
 
         const user = data.filter(item => item.user.user_uid === id);
@@ -280,7 +270,7 @@ const MemInfo = () => {
           </div>
           <div className="InfoBox">
             <h4>가입일자</h4>
-            <p>{`${moment(user.create_at).format('YYYY-MM-DD')}`}</p>
+            <p>{`${dayjs(user.create_at).format('YYYY-MM-DD')}`}</p>
           </div>
           <div className="InfoBox" style={{ backgroundColor: '#f9f9f9' }}>
             <h4>결제내역</h4>
@@ -300,15 +290,7 @@ const MemInfo = () => {
               >
                 보러가기
               </p>
-            ) : (
-              // <Link
-              //   to={`/members/${id}/payment`}
-              //   style={{ textDecoration: 'underline' }}
-              // >
-              //   보러가기
-              // </Link>
-              '멤버십을 구독하지 않은 회원입니다.'
-            )}
+            ) : ('멤버십을 구독하지 않은 회원입니다.')}
           </div>
           <div className="InfoBox">
             <h4>구독상품</h4>
@@ -340,14 +322,14 @@ const MemInfo = () => {
               {/* 구독한 적 있음 / 구독 시작날짜 있음 */}
               {membership.bill_service !== 'none' &&
                 membership.start_date !== null &&
-                `${moment(membership.start_date).format(
+                `${dayjs(membership.start_date).format(
                   'YYYY-MM-DD')}`}
 
 
               {/* 구독한 적 있음 / 구독 시작날짜 없음 */}
               {membership.bill_service !== 'none' &&
                 membership.start_date === null &&
-                `${moment(user.membership_recent_date).format(
+                `${dayjs(user.membership_recent_date).format(
                   'YYYY-MM-DD')}`}
 
             </p>
@@ -362,16 +344,16 @@ const MemInfo = () => {
               {/* 구독한 적 있음 / 최근 결제일 없음 */}
               {membership.bill_service !== 'none' &&
                 user.membership_recent_date === null &&
-                `${moment(membership.start_date).format(
+                `${dayjs(membership.start_date).format(
                   'YYYY-MM-DD'
-                )} ~ ${moment(membership.next_date).format('YYYY-MM-DD')}`}
+                )} ~ ${dayjs(membership.next_date).format('YYYY-MM-DD')}`}
 
               {/* 구독한 적 있음 / 최근 결제일 있음  */}
               {membership.bill_service !== 'none' &&
                 user.membership_recent_date !== null &&
-                `${moment(user.membership_recent_date).format(
+                `${dayjs(user.membership_recent_date).format(
                   'YYYY-MM-DD'
-                )} ~ ${moment(membership.next_date).format('YYYY-MM-DD')}`}
+                )} ~ ${dayjs(membership.next_date).format('YYYY-MM-DD')}`}
             </p>
           </div>
           <div className="InfoBox">
@@ -385,7 +367,7 @@ const MemInfo = () => {
 
               {membership.bill_service !== 'none' &&
                 !user.membership_cancel &&
-                moment(membership.next_date).format('YYYY-MM-DD')}
+                dayjs(membership.next_date).format('YYYY-MM-DD')}
 
               {/* 구독 중 & 취소함 */}
               {membership.bill_service !== 'none' &&
@@ -436,11 +418,11 @@ const MemInfo = () => {
               </div>
               <div className="ModalInfoBox">
                 <h4>가입일자</h4>
-                <p>{`${moment(user.create_at).format('YYYY-MM-DD')}`}</p>
+                <p>{`${dayjs(user.create_at).format('YYYY-MM-DD')}`}</p>
               </div>
                 <div className="ModalInfoBox">
                 <h4>가입일자</h4>
-                <p>{`${moment(user.create_at).format('YYYY-MM-DD')}`}</p>
+                <p>{`${dayjs(user.create_at).format('YYYY-MM-DD')}`}</p>
               </div>
               <div className="ModalInfoBox">
                 <h4>구독상품</h4>
@@ -463,7 +445,7 @@ const MemInfo = () => {
                   <Flex align='center' gridGap={'5px'}>
                   <input
                     className="ModalDatePickerStyle"
-                    value={moment(startDate).format('yyyy/MM/DD')}
+                    value={dayjs(startDate).format('yyyy/MM/DD')}
                     readOnly
                   /> 
                   <SpanBtn onClick={()=> setStartDate(today)}>오늘 날짜</SpanBtn>
@@ -472,7 +454,7 @@ const MemInfo = () => {
                   <Flex justify="space-between" align="flex-start" w="100%">
                     <input
                       className="ModalDatePickerStyle no-outline"
-                      value={moment(endDate).format('yyyy/MM/DD')}
+                      value={dayjs(endDate).format('yyyy/MM/DD')}
                       readOnly
                     />
 
@@ -501,7 +483,7 @@ const MemInfo = () => {
             <HStack>
               <Back onClick={UnSubscribe}>구독해지</Back>
               <Modify onClick={ModifyUserData}>구독수정</Modify>
-              <Delete onClick={DeleteUser}>회원삭제</Delete>
+              <SmallDelete onClick={DeleteUser}>회원삭제</SmallDelete>
             </HStack>
           </ModalFooter>
         </ModalContent>
@@ -512,43 +494,7 @@ const MemInfo = () => {
 
 export default MemInfo;
 
-const BtnBox = styled.div`
-  width: 100%;
-  text-align: center;
-  padding: 30px 0;
-`;
 
-
-const Modify = styled.button`
-  background-color: #444;
-  padding: 2px 8px;
-  border: 1px solid #444;
-  border-radius: 5px;
-  color: #fff;
-
-  transition: all 300ms ease;
-
-  &:hover {
-    background-color: #e6f4f1;
-    border: 1px solid #e6f4f1;
-    color: #444;
-  }
-`;
-
-const Delete = styled.button`
-  background-color: #ff5a52;
-  padding: 2px 8px;
-  border: 1px solid #ff5a52;
-  border-radius: 5px;
-  color: #fff;
-  width: 80px;
-  transition: all 300ms ease;
-
-  &:hover {
-    background-color: #d83536;
-    border: 1px solid #d83536;
-  }
-`;
 
 const Canceled = styled.span`
   background-color: transparent;

@@ -2,17 +2,19 @@ import React from 'react';
 import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import Home from 'Components/Home.jsx';
 import Members from 'Components/Management/Member/Members.jsx';
-import LoginLog from 'Components/Management/LoginLog.jsx';
-import Questions from 'Components/Management/Questions.jsx';
+import LoginLog from 'Components/Management/LoginLog/index.jsx';
+import Questions from 'Components/Management/Questions/index.jsx';
 import MemInfo from 'Components/Management/Member/MemInfo.jsx';
 import Landing from 'Components/Landing/index.jsx';
 import MemPay from 'Components/Management/Member/MemPay.jsx';
-import QuestionDetail from 'Components/Management/QuestionDetail.jsx';
-import Prompts from 'Components/Management/Prompts'
-import PromptDetail from 'Components/Management/PromptDetail.jsx';
-import CreatePropmt from 'Components/Management/CreatePrompt';
-import PaymentLog from 'Components/Management/PaymentLog';
+import QuestionDetail from 'Components/Management/Questions/QuestionDetail.jsx';
+import Prompts from 'Components/Management/Prompt/Prompts'
+import PromptDetail from 'Components/Management/Prompt/PromptDetail.jsx';
+import CreatePropmt from 'Components/Management/Prompt/CreatePrompt';
+import PaymentLog from 'Components/Management/PaymentLog/index';
 import NotFound from 'Common/NotFound';
+import CreateSerial from 'Components/Management/Serials/CreateSerial';
+import GetSerial from 'Components/Management/Serials/GetSerial';
 
 
 function Apps() {
@@ -39,6 +41,8 @@ function Apps() {
           <Route path="/prompts" element={<Prompts />}></Route>
           <Route path='/prompts/create' element={<CreatePropmt/>}/>
           <Route path='/prompts/:id' element={<PromptDetail/>}/>
+          <Route path='/createSerial' element={<CreateSerial/>}/>
+          <Route path='/getSerial' element={<GetSerial/>}/>
           </>
         ) : (
           <>
